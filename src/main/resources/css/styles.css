@@ -1,0 +1,11 @@
+.loginbounded{
+	-fx-background-radius: 20;
+}
+
+.flip-image {
+    -fx-transition: -fx-rotate 0.5s ease-in-out;
+}
+
+.flip-image:hover {
+    -fx-rotate: 180;
+}
