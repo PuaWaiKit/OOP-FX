@@ -1,18 +1,58 @@
 package com.groupfx.JavaFXApp;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
+
+
+enum UserRole
+{
+	admin("ad"),
+	salesManager("sm"),
+	purchaseManager("pm"),
+	inventoryManager("im"),
+	financeManager("fm");
+	
+	private final String descrip;
+	
+	UserRole(String descrip){
+		this.descrip=descrip;
+	}
+	
+	public String getDescription() 
+	{
+		return descrip;
+	}
+	
+}
+
+
 
 
 public class Authentication { 
 	//private static final String FileLocate= "";
 	private Map<String,String> UserMap= new HashMap<>();
 	private Map<String,String> roleMap= new HashMap<>();
+	private String CurrRole;
+	private Stage stage;
+	private Scene scene;
+
+	
+	
 	
 	public Authentication() 
 	{
@@ -54,15 +94,47 @@ public class Authentication {
 		
 	}
 	
-	public boolean UserAuth(String UserName, String Password) 
+	public boolean UserAuth(String UserName, String Password) throws IOException 
 	{
 		if(UserMap.containsKey(UserName.trim()) && UserMap.get(UserName.trim()).equals(Password.trim())) 
-		{
+		{	
+			CurrRole=roleMap.getOrDefault(UserName, "Undentified");
 			return true;
 		}
 		return false;
 		
 	}
+	
+	public String getRoles() 
+	{
+		return CurrRole;
+	}
+	
+	
+	
+	public void SwitchScene(MouseEvent event) throws IOException
+	{			
+	/**
+	 * String[] data= {"sm","pm","im","ad","fm"};
+	 * Please Mind that all the role interface/main menu must start with sm/pmInterface...
+	 * And the Text File Data must same as enum values 
+	 * 
+	 * */
+		for(UserRole rol: UserRole.values()) 
+		{
+			if (CurrRole.equals(rol.toString())) 
+			{	String filePath= MessageFormat.format("/fxml/{0}Interface.fxml",rol.getDescription());  //getDescription is enum method
+				Parent root= FXMLLoader.load(getClass().getResource(filePath));
+				stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+				scene= new Scene(root);
+				stage.setScene(scene);
+				stage.show();
+			}
+			
+		}
+		
+	}
+	
 	
 //	public String TestCase() 
 //	{

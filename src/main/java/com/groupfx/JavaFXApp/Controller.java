@@ -1,6 +1,8 @@
 
 package com.groupfx.JavaFXApp;
 
+import java.io.IOException;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -69,7 +71,7 @@ public class Controller {
     }
 
     @FXML
-    public void loginAct(MouseEvent event) {
+    public void loginAct(MouseEvent event) throws IOException {
     	Authentication auth= new Authentication();
 		auth.LoadData();
 		if(auth.UserAuth(UsernameBx.getText(),passwordbox.getText())) 
@@ -79,6 +81,7 @@ public class Controller {
 			alert.setHeaderText(null);
 			alert.setContentText("Sucess Login");
 			alert.showAndWait();
+			auth.SwitchScene(event);
 		
 		}
 		else 
@@ -92,8 +95,11 @@ public class Controller {
     }
     
     
-    
 
+    
+    
+    
+// Click show Password or Hide Password 
     @FXML
     public void pwClick(MouseEvent event) {
     	pwChangePic.setImage(new Image(getClass().getResource("/img/hide.png").toExternalForm()));
