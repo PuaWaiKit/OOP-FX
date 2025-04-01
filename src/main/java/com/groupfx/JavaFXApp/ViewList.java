@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 
 
-public class ViewItemList
+public class ViewList implements ViewPack
 {
 	private String Name;
 	private String ID;
@@ -16,12 +16,14 @@ public class ViewItemList
 	private int Stock;
 	protected StringBuilder builder;
 	
-	public ViewItemList() 
+	public ViewList() 
 	{
 		
 	}
 	
-	public ViewItemList(String ID, String Name, String Supplier,int Stock,double UnitPrice ) 
+	
+	
+	public ViewList(String ID, String Name, String Supplier,int Stock,double UnitPrice ) 
 	{
 	    this.ID = ID;
         this.Name = Name;
@@ -56,7 +58,7 @@ public class ViewItemList
     	return UnitPrice; 
     }
 	
-    
+    @Override
     public StringBuilder ReadTextFile() throws IOException
 	{	
 		InputStream stream= getClass().getClassLoader().getResourceAsStream("Data/ItemsList.txt");
@@ -71,7 +73,7 @@ public class ViewItemList
 			builder.append(data[1]).append(","); //Name
 			builder.append(data[2]).append(","); //Supplier Name
 			builder.append(data[3]).append(","); //Stock
-			builder.append(data[0]).append("\n"); //UnitPrice
+			builder.append(data[4]).append("\n"); //UnitPrice
 			
 		}
 		return builder;
