@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="980.0" style="-fx-background-color: #5E6572;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutX="15.0" layoutY="15.0" prefHeight="670.0" prefWidth="950.0" style="-fx-background-color: #ffffff;" styleClass="loginbounded" stylesheets="@../css/styles.css" />
+      <AnchorPane layoutX="15.0" layoutY="15.0" prefHeight="670.0" prefWidth="950.0" style="-fx-background-color: #ffffff;" styleClass="loginbounded" stylesheets="@../css/styles.css">
+         <children>
+            <Separator layoutX="15.0" layoutY="55.0" prefHeight="0.0" prefWidth="920.0" style="-fx-background-color: #5E6572;" />
+            <Label layoutX="15.0" layoutY="22.0" text="ITEMS MANAGEMENT" textFill="#5e6572">
+               <font>
+                  <Font name="DejaVu Sans Mono Bold" size="18.0" />
+               </font>
+            </Label>
+            <TableView layoutX="15.0" layoutY="379.0" prefHeight="267.0" prefWidth="747.0">
+              <columns>
+                <TableColumn prefWidth="128.1485252380371" text="ItemID" />
+                <TableColumn prefWidth="108.88923645019531" text="Name" />
+                  <TableColumn prefWidth="146.66717529296875" text="Quantity" />
+                  <TableColumn prefWidth="170.37091064453125" text="Price" />
+                  <TableColumn prefWidth="194.07470703125" text="SupplierID" />
+              </columns>
+            </TableView>
+            <BarChart layoutX="1.0" layoutY="65.0" prefHeight="305.0" prefWidth="933.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </BarChart>
+         </children></AnchorPane>
    </children>
 </AnchorPane>
