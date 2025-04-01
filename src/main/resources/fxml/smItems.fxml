@@ -25,7 +25,7 @@
                   <Font name="DejaVu Sans Mono Bold" size="18.0" />
                </font>
             </Label>
-            <TableView fx:id="viewItemTable" layoutX="15.0" layoutY="379.0" onMouseClicked="#rowClick" prefHeight="270.0" prefWidth="710.0">
+            <TableView fx:id="viewItemTable" layoutX="15.0" layoutY="379.0" onMouseClicked="#rowClick" prefHeight="267.0" prefWidth="710.0">
               <columns>
                 <TableColumn fx:id="ItemsID" prefWidth="94.81509017944336" text="Items_ID" />
                 <TableColumn fx:id="ItemsName" prefWidth="177.03760528564453" text="Items_Name" />
@@ -37,7 +37,7 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <BarChart layoutX="1.0" layoutY="65.0" prefHeight="305.0" prefWidth="950.0">
+            <BarChart fx:id="viewStockChart" layoutX="1.0" layoutY="65.0" prefHeight="305.0" prefWidth="950.0">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>
@@ -52,30 +52,36 @@
                         <Font name="DejaVu Serif Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtItemsID"/>
+                  <TextField fx:id="txtItemsID" />
                   <Label text="NAME">
                      <font>
                         <Font name="DejaVu Serif Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtItemsName"/>
+                  <TextField fx:id="txtItemsName" />
                   <Label text="QUANTITY">
                      <font>
                         <Font name="DejaVu Serif Bold" size="14.0" />
                      </font></Label>
-                  <TextField fx:id="txtItemsStock"/>
+                  <TextField fx:id="txtItemsStock" />
                   <Label text="PRICE">
                      <font>
                         <Font name="DejaVu Serif Bold" size="14.0" />
                      </font></Label>
-                  <TextField fx:id="txtItemsUP"/>
+                  <TextField fx:id="txtItemsUP" />
                   <Label text="SUPPLIER">
                      <font>
                         <Font name="DejaVu Serif Bold" size="14.0" />
                      </font></Label>
-                  <TextField fx:id="txtItemSupp"/>
+                  <TextField fx:id="txtItemSupp" />
+                  <Separator prefWidth="200.0" />
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
+                        <Button mnemonicParsing="false" style="-fx-background-color: #1098F7;">
+                           <graphic>
+                              <FontIcon iconLiteral="anto-reload" />
+                           </graphic>
+                        </Button>
                         <Button mnemonicParsing="false" style="-fx-background-color: #F7DD72;">
                            <graphic>
                               <FontIcon iconLiteral="anto-cloud-upload" />
