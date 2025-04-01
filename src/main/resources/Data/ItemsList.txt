@@ -1,1 +1,2 @@
 002,Banana,Tropical Market,50,0.8
+001,Apple,Nixon Supply,100,1.5
