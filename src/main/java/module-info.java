@@ -4,5 +4,6 @@ open module JavaFXApp {
 	requires javafx.fxml;
 	requires javafx.graphics;
 	requires java.desktop;
+	requires javafx.base;
 	
 }
