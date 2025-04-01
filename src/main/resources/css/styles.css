@@ -9,3 +9,15 @@
 .flip-image:hover {
     -fx-rotate: 180;
 }
+
+.button {
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 16px;
+    -fx-background-color:  #1C2321;
+    -fx-text-fill: white;
+} 
+
+.button:pressed {
+    -fx-background-color: white;
+    -fx-text-fill:  #1C2321;
+}
