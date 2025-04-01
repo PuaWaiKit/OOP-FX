@@ -24,7 +24,7 @@
                   </Button>
                   <Button fx:id="exitIco" layoutX="10.0" layoutY="658.0" mnemonicParsing="false" style="-fx-background-color: #1C2321;">
                      <graphic>
-                        <FontIcon fx:id="exitBtn" iconColor="WHITE" iconLiteral="anto-logout" iconSize="20" text="" />
+                        <FontIcon fx:id="exitBtn" iconColor="WHITE" iconLiteral="anto-logout" iconSize="20" onMouseClicked="#LogoutB" text="" />
                      </graphic>
                   </Button>
                   <VBox layoutX="10.0" layoutY="186.0" prefHeight="300.0" prefWidth="200.0">

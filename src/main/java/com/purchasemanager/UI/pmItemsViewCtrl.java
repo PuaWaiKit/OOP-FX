@@ -14,27 +14,27 @@ import com.groupfx.JavaFXApp.*;
 public class pmItemsViewCtrl {
 
     @FXML
-    private TableColumn<ViewItemList, String> ItemsID;
+    private TableColumn<ViewList, String> ItemsID;
 
     @FXML
-    private TableColumn<ViewItemList, String> ItemsName;
+    private TableColumn<ViewList, String> ItemsName;
 
     @FXML
-    private TableColumn<ViewItemList, String> ItemsSupp;
+    private TableColumn<ViewList, String> ItemsSupp;
 
     @FXML
-    private TableColumn<ViewItemList, Integer> itemsStock;
+    private TableColumn<ViewList, Integer> itemsStock;
 
     @FXML
-    private TableColumn<ViewItemList, Double> itemsUP;
+    private TableColumn<ViewList, Double> itemsUP;
 
     @FXML
-    private TableView<ViewItemList> viewItemTable;
+    private TableView<ViewList> viewItemTable;
     
     
     public void initialize() throws IOException 
     {
-    	ItemsID.setCellValueFactory(new PropertyValueFactory<>("id")); // Use the ViewItemList.getID method
+    	ItemsID.setCellValueFactory(new PropertyValueFactory<>("id")); // Use the ViewList.getID method
     	ItemsName.setCellValueFactory(new PropertyValueFactory<>("name"));// same as above but the method different
         ItemsSupp.setCellValueFactory(new PropertyValueFactory<>("supplier"));
         itemsStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
@@ -45,8 +45,8 @@ public class pmItemsViewCtrl {
     
     public void load() throws IOException 
     {
-    	ViewItemList listed= new ViewItemList();
-    	ObservableList<ViewItemList> itemList= FXCollections.observableArrayList(); 
+    	ViewList listed= new ViewList();
+    	ObservableList<ViewList> itemList= FXCollections.observableArrayList(); 
     	String[] row= listed.ReadTextFile().toString().split("\n");
     	
     	for(String rows: row) 
@@ -54,7 +54,7 @@ public class pmItemsViewCtrl {
     		String[] spl= rows.split(",");
     		if(spl.length==5) 
     		{
-    			itemList.add(new ViewItemList(
+    			itemList.add(new ViewList(
     					spl[0],
     					spl[1],
     					spl[2],

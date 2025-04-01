@@ -5,14 +5,25 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import javafx.util.Duration;
+
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 
@@ -50,6 +61,8 @@ public class purchaseCtrl implements Initializable{
     @FXML
     private AnchorPane nvgPane;
 
+    private Scene scene;
+    private Stage stage;
     
 	@Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -104,8 +117,9 @@ public class purchaseCtrl implements Initializable{
 
     @FXML
     private void handleChangeSuppliers(ActionEvent event) {
-
+    	loadNewContent("/fxml/pmViewSuppliers.fxml");
     }
+    
     private boolean drawerOpen = false;
     @FXML
     private void toggleDrawer(ActionEvent event) 
@@ -120,6 +134,29 @@ public class purchaseCtrl implements Initializable{
 
         transition.play();
         drawerOpen = !drawerOpen;
+    }
+    
+    @FXML
+    public void LogoutB(MouseEvent event) throws IOException {
+    	Alert alert= new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("LogOut?");
+    	alert.setContentText("Do You Want To Log Out ?");
+    	alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO); //add button yes and no
+    	Optional<ButtonType> result= alert.showAndWait(); // wait until user select
+    	alert.setHeaderText(null);
+    	
+    	if(result.isPresent() && result.get()== ButtonType.YES) 
+    	{
+			Parent root= FXMLLoader.load(getClass().getResource("/fxml/Sample.fxml"));
+			stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+			scene= new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+    	}
+    	
+    	
+    	
+    	
     }
   }
 

@@ -13,22 +13,22 @@ import com.groupfx.JavaFXApp.*;
 
 public class smItemsCtrl {
 	@FXML
-    private TableColumn<ViewItemList, String> ItemsID;
+    private TableColumn<ViewList, String> ItemsID;
 
     @FXML
-    private TableColumn<ViewItemList, String> ItemsName;
+    private TableColumn<ViewList, String> ItemsName;
 
     @FXML
-    private TableColumn<ViewItemList, String> ItemsSupp;
+    private TableColumn<ViewList, String> ItemsSupp;
 
     @FXML
-    private TableColumn<ViewItemList, Integer> itemsStock;
+    private TableColumn<ViewList, Integer> itemsStock;
 
     @FXML
-    private TableColumn<ViewItemList, Double> itemsUP;
+    private TableColumn<ViewList, Double> itemsUP;
 
     @FXML
-    private TableView<ViewItemList> viewItemTable;
+    private TableView<ViewList> viewItemTable;
     
     @FXML
     private TextField txtItemsID;
@@ -58,8 +58,8 @@ public class smItemsCtrl {
     
     public void load() throws IOException 
     {
-    	ViewItemList listed= new ViewItemList();
-    	ObservableList<ViewItemList> itemList= FXCollections.observableArrayList(); 
+    	ViewList listed= new ViewList();
+    	ObservableList<ViewList> itemList= FXCollections.observableArrayList(); 
     	String[] row= listed.ReadTextFile().toString().split("\n");
     	
     	for(String rows: row) 
@@ -67,7 +67,7 @@ public class smItemsCtrl {
     		String[] spl= rows.split(",");
     		if(spl.length==5) 
     		{
-    			itemList.add(new ViewItemList(
+    			itemList.add(new ViewList(
     					spl[0],
     					spl[1],
     					spl[2],
@@ -82,7 +82,7 @@ public class smItemsCtrl {
     
     public void rowClick() {
 
-        ViewItemList selectedItem = viewItemTable.getSelectionModel().getSelectedItem();
+        ViewList selectedItem = viewItemTable.getSelectionModel().getSelectedItem();
         
         if (selectedItem != null) {
             String id = selectedItem.getId();
