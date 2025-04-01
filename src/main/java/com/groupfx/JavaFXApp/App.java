@@ -13,7 +13,7 @@ public class App extends Application {
     	Parent root = FXMLLoader.load(getClass().getResource("/fxml/Sample.fxml"));
         Scene scene = new Scene(root, 600, 700);
         
-        primaryStage.setTitle("JavaFX App");
+        primaryStage.setTitle("O M E G A");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
