@@ -27,7 +27,7 @@
                         <FontIcon iconColor="WHITE" iconLiteral="anto-logout" iconSize="20" text="" />
                      </graphic>
                   </Button>
-                  <VBox layoutX="10.0" layoutY="189.0" prefHeight="300.0" prefWidth="200.0">
+                  <VBox layoutX="10.0" layoutY="186.0" prefHeight="300.0" prefWidth="200.0">
                      <children>
                         <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangeItems" prefHeight="60.0" prefWidth="201.0" style="-fx-background-color: #1C2321;" text="   ITEMS" textFill="WHITE">
                            <graphic>
@@ -45,7 +45,7 @@
                               <Font name="Comic Sans MS" size="16.0" />
                            </font>
                         </Button>
-                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="60.0" prefWidth="204.0" style="-fx-background-color: #1C2321;" text="   DAILY SALES" textFill="WHITE">
+                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangeDailyS" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #1C2321;" text="   DAILY SALES" textFill="WHITE">
                            <graphic>
                               <FontIcon iconColor="WHITE" iconLiteral="anto-bar-chart" iconSize="25" wrappingWidth="22.963074445724487" />
                            </graphic>
@@ -53,7 +53,7 @@
                               <Font name="Comic Sans MS" size="16.0" />
                            </font>
                         </Button>
-                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="60.0" prefWidth="201.0" style="-fx-background-color: #1C2321;" text="   REQUITSITION" textFill="WHITE">
+                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangePR" prefHeight="60.0" prefWidth="201.0" style="-fx-background-color: #1C2321;" text="   REQUITSITION" textFill="WHITE">
                            <graphic>
                               <FontIcon iconColor="WHITE" iconLiteral="anto-file-text" iconSize="25" wrappingWidth="22.963074445724487" />
                            </graphic>
@@ -61,7 +61,7 @@
                               <Font name="Comic Sans MS" size="16.0" />
                            </font>
                         </Button>
-                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="60.0" prefWidth="201.0" style="-fx-background-color: #1C2321;" text="   PO" textFill="WHITE">
+                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangePO" prefHeight="60.0" prefWidth="201.0" style="-fx-background-color: #1C2321;" text="   PO" textFill="WHITE">
                            <graphic>
                               <FontIcon iconColor="WHITE" iconLiteral="anto-shopping-cart" iconSize="25" wrappingWidth="22.963074445724487" />
                            </graphic>
@@ -71,7 +71,7 @@
                         </Button>
                      </children>
                   </VBox>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="35.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="35.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/OMEGA-UI.png" />
                      </image>
