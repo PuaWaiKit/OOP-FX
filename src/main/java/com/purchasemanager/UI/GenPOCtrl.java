@@ -34,19 +34,19 @@ public class GenPOCtrl {
     private TextField PMtxt;
 
     @FXML
-    private TableColumn<PurchaseOrderData, String> POIName;
+    private TableColumn<PManagerOrder, String> POIName;
 
     @FXML
-    private TableColumn<PurchaseOrderData, String> POid;
+    private TableColumn<PManagerOrder, String> POid;
 
     @FXML
-    private TableColumn<PurchaseOrderData, Double> POprice;
+    private TableColumn<PManagerOrder, Double> POprice;
 
     @FXML
-    private TableColumn<PurchaseOrderData, Integer> POqty;
+    private TableColumn<PManagerOrder, Integer> POqty;
 
     @FXML
-    private TableColumn<PurchaseOrderData, String> POso;
+    private TableColumn<PManagerOrder, String> POso;
 
     @FXML
     private TextField Pricetxt;
@@ -61,7 +61,7 @@ public class GenPOCtrl {
     private Button UploadBtn;
 
     @FXML
-    private TableView<PurchaseOrderData> ViewPO;
+    private TableView<PManagerOrder> ViewPO;
 
     @FXML
     private Button backBtn;
@@ -80,15 +80,15 @@ public class GenPOCtrl {
     
     public void load() throws IOException 
     {
-    	PurchaseOrderData data= new PurchaseOrderData();
-    	ObservableList<PurchaseOrderData> obList= FXCollections.observableArrayList();
-    	String[] rows= data.ViewPo().toString().split("\n");
+    	PManagerOrder data= new PManagerOrder();
+    	ObservableList<PManagerOrder> obList= FXCollections.observableArrayList();
+    	String[] rows= data.ReadTextFile().toString().split("\n");
     	
     	for(String row:rows) 
     	{	String[] split=row.split(",");
     		if(split.length==5) 
     		{
-    			obList.add(new PurchaseOrderData(
+    			obList.add(new PManagerOrder(
     					split[0],
     					split[1],
     					Integer.parseInt(split[2]),
@@ -105,7 +105,7 @@ public class GenPOCtrl {
     @FXML
     public void AddClick(MouseEvent event) {
     	//String Id, String name, String Quantity, String Price, String Pm
-    	PurchaseOrderData data= new PurchaseOrderData(IdTxtbx.getText(),ItemsNameTxt.getText(),QtyTxt.getText(),Pricetxt.getText(),PMtxt.getText());
+    	PManagerOrder data= new PManagerOrder(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText());
     	data.AddFunc();
     	if(data.checkingFunc()) 
     	{
@@ -125,6 +125,22 @@ public class GenPOCtrl {
     	}
     }
 
+    @FXML
+    public void RowSelection(MouseEvent e) 
+    {
+    	PManagerOrder selectedItems= ViewPO.getSelectionModel().getSelectedItem();
+    	if(selectedItems!=null) 
+    	{
+    		IdTxtbx.setText(selectedItems.getId());
+    		ItemsNameTxt.setText(selectedItems.getName());
+    		Pricetxt.setText(Double.toString(selectedItems.getPrice()));
+    		QtyTxt.setText(Integer.toString(selectedItems.getQuantity()));
+    		PMtxt.setText(selectedItems.getPm());
+    		
+    	}
+    }
+    
+    
     @FXML
     void DelClick(MouseEvent event) {
 
