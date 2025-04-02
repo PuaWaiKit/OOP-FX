@@ -7,11 +7,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.MessageFormat;
 
 import com.groupfx.JavaFXApp.*;
 
 public class PManagerOrder implements ViewPack, ModificationFunction {
-	private String Id,name,Quantity,Price,Pm;
+	private String Id,name,Pm;
+	private int Quantity;
+	private double Price;
 	private InputStream stream;
 	private String Filepath="Data/PurchaseOrder.txt";
 	private boolean Checking=false;
@@ -22,13 +25,38 @@ public class PManagerOrder implements ViewPack, ModificationFunction {
 		
 	}
 	
-	public PManagerOrder(String Id, String name, String Quantity, String Price, String Pm ) 
+	public PManagerOrder(String Id, String name, int Quantity, double Price, String Pm ) 
 	{
 		this.Id=Id;
 		this.name=name;
 		this.Quantity=Quantity;
 		this.Price=Price;
 		this.Pm=Pm;
+	}
+	
+	public String getName() 
+	{
+		return name;
+	}
+	
+	public String getId() 
+	{
+		return Id;
+	}
+	
+	public int getQuantity() 
+	{
+		return Quantity;
+	}
+	
+	public double getPrice() 
+	{
+		return Price;
+	}
+	
+	public String getPm() 
+	{
+		return Pm;
 	}
 	
 	
@@ -46,14 +74,16 @@ public class PManagerOrder implements ViewPack, ModificationFunction {
 		
 		try(BufferedWriter writer= new BufferedWriter(new FileWriter(Filepath,true)))
 		{
+			//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
+			//writer.write(Data);
+			
 			builder.append(Id).append(",");
 			builder.append(name).append(",");
 			builder.append(Quantity).append(",");
 			builder.append(Price).append(",");
 			builder.append(Pm).append("\n");
-			
 			writer.write(builder.toString());
-			writer.newLine();
+			//writer.newLine();
 			Checking=true;
 		}
 		catch(IOException e) 
@@ -90,6 +120,8 @@ public class PManagerOrder implements ViewPack, ModificationFunction {
 		String line;
 		while ((line=reader.readLine())!=null) 
 		{
+			if(line.trim().isEmpty()) continue; //Skip Empty Space/Data
+			
 			String[] data=line.split(",");
 			builder.append(data[0]).append(",");
 			builder.append(data[1]).append(",");
@@ -97,7 +129,7 @@ public class PManagerOrder implements ViewPack, ModificationFunction {
 			builder.append(data[3]).append(",");
 			builder.append(data[4]).append("\n");
 		}
-	
+		reader.close();
 		return builder;
 		
 	}
