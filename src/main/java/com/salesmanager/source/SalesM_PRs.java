@@ -1,7 +1,9 @@
 package com.salesmanager.source;
 
 import java.io.BufferedReader;
+
 import java.io.FileReader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,6 +12,33 @@ import com.groupfx.JavaFXApp.prSource;
 
 public class SalesM_PRs  extends SalesM implements prSource {
 	
+	private String Id;
+	private String Item_ID;
+	private int Quantity;
+	private int Budget;
+	private String SalesM;
+	private String Status;
+
+	public String getId() { return Id; }
+    public String getItem_ID() { return Item_ID; }
+    public int getQuantity() { return Quantity; }
+    public int getBudget() { return Budget; }
+    public String getSalesM() { return SalesM; }
+    public String getStatus() { return Status; }
+    
+    public SalesM_PRs() {
+    	
+    }
+    
+    public SalesM_PRs(String Id, String Item_ID, int Quantity, int Budget, String SalesM, String Status) {
+        this.Id = Id;
+        this.Item_ID = Item_ID;
+        this.Quantity = Quantity;
+        this.Budget = Budget;
+        this.SalesM = SalesM;
+        this.Status = Status;
+    }
+    
 	@Override
 	public void viewPR() {
 		try {
@@ -28,7 +57,6 @@ public class SalesM_PRs  extends SalesM implements prSource {
 
 	public StringBuilder ReadTextFile() throws IOException
 	{	
-		
 		
 		BufferedReader reader= new BufferedReader(new FileReader("Data/prList.txt"));
 		builder= new StringBuilder();
