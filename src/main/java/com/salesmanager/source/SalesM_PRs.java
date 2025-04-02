@@ -15,14 +15,14 @@ public class SalesM_PRs  extends SalesM implements prSource {
 	private String Id;
 	private String Item_ID;
 	private int Quantity;
-	private int Budget;
+	private String Date;
 	private String SalesM;
 	private String Status;
 
 	public String getId() { return Id; }
     public String getItem_ID() { return Item_ID; }
     public int getQuantity() { return Quantity; }
-    public int getBudget() { return Budget; }
+    public String getDate() { return Date; }
     public String getSalesM() { return SalesM; }
     public String getStatus() { return Status; }
     
@@ -30,11 +30,11 @@ public class SalesM_PRs  extends SalesM implements prSource {
     	
     }
     
-    public SalesM_PRs(String Id, String Item_ID, int Quantity, int Budget, String SalesM, String Status) {
+    public SalesM_PRs(String Id, String Item_ID, int Quantity, String Date, String SalesM, String Status) {
         this.Id = Id;
         this.Item_ID = Item_ID;
         this.Quantity = Quantity;
-        this.Budget = Budget;
+        this.Date = Date;
         this.SalesM = SalesM;
         this.Status = Status;
     }

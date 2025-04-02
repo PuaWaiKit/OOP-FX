@@ -23,7 +23,7 @@
                       <TableColumn fx:id="PRsID" prefWidth="101.48171615600586" text="PR_ID" />
                       <TableColumn fx:id="Item_ID" minWidth="0.0" prefWidth="94.8150634765625" text="Item_ID" />
                         <TableColumn fx:id="Quantity" prefWidth="111.11146545410156" text="Quantity" />
-                        <TableColumn fx:id="Budget" prefWidth="97.778076171875" text="Budget" />
+                        <TableColumn fx:id="Date" prefWidth="97.778076171875" text="Date" />
                         <TableColumn fx:id="SalesM" prefWidth="141.48199462890625" text="Sales Manager" />
                         <TableColumn fx:id="Status" prefWidth="142.22265625" text="Status" />
                     </columns>
@@ -44,37 +44,37 @@
                            <font>
                               <Font name="DejaVu Serif Bold" size="14.0" />
                            </font></Label>
-                        <TextField fx:id="txtPRsID"/>
+                        <TextField fx:id="txtPRsID" />
                         <Separator opacity="0.0" prefHeight="35.0" prefWidth="190.0" />
                         <Label text="ITEM ID" textFill="#5e6572">
                            <font>
                               <Font name="DejaVu Serif Bold" size="14.0" />
                            </font></Label>
-                        <TextField fx:id="txtItem_ID"/>
+                        <TextField fx:id="txtItem_ID" />
                         <Separator opacity="0.0" prefHeight="35.0" prefWidth="200.0" />
                         <Label text="QUANTITY" textFill="#5e6572">
                            <font>
                               <Font name="DejaVu Serif Bold" size="14.0" />
                            </font></Label>
-                        <TextField fx:id="txtQuantity"/>
+                        <TextField fx:id="txtQuantity" />
                         <Separator opacity="0.0" prefHeight="35.0" prefWidth="200.0" />
                         <Label text="BUDGET" textFill="#5e6572">
                            <font>
                               <Font name="DejaVu Serif Bold" size="14.0" />
                            </font></Label>
-                        <TextField fx:id="txtBudget"/>
+                        <TextField fx:id="txtDate" />
                         <Separator opacity="0.0" prefHeight="35.0" prefWidth="200.0" />
                         <Label text="SALES MANAGER" textFill="#5e6572">
                            <font>
                               <Font name="DejaVu Serif Bold" size="14.0" />
                            </font></Label>
-                        <TextField fx:id="txtSalesM"/>
+                        <TextField fx:id="txtSalesM" />
                         <Separator opacity="0.0" prefHeight="35.0" prefWidth="200.0" />
                         <Label text="STATUS" textFill="#5e6572">
                            <font>
                               <Font name="DejaVu Serif Bold" size="14.0" />
                            </font></Label>
-                        <TextField fx:id="txtStatus"/>
+                        <TextField fx:id="txtStatus" />
                         <Separator opacity="0.0" prefHeight="40.0" prefWidth="200.0" />
                         <HBox alignment="TOP_RIGHT" prefHeight="36.0" prefWidth="190.0">
                            <children>

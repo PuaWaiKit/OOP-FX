@@ -25,7 +25,7 @@ public class smPRsCtrl {
     private TableColumn<SalesM_PRs, Integer> Quantity;
 
     @FXML
-    private TableColumn<SalesM_PRs, Integer> Budget;
+    private TableColumn<SalesM_PRs, Integer> Date;
 
     @FXML
     private TableColumn<SalesM_PRs, String> SalesM;
@@ -46,7 +46,7 @@ public class smPRsCtrl {
     private TextField txtQuantity;
     
     @FXML
-    private TextField txtBudget;
+    private TextField txtDate;
     
     @FXML
     private TextField txtSalesM;
@@ -59,7 +59,7 @@ public class smPRsCtrl {
     	PRsID.setCellValueFactory(new PropertyValueFactory<>("id")); // Use the SalesM_PRs.getID method
     	Item_ID.setCellValueFactory(new PropertyValueFactory<>("item_ID"));
         Quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        Budget.setCellValueFactory(new PropertyValueFactory<>("budget"));
+        Date.setCellValueFactory(new PropertyValueFactory<>("date"));
         SalesM.setCellValueFactory(new PropertyValueFactory<>("salesM"));
         Status.setCellValueFactory(new PropertyValueFactory<>("status"));
         
@@ -82,7 +82,7 @@ public class smPRsCtrl {
     					spl[0],
     					spl[1],
     					Integer.parseInt(spl[2]),
-    					Integer.parseInt(spl[3]),
+    					spl[3],
     					spl[4],
     					spl[5]
     					));
@@ -101,14 +101,14 @@ public class smPRsCtrl {
             String id = selectedItem.getId();
             String itemId = selectedItem.getItem_ID();
             int quantity = selectedItem.getQuantity();
-            int budget = selectedItem.getBudget();
+            String budget = selectedItem.getDate();
             String salesM = selectedItem.getSalesM();
             String status = selectedItem.getStatus();
             
             txtPRsID.setText(id);
             txtItem_ID.setText(itemId);
             txtQuantity.setText(String.valueOf(quantity));
-            txtBudget.setText(String.valueOf(budget));
+            txtDate.setText(String.valueOf(budget));
             txtSalesM.setText(salesM);
             txtStatus.setText(status);
         }
