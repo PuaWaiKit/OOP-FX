@@ -82,11 +82,6 @@
                               <FontIcon iconLiteral="anto-reload" />
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #F7DD72;">
-                           <graphic>
-                              <FontIcon iconLiteral="anto-cloud-upload" />
-                           </graphic>
-                        </Button>
                         <Button mnemonicParsing="false" style="-fx-background-color: green;">
                            <graphic>
                               <FontIcon iconLiteral="anto-check" />

@@ -1,0 +1,2 @@
+John,john123,salesManager
+Ming,ming1111,purchaseManager

@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class SMInterface extends Application {
+	
     @Override
     public void start(Stage primaryStage) throws Exception {
     	Parent root = FXMLLoader.load(getClass().getResource("/fxml/smInterface.fxml"));
