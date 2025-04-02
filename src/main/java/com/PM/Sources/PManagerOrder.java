@@ -1,0 +1,104 @@
+package com.PM.Sources;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import com.groupfx.JavaFXApp.*;
+
+public class PManagerOrder implements ViewPack, ModificationFunction {
+	private String Id,name,Quantity,Price,Pm;
+	private InputStream stream;
+	private String Filepath="Data/PurchaseOrder.txt";
+	private boolean Checking=false;
+	
+	
+	public PManagerOrder() 
+	{
+		
+	}
+	
+	public PManagerOrder(String Id, String name, String Quantity, String Price, String Pm ) 
+	{
+		this.Id=Id;
+		this.name=name;
+		this.Quantity=Quantity;
+		this.Price=Price;
+		this.Pm=Pm;
+	}
+	
+	
+	public boolean checkingFunc() 
+	{
+		return Checking;
+	}
+	
+	@Override
+	public void AddFunc() 
+	{
+		StringBuilder builder= new StringBuilder();
+	
+		
+		
+		try(BufferedWriter writer= new BufferedWriter(new FileWriter(Filepath,true)))
+		{
+			builder.append(Id).append(",");
+			builder.append(name).append(",");
+			builder.append(Quantity).append(",");
+			builder.append(Price).append(",");
+			builder.append(Pm).append("\n");
+			
+			writer.write(builder.toString());
+			writer.newLine();
+			Checking=true;
+		}
+		catch(IOException e) 
+		{	Checking=false;
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void DeleteFunc() 
+	{
+		
+	}
+	
+	@Override
+	public void SaveFunc() 
+	{
+		
+	}
+	
+	@Override
+	public void EditFunc() 
+	{
+		
+	}
+	
+	@Override
+	public StringBuilder ReadTextFile() throws IOException
+	{
+		StringBuilder builder= new StringBuilder();
+		
+		BufferedReader reader= new BufferedReader(new FileReader(Filepath));
+		
+		String line;
+		while ((line=reader.readLine())!=null) 
+		{
+			String[] data=line.split(",");
+			builder.append(data[0]).append(",");
+			builder.append(data[1]).append(",");
+			builder.append(data[2]).append(",");
+			builder.append(data[3]).append(",");
+			builder.append(data[4]).append("\n");
+		}
+	
+		return builder;
+		
+	}
+}

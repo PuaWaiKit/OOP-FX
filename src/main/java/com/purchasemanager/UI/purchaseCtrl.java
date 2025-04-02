@@ -107,7 +107,7 @@ public class purchaseCtrl implements Initializable{
 
     @FXML
     private void handleChangePO(ActionEvent event) {
-
+    	loadNewContent("/fxml/PMGenPO.fxml");
     }
 
     @FXML

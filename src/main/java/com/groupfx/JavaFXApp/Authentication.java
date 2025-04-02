@@ -68,9 +68,9 @@ public class Authentication {
 	
 	
 	public void LoadData() {
-		 InputStream inputStream = getClass().getClassLoader().getResourceAsStream("Data/UserData.txt");//maven and gardle use inputstram
 		
-		try(BufferedReader BRead= new BufferedReader(new InputStreamReader(inputStream)))
+		
+		try(BufferedReader BRead= new BufferedReader(new FileReader("Data/UserData.txt")))
 		{
 			String line="";
 			while ((line=BRead.readLine())!=null) 

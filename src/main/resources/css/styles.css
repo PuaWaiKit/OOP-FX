@@ -17,6 +17,7 @@
     -fx-text-fill: white;
 } 
 
+
 .button:pressed {
     -fx-background-color: white;
     -fx-text-fill:  #1C2321;

@@ -17,7 +17,7 @@
                </font>
             </Label>
             <Separator layoutX="14.0" layoutY="68.0" prefHeight="0.0" prefWidth="597.0" />
-            <TableView fx:id="SupplierView" layoutX="109.0" layoutY="90.0" prefHeight="490.0" prefWidth="682.0">
+            <TableView fx:id="SupplierView" layoutX="109.0" layoutY="90.0" prefHeight="490.0" prefWidth="682.0" stylesheets="@../css/tableStyle.css">
               <columns>
                 <TableColumn fx:id="SuppID" prefWidth="75.0" text="ID" />
                 <TableColumn fx:id="SuppName" prefWidth="185.59999084472656" text="Name" />
