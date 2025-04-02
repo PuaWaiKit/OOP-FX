@@ -51,22 +51,22 @@
             <Separator layoutX="643.0" layoutY="448.0" prefHeight="3.0" prefWidth="200.0" />
             <HBox layoutX="643.0" layoutY="459.0" prefHeight="54.0" prefWidth="223.0" spacing="10.0">
                <children>
-                  <Button fx:id="RefBtn" mnemonicParsing="false" onMouseClicked="#RefClick" prefHeight="34.0" prefWidth="38.0" style="-fx-background-color: #00008B;" stylesheets="@../css/Button.css">
+                  <Button fx:id="RefBtn" mnemonicParsing="false" onMouseClicked="#RefClick" prefHeight="34.0" prefWidth="38.0" style="-fx-background-color: #00008B;" stylesheets="@../css/tableStyle.css">
                      <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="anto-reload" text="" />
                      </graphic>
                   </Button>
-                  <Button fx:id="UploadBtn" mnemonicParsing="false" onMouseClicked="#upClick" prefHeight="34.0" prefWidth="38.0" style="-fx-background-color: #0000ff;" stylesheets="@../css/Button.css">
+                  <Button fx:id="EditBtn" mnemonicParsing="false" onMouseClicked="#EditClick" prefHeight="34.0" prefWidth="38.0" style="-fx-background-color: #6C757D;" stylesheets="@../css/tableStyle.css" textFill="RED">
                      <graphic>
-                        <FontIcon iconColor="WHITE" iconLiteral="anto-cloud-upload" />
+                        <FontIcon iconColor="WHITE" iconLiteral="anto-edit" />
                      </graphic>
                   </Button>
-                  <Button fx:id="Addbtn" mnemonicParsing="false" onMouseClicked="#AddClick" prefHeight="34.0" prefWidth="38.0" style="-fx-background-color: #008000;" stylesheets="@../css/Button.css">
+                  <Button fx:id="Addbtn" mnemonicParsing="false" onMouseClicked="#AddClick" prefHeight="34.0" prefWidth="38.0" style="-fx-background-color: #008000;" stylesheets="@../css/tableStyle.css">
                      <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="anto-check" />
                      </graphic>
                   </Button>
-                  <Button fx:id="DelBtn" mnemonicParsing="false" onMouseClicked="#DelClick" prefHeight="34.0" prefWidth="38.0" style="-fx-background-color: #FF0000;" stylesheets="@../css/Button.css" textFill="RED">
+                  <Button fx:id="DelBtn" mnemonicParsing="false" onMouseClicked="#DelClick" prefHeight="34.0" prefWidth="38.0" style="-fx-background-color: #FF0000;" stylesheets="@../css/tableStyle.css" textFill="RED">
                      <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="anto-delete" />
                      </graphic>

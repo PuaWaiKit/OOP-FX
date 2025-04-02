@@ -2,7 +2,9 @@ package com.groupfx.JavaFXApp;
 
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -50,7 +52,7 @@ public class Authentication {
 	private String CurrRole;
 	private Stage stage;
 	private Scene scene;
-
+	private String Name;
 	
 	
 	
@@ -59,6 +61,10 @@ public class Authentication {
 		
 	}
 	
+	public String getName() 
+	{
+		return Name;
+	}
 //	public static void main(String[] args) 
 //	{
 //		Authentication auth= new Authentication();
@@ -80,6 +86,7 @@ public class Authentication {
 				{
 					UserMap.put(UserParts[0], UserParts[1]); //name and passwords
 					roleMap.put(UserParts[0], UserParts[2]); // name and roles
+					
 				}
 			}
 			
@@ -99,6 +106,10 @@ public class Authentication {
 		if(UserMap.containsKey(UserName.trim()) && UserMap.get(UserName.trim()).equals(Password.trim())) 
 		{	
 			CurrRole=roleMap.getOrDefault(UserName, "Undentified");
+			BufferedWriter writer = new BufferedWriter(new FileWriter("Data/Log.txt"));
+			writer.write(UserName);
+			writer.newLine();
+			writer.close();
 			return true;
 		}
 		return false;

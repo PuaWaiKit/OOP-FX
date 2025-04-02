@@ -60,6 +60,7 @@ public class ListSupplier implements viewData  {
 			builder.append(data[3]).append("\n");
 			
 		}
+		reader.close();
 		return builder;
 		
 	}
