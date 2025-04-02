@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class SMInterface extends Application {
+public class smInterface extends Application {
 	
     @Override
     public void start(Stage primaryStage) throws Exception {

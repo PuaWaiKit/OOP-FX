@@ -68,7 +68,7 @@ public class SalesM_PRs  extends SalesM implements prSource {
 			builder.append(data[0]).append(","); //ID
 			builder.append(data[1]).append(","); //Name
 			builder.append(data[2]).append(","); //Supplier Name
-			builder.append(data[3]).append(","); //Stock
+			builder.append(data[3]).append(","); //Stoc.k
 			builder.append(data[4]).append(","); //UnitPrice
 			builder.append(data[5]).append("\n"); //Sales Manager
 			

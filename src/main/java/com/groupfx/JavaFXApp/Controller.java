@@ -1,4 +1,3 @@
-
 package com.groupfx.JavaFXApp;
 
 import java.io.IOException;
