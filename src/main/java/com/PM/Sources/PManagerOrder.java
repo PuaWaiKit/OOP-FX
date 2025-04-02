@@ -11,7 +11,7 @@ import java.text.MessageFormat;
 
 import com.groupfx.JavaFXApp.*;
 
-public class PManagerOrder implements ViewPack, ModificationFunction {
+public class PManagerOrder implements viewData, modifyData {
 	private String Id,name,Pm;
 	private int Quantity;
 	private double Price;
