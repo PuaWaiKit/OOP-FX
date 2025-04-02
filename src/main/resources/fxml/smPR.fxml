@@ -12,20 +12,20 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="980.0" style="-fx-background-color: #5E6572;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="980.0" style="-fx-background-color: #5E6572;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salesmanager.UI.smPRsCtrl">
    <children>
       <AnchorPane layoutX="15.0" layoutY="15.0" prefHeight="670.0" prefWidth="950.0" style="-fx-background-color: #ffffff;" styleClass="loginbounded" stylesheets="@../css/styles.css">
          <children>
             <HBox layoutX="14.0" layoutY="88.0" prefHeight="555.0" prefWidth="920.0">
                <children>
-                  <TableView prefHeight="555.0" prefWidth="710.0">
+                  <TableView fx:id="viewPRsTable" onMouseClicked="#rowClick" prefHeight="555.0" prefWidth="710.0">
                     <columns>
-                      <TableColumn prefWidth="101.48171615600586" text="PR_ID" />
-                      <TableColumn minWidth="0.0" prefWidth="94.8150634765625" text="Item_ID" />
-                        <TableColumn prefWidth="111.11146545410156" text="Quantity" />
-                        <TableColumn prefWidth="97.778076171875" text="Budget" />
-                        <TableColumn prefWidth="141.48199462890625" text="Sales Manager" />
-                        <TableColumn prefWidth="142.22265625" text="Status" />
+                      <TableColumn fx:id="PRsID" prefWidth="101.48171615600586" text="PR_ID" />
+                      <TableColumn fx:id="Item_ID" minWidth="0.0" prefWidth="94.8150634765625" text="Item_ID" />
+                        <TableColumn fx:id="Quantity" prefWidth="111.11146545410156" text="Quantity" />
+                        <TableColumn fx:id="Budget" prefWidth="97.778076171875" text="Budget" />
+                        <TableColumn fx:id="SalesM" prefWidth="141.48199462890625" text="Sales Manager" />
+                        <TableColumn fx:id="Status" prefWidth="142.22265625" text="Status" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -40,28 +40,47 @@
                            </font>
                         </Label>
                         <Separator prefWidth="190.0" style="-fx-background-color: #5E6572;" />
-                        <Label text="Label" />
-                        <TextField />
-                        <Label text="Label" />
-                        <TextField />
-                        <Label text="Label" />
-                        <TextField />
-                        <Label text="Label" />
-                        <TextField />
-                        <Label text="Label" />
-                        <TextField />
-                        <Label text="Label" />
-                        <TextField />
+                        <Label text="PR ID" textFill="#5e6572">
+                           <font>
+                              <Font name="DejaVu Serif Bold" size="14.0" />
+                           </font></Label>
+                        <TextField fx:id="txtPRsID"/>
+                        <Separator opacity="0.0" prefHeight="35.0" prefWidth="190.0" />
+                        <Label text="ITEM ID" textFill="#5e6572">
+                           <font>
+                              <Font name="DejaVu Serif Bold" size="14.0" />
+                           </font></Label>
+                        <TextField fx:id="txtItem_ID"/>
+                        <Separator opacity="0.0" prefHeight="35.0" prefWidth="200.0" />
+                        <Label text="QUANTITY" textFill="#5e6572">
+                           <font>
+                              <Font name="DejaVu Serif Bold" size="14.0" />
+                           </font></Label>
+                        <TextField fx:id="txtQuantity"/>
+                        <Separator opacity="0.0" prefHeight="35.0" prefWidth="200.0" />
+                        <Label text="BUDGET" textFill="#5e6572">
+                           <font>
+                              <Font name="DejaVu Serif Bold" size="14.0" />
+                           </font></Label>
+                        <TextField fx:id="txtBudget"/>
+                        <Separator opacity="0.0" prefHeight="35.0" prefWidth="200.0" />
+                        <Label text="SALES MANAGER" textFill="#5e6572">
+                           <font>
+                              <Font name="DejaVu Serif Bold" size="14.0" />
+                           </font></Label>
+                        <TextField fx:id="txtSalesM"/>
+                        <Separator opacity="0.0" prefHeight="35.0" prefWidth="200.0" />
+                        <Label text="STATUS" textFill="#5e6572">
+                           <font>
+                              <Font name="DejaVu Serif Bold" size="14.0" />
+                           </font></Label>
+                        <TextField fx:id="txtStatus"/>
+                        <Separator opacity="0.0" prefHeight="40.0" prefWidth="200.0" />
                         <HBox alignment="TOP_RIGHT" prefHeight="36.0" prefWidth="190.0">
                            <children>
                               <Button mnemonicParsing="false" style="-fx-background-color: #1098F7;">
                                  <graphic>
                                     <FontIcon iconLiteral="anto-reload" />
-                                 </graphic>
-                              </Button>
-                              <Button mnemonicParsing="false" style="-fx-background-color: #F7DD72;">
-                                 <graphic>
-                                    <FontIcon iconLiteral="anto-cloud-upload" />
                                  </graphic>
                               </Button>
                               <Button mnemonicParsing="false" style="-fx-background-color: green;">
