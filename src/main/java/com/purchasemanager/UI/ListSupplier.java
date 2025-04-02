@@ -1,5 +1,6 @@
 package com.purchasemanager.UI;
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -47,8 +48,8 @@ public class ListSupplier implements ViewPack  {
 	public StringBuilder ReadTextFile() throws IOException
 	{
 		StringBuilder builder= new StringBuilder();
-		InputStream stream= getClass().getClassLoader().getResourceAsStream("Data/Suppliers.txt");
-		BufferedReader reader= new BufferedReader(new InputStreamReader(stream));
+
+		BufferedReader reader= new BufferedReader(new FileReader("Data/Suppliers.txt"));
 		String line;
 		while ((line=reader.readLine())!=null) 
 		{

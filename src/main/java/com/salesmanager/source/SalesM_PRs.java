@@ -1,6 +1,7 @@
 package com.salesmanager.source;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,8 +29,8 @@ public class SalesM_PRs  extends SalesM implements prSource {
 	public StringBuilder ReadTextFile() throws IOException
 	{	
 		
-		InputStream stream= getClass().getClassLoader().getResourceAsStream("Data/prList.txt");
-		BufferedReader reader= new BufferedReader(new InputStreamReader(stream));
+		
+		BufferedReader reader= new BufferedReader(new FileReader("Data/prList.txt"));
 		builder= new StringBuilder();
 		String line;
 		

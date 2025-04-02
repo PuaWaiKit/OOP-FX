@@ -1,6 +1,7 @@
 package com.groupfx.JavaFXApp;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -61,8 +62,8 @@ public class ViewList implements ViewPack
     @Override
     public StringBuilder ReadTextFile() throws IOException
 	{	
-		InputStream stream= getClass().getClassLoader().getResourceAsStream("Data/ItemsList.txt");
-		BufferedReader reader= new BufferedReader(new InputStreamReader(stream));
+		//InputStream stream= getClass().getClassLoader().getResourceAsStream("Data/ItemsList.txt");
+		BufferedReader reader= new BufferedReader(new FileReader("Data/ItemsList.txt"));
 		builder= new StringBuilder();
 		String line;
 		
