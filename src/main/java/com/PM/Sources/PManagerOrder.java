@@ -7,7 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.groupfx.JavaFXApp.*;
 
@@ -18,12 +23,26 @@ public class PManagerOrder implements viewData, modifyData {
 	private InputStream stream;
 	private String Filepath="Data/PurchaseOrder.txt";
 	private boolean Checking=false;
-	
+	private int LineNum;
+	private String newData;
+
 	
 	public PManagerOrder() 
 	{
 		
 	}
+	
+	public PManagerOrder(int LineNum, String newData) 
+	{
+		this.LineNum= LineNum;
+		this.newData= newData;
+	}
+	
+	public PManagerOrder(int LineNum) 
+	{
+		this.LineNum=LineNum;
+	}
+	
 	
 	public PManagerOrder(String Id, String name, int Quantity, double Price, String Pm ) 
 	{
@@ -92,10 +111,37 @@ public class PManagerOrder implements viewData, modifyData {
 		}
 	}
 	
+	public StringBuilder NewData() 
+	{
+		StringBuilder builder= new StringBuilder();
+		builder.append(Id).append(",");
+		builder.append(name).append(",");
+		builder.append(Quantity).append(",");
+		builder.append(Price).append(",");
+		builder.append(Pm).append("\n");
+		
+		return builder;
+	}
+	
+	
+	
 	@Override
 	public void DeleteFunc() 
 	{
-		
+		try {
+			List<String> line= new ArrayList<>(Files.readAllLines(Paths.get(Filepath))); //get file into Array
+			if(LineNum>=0 &&LineNum<line.size()) //size one based start from 1 
+			{
+				line.remove(LineNum); //remove it
+			}
+			
+			//Write into file WRITE is to write in TRUNCATEEXISTING is to clear all the data in file and write new 
+			Files.write(Paths.get(Filepath), line, StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
+			Checking=true;
+		} catch (IOException e) {
+			Checking=false;
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -107,7 +153,22 @@ public class PManagerOrder implements viewData, modifyData {
 	@Override
 	public void EditFunc() 
 	{
-		
+		try
+		{
+			List<String> EditList= new ArrayList<>(Files.readAllLines(Paths.get(Filepath)));
+			if(LineNum>=0 && LineNum<=EditList.size()) 
+			{
+				EditList.set(LineNum,newData);
+				
+			}
+			Files.write(Paths.get(Filepath),EditList,StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
+			Checking=true;
+		}
+		catch(IOException e) 
+		{
+			e.printStackTrace();
+			Checking=false;
+		}
 	}
 	
 	@Override
