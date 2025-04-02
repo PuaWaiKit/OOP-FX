@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import com.groupfx.JavaFXApp.ViewPack;
+import com.groupfx.JavaFXApp.viewData;
 
-public class ListSupplier implements ViewPack  {
+public class ListSupplier implements viewData  {
 	private String Name;
 	private String ID;
 	private String PhNo;

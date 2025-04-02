@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 
 
 
-public class ViewList implements ViewPack
+public class ViewList implements viewData
 {
 	private String Name;
 	private String ID;

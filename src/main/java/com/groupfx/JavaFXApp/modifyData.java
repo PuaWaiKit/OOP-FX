@@ -1,6 +1,6 @@
 package com.groupfx.JavaFXApp;
 
-public interface ModificationFunction {
+public interface modifyData {
 	void AddFunc();
 	void EditFunc();
 	void SaveFunc();
