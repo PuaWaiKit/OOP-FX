@@ -3,11 +3,15 @@ package com.salesmanager.UI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.groupfx.JavaFXApp.*;
 
@@ -45,6 +49,11 @@ public class smItemsCtrl {
     @FXML
     private TextField txtItemSupp;
     
+    @FXML
+    private BarChart<?,?> viewStockChart;
+    
+    private HashMap<String, Integer> chartStore = new HashMap<>();
+    
     public void initialize() throws IOException 
     {
     	ItemsID.setCellValueFactory(new PropertyValueFactory<>("id")); // Use the ViewItemList.getID method
@@ -54,6 +63,7 @@ public class smItemsCtrl {
         itemsUP.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         
         load();
+        chartload();
     }
     
     public void load() throws IOException 
@@ -74,12 +84,25 @@ public class smItemsCtrl {
     					Integer.parseInt(spl[3]),
     					Double.parseDouble(spl[4])
     					));
+    			
+    			chartStore.put(spl[1], Integer.parseInt(spl[3]));
     		}
     	}
     	
     	viewItemTable.setItems(itemList);
     }
     
+    public void chartload() {
+    	
+    	XYChart.Series series = new XYChart.Series();
+    	series.setName("Items Stock");
+    	for (Map.Entry<String, Integer> entry : chartStore.entrySet()) {
+            series.getData().add(new XYChart.Data(entry.getKey(), entry.getValue()));
+        }
+    	
+    	viewStockChart.getData().add(series);
+    	
+    }
     public void rowClick() {
 
         ViewList selectedItem = viewItemTable.getSelectionModel().getSelectedItem();

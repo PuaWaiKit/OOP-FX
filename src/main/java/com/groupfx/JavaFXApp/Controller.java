@@ -76,11 +76,6 @@ public class Controller {
 		auth.LoadData();
 		if(auth.UserAuth(UsernameBx.getText(),passwordbox.getText())) 
 		{
-			Alert alert= new Alert(AlertType.INFORMATION);
-			alert.setTitle("Sucessfull");
-			alert.setHeaderText(null);
-			alert.setContentText("Sucess Login");
-			alert.showAndWait();
 			auth.SwitchScene(event);
 		
 		}
