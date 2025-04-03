@@ -12,15 +12,17 @@ public class ListSupplier implements viewData  {
 	private String ID;
 	private String PhNo;
 	private String Address;
+	private String ItemsId;
 	
 	public ListSupplier() {}
 	
-	public ListSupplier(String ID, String Name, String PhNo, String Address) 
+	public ListSupplier(String ID, String Name, String PhNo, String Address,String ItemsId) 
 	{
 		this.Name=Name;
 		this.ID=ID;
 		this.PhNo=PhNo;
 		this.Address=Address;
+		this.ItemsId=ItemsId;
 	}
 	
 	public String getName() 
@@ -43,6 +45,11 @@ public class ListSupplier implements viewData  {
 		return Address;
 	}
 	
+	public String getItemsId() 
+	{
+		return ItemsId;
+	}
+	
 	
 	@Override
 	public StringBuilder ReadTextFile() throws IOException
@@ -57,7 +64,8 @@ public class ListSupplier implements viewData  {
 			builder.append(data[0]).append(",");
 			builder.append(data[1]).append(",");
 			builder.append(data[2]).append(",");
-			builder.append(data[3]).append("\n");
+			builder.append(data[3]).append(",");
+			builder.append(data[4]).append("\n");
 			
 		}
 		reader.close();

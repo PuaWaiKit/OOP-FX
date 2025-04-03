@@ -56,6 +56,11 @@
                         <FontIcon iconColor="WHITE" iconLiteral="anto-reload" text="" />
                      </graphic>
                   </Button>
+                  <Button fx:id="SaveBtn" mnemonicParsing="false" onMouseClicked="#saveClick" prefHeight="34.0" prefWidth="38.0" style="-fx-background-color: #ADD8E6;" stylesheets="@../css/tableStyle.css" textFill="RED">
+                     <graphic>
+                        <FontIcon iconLiteral="anto-save" text="" />
+                     </graphic>
+                  </Button>
                   <Button fx:id="EditBtn" mnemonicParsing="false" onMouseClicked="#EditClick" prefHeight="34.0" prefWidth="38.0" style="-fx-background-color: #6C757D;" stylesheets="@../css/tableStyle.css" textFill="RED">
                      <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="anto-edit" />
