@@ -1,12 +1,16 @@
 package com.salesmanager.UI;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.salesmanager.source.SalesM_Suppliers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -48,9 +52,9 @@ public class smSuppsCtrl {
     
     private ObservableList<SalesM_Suppliers> itemList= FXCollections.observableArrayList(); 
     
-    private ObservableList<SalesM_Suppliers> saveList = FXCollections.observableArrayList();
-    
     private ObservableList<SalesM_Suppliers> cacheList = FXCollections.observableArrayList();
+    
+    private Map<String, String> dataRecord = new LinkedHashMap<>();
     
     public void initialize() throws IOException 
     {
@@ -81,13 +85,14 @@ public class smSuppsCtrl {
     					spl[3],
     					spl[4]
     					));
-    			
     		}
     	}
-
-    	viewSuppsTable.setItems(itemList);
+    	
+    	cacheList = itemList;
+    	viewSuppsTable.setItems(cacheList);
     }
     
+    @FXML
     public void rowClick() {
 
         SalesM_Suppliers selectedItem = viewSuppsTable.getSelectionModel().getSelectedItem();
@@ -107,5 +112,83 @@ public class smSuppsCtrl {
             
             txtID.setEditable(false);
         }
+    }
+    
+    @FXML
+    public void addeditClick() {
+    	
+    	SalesM_Suppliers selectedSupp = viewSuppsTable.getSelectionModel().getSelectedItem();
+    	int selectedSuppIndex = viewSuppsTable.getSelectionModel().getSelectedIndex();
+    	
+    	try {
+	    	if (selectedSupp == null) {
+	    		cacheList.add(new SalesM_Suppliers(		
+	    				
+						txtID.getText(),
+						txtName.getText(),
+						txtContactN.getText(),
+						txtAddress.getText(),
+						txtItemID.getText()
+						));
+	    		
+	    		dataRecord.put(txtID.getText(), "add");
+	    		viewSuppsTable.setItems(cacheList);
+	    		
+	    	} else {
+	    		
+	    		SalesM_Suppliers editData = new SalesM_Suppliers(txtID.getText(), txtName.getText(),txtContactN.getText(),txtAddress.getText(),txtItemID.getText());
+	    		cacheList.set(selectedSuppIndex, editData);
+	    		
+	    		dataRecord.put(txtID.getText(), "edit");
+	    		viewSuppsTable.setItems(cacheList);
+	    		
+	    	}
+    	} catch (Exception e) {
+    		
+    		Alert alert = new Alert(AlertType.ERROR);
+    	    alert.setContentText(String.format("Error: %s", e.getMessage()));
+    	    alert.showAndWait();
+    	}
+    }
+    
+    @FXML
+    public void deleteClick() {
+    	int selectedSuppIndex = viewSuppsTable.getSelectionModel().getSelectedIndex();
+    	try {
+    		
+    		cacheList.remove(selectedSuppIndex);
+    		dataRecord.put(txtID.getText(), "del");
+    		viewSuppsTable.setItems(cacheList);
+    		
+    	} catch (Exception e) {
+    		
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setContentText("Okay this guy tried to remove something that doesnt exist");
+    	}
+    }
+    
+    @FXML
+    public void saveClick() {
+    	
+    	StringBuilder result = new StringBuilder();
+    	for (SalesM_Suppliers supplier : itemList) {
+            // 拼接属性，属性之间用 "-" 分隔
+            result.append(supplier.getId()).append("-")
+                  .append(supplier.getName()).append("-")
+                  .append(supplier.getAddress()).append("-")
+                  .append(supplier.getContactNum()).append("-")
+                  .append(supplier.getItem()).append("\n");  
+        }
+    	
+    	String netString = result.toString();
+    	
+    	SalesM_Suppliers note = new SalesM_Suppliers(netString, dataRecord);
+    	note.SaveFunc();
+    }
+    
+    @FXML
+    public void reloadClick() throws IOException {
+    	cacheList.clear();
+    	load();
     }
 }

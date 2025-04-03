@@ -3,6 +3,9 @@ package com.salesmanager.source;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 import com.groupfx.JavaFXApp.modifyData;
 import com.groupfx.JavaFXApp.viewData;
@@ -14,11 +17,19 @@ public class SalesM_Suppliers  extends SalesM implements viewData, modifyData{
 	private String ContactNum;
 	private String Address;
 	private String Item;
+	private String resultString;
+	private Map<String,String> dataRecordMap;
 	
 	public SalesM_Suppliers() {
 		
 	}
 	
+	public SalesM_Suppliers(String resultString, Map<String,String> dataRecordMap) {
+		
+		this.resultString = resultString;
+		this.dataRecordMap = dataRecordMap;
+	}
+
 	public SalesM_Suppliers(String id, String name, String contactNum, String address, String item) {
         this.Id = id;
         this.Name = name;
@@ -58,20 +69,24 @@ public class SalesM_Suppliers  extends SalesM implements viewData, modifyData{
 	@Override
 	public void AddFunc() {
 		
+		
 	}
 	
 	@Override
 	public void EditFunc() {
+		
 		
 	}
 	
 	@Override
 	public void DeleteFunc() {
 		
+		
 	}
 	
 	@Override
 	public void SaveFunc() {
+		
 		
 	}
 }
