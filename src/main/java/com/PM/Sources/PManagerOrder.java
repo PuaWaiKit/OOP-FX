@@ -28,6 +28,7 @@ public class PManagerOrder implements viewData, modifyData {
 	private String newData;
 	private StringBuilder builder= new StringBuilder();
 	private int lineCount;
+	private int ClickCount;
 
 	
 	public PManagerOrder() 
@@ -125,6 +126,7 @@ public class PManagerOrder implements viewData, modifyData {
 			writer.write(builder.toString());
 			//writer.newLine();
 			Checking=true;
+			ClickCount++;
 			
 		}
 		catch(IOException e) 
@@ -195,6 +197,7 @@ public class PManagerOrder implements viewData, modifyData {
 				//Write into file WRITE is to write in TRUNCATEEXISTING is to clear all the data in file and write new 
 				Files.write(Paths.get("Data/Cache.txt"), lineR, StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
 				Checking=true;
+				ClickCount++;
 			} catch (IOException e) {
 				Checking=false;
 				e.printStackTrace();
@@ -210,63 +213,130 @@ public class PManagerOrder implements viewData, modifyData {
 	{
 		try(BufferedReader reader= new BufferedReader(new FileReader("Data/Cache.txt")))
 		{
-			try(BufferedWriter writer= new BufferedWriter(new FileWriter(Filepath)))
+			try(BufferedReader CheckLineEmpty= new BufferedReader(new FileReader("Data/Cache.txt")))
 			{
-				//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
-				//writer.write(Data);
-				String line;
-				while ((line=reader.readLine())!=null) 
+				boolean isEmptyOrNot=CheckLineEmpty.readLine()==null;
+				if(!isEmptyOrNot) 
 				{
-					String[] dataSet= line.split(",");
-					builder.append(dataSet[0]).append(",");
-					builder.append(dataSet[1]).append(",");
-					builder.append(dataSet[2]).append(",");
-					builder.append(dataSet[3]).append(",");
-					builder.append(dataSet[4]).append("\n");
-					lineCount++;
+					try(BufferedWriter writer= new BufferedWriter(new FileWriter(Filepath)))
+					{
+							//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
+							//writer.write(Data);
+							String line;
+							
+							while ((line=reader.readLine())!=null) 
+							{
+								String[] dataSet= line.split(",");
+								if(line.trim().isEmpty()) continue;
+								
+								builder.append(dataSet[0]).append(",");
+								builder.append(dataSet[1]).append(",");
+								builder.append(dataSet[2]).append(",");
+								builder.append(dataSet[3]).append(",");
+								builder.append(dataSet[4]).append("\n");
+								lineCount++;
+							}
+							writer.write(builder.toString());
+							builder.setLength(0);
+							//writer.newLine();
+							Checking=true;
+							BufferedWriter Delete= new BufferedWriter(new FileWriter("Data/Cache.txt"));
+						}
+						catch(IOException e) 
+						{	Checking=false;
+							e.printStackTrace();
+						}
 				}
-				writer.write(builder.toString());
-				builder.setLength(0);
-				//writer.newLine();
-				Checking=true;
-				BufferedWriter Delete= new BufferedWriter(new FileWriter("Data/Cache.txt"));
-			}
-			catch(IOException e) 
-			{	Checking=false;
-				e.printStackTrace();
+				else 
+				{
+				
+					Checking=false;
+				}
 			}
 		}
 		catch(IOException e) 
 		{
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
+			
 	}
+			
+		
+		
+	
+	
 	
 	@Override
 	public void EditFunc() 
-	{
-		try
+	{	
+		String line;
+		if(ClickCount>0) 
 		{
-			List<String> EditList= new ArrayList<>(Files.readAllLines(Paths.get(Filepath)));
-			if(LineNum>=0 && LineNum<=EditList.size()) 
+		
+			try(BufferedReader readOri= new BufferedReader(new FileReader("Data/PurchaseOrder.txt"))) //initialize first
 			{
-				EditList.set(LineNum,newData);
 				
+				while((line=readOri.readLine())!=null) 
+				{
+					String[] oldData= line.split(",");
+					builder.append(oldData[0]).append(",");
+					builder.append(oldData[1]).append(",");
+					builder.append(oldData[2]).append(",");
+					builder.append(oldData[3]).append(",");
+					builder.append(oldData[4]).append(",");
+				}
+			 }
+			catch(IOException e) 
+			{
+				e.printStackTrace();
+				Checking=false;
 			}
-			Files.write(Paths.get(Filepath),EditList,StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
-			Checking=true;
+		 }
+		
+			try(BufferedReader reader= new BufferedReader(new FileReader("Data/Cache.txt")))
+			{
+				
+				while((line=reader.readLine())!=null) 
+				{	
+					if(line.trim().isEmpty())continue;
+					
+					String[] data=line.split(",");
+					builder.append(data[0]).append(",");
+					builder.append(data[1]).append(",");
+					builder.append(data[2]).append(",");
+					builder.append(data[3]).append(",");
+					builder.append(data[4]).append("\n");
+				}
+				
+				try(FileWriter writer= new FileWriter("Data/Cache.txt"))
+				{
+					writer.write(builder.toString());
+				}
+			
+			}
+			catch(IOException e) 
+			{
+				e.printStackTrace();
+			}
+			
+			try
+			{
+				List<String> EditList= new ArrayList<>(Files.readAllLines(Paths.get("Data/Cache.txt")));
+				if(LineNum>=0 && LineNum<=EditList.size()) 
+				{
+					EditList.set(LineNum,newData);
+					
+				}
+				Files.write(Paths.get("Data/Cache.txt"),EditList,StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
+				Checking=true;
+			}
+			catch(IOException e) 
+			{
+				e.printStackTrace();
+				Checking=false;
+			}
 		}
-		catch(IOException e) 
-		{
-			e.printStackTrace();
-			Checking=false;
-		}
-	}
+	
 	
 	@Override
 	public StringBuilder ReadTextFile() throws IOException

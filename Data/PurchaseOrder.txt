@@ -1,7 +1,7 @@
 PO001,Apple,100,1.0,Ming
-PO002,Banana,200,10.90,Ming
+PO002,Banana,200,10.9,Ming
 PO004,Tang,2000,10.90,Ming
-PO005,Tangs,2000,10.9,Ming
-PO006,Tangs,2000,10.9,Ming
-PO007,Tangs,2000,10.9,Ming
-PO007,Tangs,2000,10.9,Ming
+PO005,TestingEd,2000,10.9,Ming
+PO006,CheckFun,100,10.9,Ming
+PO008,Tangs,2000,10.9,Ming
+PO009,Ning,100,1.0,Ming

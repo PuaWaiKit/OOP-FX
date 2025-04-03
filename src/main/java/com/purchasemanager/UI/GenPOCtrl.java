@@ -149,6 +149,7 @@ public class GenPOCtrl {
     		alert.setHeaderText(null);
     		alert.setContentText("Adding Sucessfull, Please Save Before Leaving !");
     		alert.showAndWait();
+    		ViewPO.getSelectionModel().clearSelection(); //clear selection
     	}
     	else 
     	{
@@ -160,6 +161,8 @@ public class GenPOCtrl {
     	}
     }
 
+ 
+    
     @FXML
     public void RowSelection(MouseEvent e) throws IOException 
     {
@@ -179,6 +182,7 @@ public class GenPOCtrl {
     @FXML
     public void DelClick(MouseEvent event) {
     	int selectedIndex=ViewPO.getSelectionModel().getSelectedIndex();
+    	
     	if(selectedIndex>=0) 
     	{
     		ViewPO.getItems().remove(selectedIndex);
@@ -190,6 +194,7 @@ public class GenPOCtrl {
     			alert.setTitle("Delete");
     			alert.setContentText("Delete Sucessfull");
     			alert.showAndWait();
+    			ViewPO.getSelectionModel().clearSelection(); //clear the selection
     		}
     		else 
     		{
@@ -220,12 +225,13 @@ public class GenPOCtrl {
     			alert.setTitle("Edit");
     			alert.setContentText("Edit Sucessfull, Please Refresh Your Data");
     			alert.showAndWait();
+    			ViewPO.getSelectionModel().clearSelection();
     		}
     		else 
     		{
     			Alert alert= new Alert(AlertType.ERROR);
     			alert.setTitle("Edit");
-    			alert.setContentText("Edit Failed");
+    			alert.setContentText("Edit Failed or Please select a row");
     			alert.showAndWait();
     		}
     	}
@@ -234,6 +240,7 @@ public class GenPOCtrl {
     @FXML
     public void RefClick(MouseEvent event) throws IOException {
     	load();
+    	
     }
 
     @FXML
@@ -243,7 +250,7 @@ public class GenPOCtrl {
     
     @FXML
     public void saveClick(MouseEvent event) {
-    	PManagerOrder order= new PManagerOrder(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText());
+    	PManagerOrder order= new PManagerOrder();
     	order.SaveFunc();
     	if(order.checkingFunc()) 
     	{
@@ -251,13 +258,14 @@ public class GenPOCtrl {
     		alert.setTitle("Saving");
     		alert.setContentText(order.LineCount()+"row(s) has been saved !");
     		alert.showAndWait();
+    		ViewPO.getSelectionModel().clearSelection();
     		
     	}
     	else 
     	{
     		Alert alert= new Alert(AlertType.WARNING);
     		alert.setTitle("Saving");
-    		alert.setContentText("Error Occur !");
+    		alert.setContentText("Error Occur or No Changes Made!");
     		alert.showAndWait();
     	}
     }
