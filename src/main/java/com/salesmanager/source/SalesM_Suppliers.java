@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import com.groupfx.JavaFXApp.modifyData;
 import com.groupfx.JavaFXApp.viewData;
 
+import javafx.collections.ObservableList;
+
 public class SalesM_Suppliers  extends SalesM implements viewData, modifyData{
 	
 	private String Id;
@@ -17,25 +19,43 @@ public class SalesM_Suppliers  extends SalesM implements viewData, modifyData{
 	private String ContactNum;
 	private String Address;
 	private String Item;
+	
+	//Variable for the modification
+	private int selectedIndex;
 	private String resultString;
-	private Map<String,String> dataRecordMap;
+	private ObservableList<SalesM_Suppliers> cachelist;
 	
 	public SalesM_Suppliers() {
 		
 	}
 	
-	public SalesM_Suppliers(String resultString, Map<String,String> dataRecordMap) {
+	public SalesM_Suppliers(String resultString) {
 		
 		this.resultString = resultString;
-		this.dataRecordMap = dataRecordMap;
 	}
-
+	
+	public SalesM_Suppliers(int selectedIndex, ObservableList<SalesM_Suppliers> cacheList) {
+		
+		this.selectedIndex = selectedIndex;
+		this.cachelist = cacheList;
+	}
+	
 	public SalesM_Suppliers(String id, String name, String contactNum, String address, String item) {
         this.Id = id;
         this.Name = name;
         this.ContactNum = contactNum;
         this.Address = address;
         this.Item = item;
+    }
+	
+	public SalesM_Suppliers(String id, String name, String contactNum, String address, String item, ObservableList<SalesM_Suppliers> cacheList, int Index) {
+        this.Id = id;
+        this.Name = name;
+        this.ContactNum = contactNum;
+        this.Address = address;
+        this.Item = item;
+        this.cachelist = cacheList;
+        this.selectedIndex = Index;
     }
 	
 	public String getId() { return Id; }
@@ -69,24 +89,57 @@ public class SalesM_Suppliers  extends SalesM implements viewData, modifyData{
 	@Override
 	public void AddFunc() {
 		
+		cachelist.add(new SalesM_Suppliers(		
+				
+				Id,
+				Name,
+				ContactNum,
+				Address,
+				Item
+				
+				));
 		
 	}
 	
 	@Override
 	public void EditFunc() {
 		
+		cachelist.set(selectedIndex, new SalesM_Suppliers(		
+				
+				Id,
+				Name,
+				ContactNum,
+				Address,
+				Item
+				
+				));
 		
 	}
 	
 	@Override
 	public void DeleteFunc() {
 		
-		
+		cachelist.remove(selectedIndex);
 	}
 	
 	@Override
 	public void SaveFunc() {
 		
+		String[] parts = resultString.split("\n");
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("Data/Suppliers.txt", false))) {
+			for (String part : parts) {
+				
+            writer.write(part);
+            writer.newLine(); 
+            
+			}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public ObservableList<SalesM_Suppliers>  getCacheList() {
 		
+		return cachelist;
 	}
 }

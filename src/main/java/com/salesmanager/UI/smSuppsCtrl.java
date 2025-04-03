@@ -54,8 +54,6 @@ public class smSuppsCtrl {
     
     private ObservableList<SalesM_Suppliers> cacheList = FXCollections.observableArrayList();
     
-    private Map<String, String> dataRecord = new LinkedHashMap<>();
-    
     public void initialize() throws IOException 
     {
     	SuppsID.setCellValueFactory(new PropertyValueFactory<>("id")); // Use the SalesM_PRs.getID method
@@ -98,6 +96,7 @@ public class smSuppsCtrl {
         SalesM_Suppliers selectedItem = viewSuppsTable.getSelectionModel().getSelectedItem();
         
         if (selectedItem != null) {
+        	
             String id = selectedItem.getId();
             String Name = selectedItem.getName();
             String ContactN = selectedItem.getContactNum();
@@ -114,81 +113,110 @@ public class smSuppsCtrl {
         }
     }
     
+    private boolean containsID(ObservableList<SalesM_Suppliers> List, String id) {
+        for (SalesM_Suppliers supplier : List) {
+            if (supplier.getId().equals(id)) {
+            	
+                return true;
+            }
+        }
+        return false;
+    }
+    
     @FXML
     public void addeditClick() {
     	
-    	SalesM_Suppliers selectedSupp = viewSuppsTable.getSelectionModel().getSelectedItem();
+    	SalesM_Suppliers selectedSupp = viewSuppsTable.getSelectionModel().getSelectedItem();	
     	int selectedSuppIndex = viewSuppsTable.getSelectionModel().getSelectedIndex();
     	
     	try {
-	    	if (selectedSupp == null) {
-	    		cacheList.add(new SalesM_Suppliers(		
-	    				
-						txtID.getText(),
-						txtName.getText(),
-						txtContactN.getText(),
-						txtAddress.getText(),
-						txtItemID.getText()
-						));
+	    	if(containsID(cacheList, txtID.getText()) && selectedSupp != null) {
+	
+	    		SalesM_Suppliers dataEntry = new SalesM_Suppliers(txtID.getText(), txtName.getText(),txtContactN.getText(),txtAddress.getText(),txtItemID.getText(), cacheList, selectedSuppIndex);
+		    	dataEntry.EditFunc();
+		    	ObservableList<SalesM_Suppliers>  tempList = dataEntry.getCacheList();
+		    	cacheList = tempList;
+		    	viewSuppsTable.setItems(cacheList);
+		    	clearTextField();
+		    	
+	    	} else if (!(containsID(cacheList, txtID.getText())) && selectedSupp == null){	
 	    		
-	    		dataRecord.put(txtID.getText(), "add");
-	    		viewSuppsTable.setItems(cacheList);
-	    		
+	    		SalesM_Suppliers dataEntry = new SalesM_Suppliers(txtID.getText(), txtName.getText(),txtContactN.getText(),txtAddress.getText(),txtItemID.getText(), cacheList, selectedSuppIndex);
+			    dataEntry.AddFunc();
+			    ObservableList<SalesM_Suppliers>  tempList = dataEntry.getCacheList();
+			    cacheList = tempList;
+			    viewSuppsTable.setItems(cacheList);
+			    clearTextField();
 	    	} else {
 	    		
-	    		SalesM_Suppliers editData = new SalesM_Suppliers(txtID.getText(), txtName.getText(),txtContactN.getText(),txtAddress.getText(),txtItemID.getText());
-	    		cacheList.set(selectedSuppIndex, editData);
-	    		
-	    		dataRecord.put(txtID.getText(), "edit");
-	    		viewSuppsTable.setItems(cacheList);
-	    		
+	    		Alert alert = new Alert(AlertType.INFORMATION);
+	    		alert.setTitle("Information");
+	    		alert.setHeaderText(null);
+	    		alert.setContentText("Please select the supplier if you want to edit\n OR \n If you want to add a supplier please dont repeat the ID");
+	    		alert.showAndWait();
 	    	}
     	} catch (Exception e) {
-    		
     		Alert alert = new Alert(AlertType.ERROR);
-    	    alert.setContentText(String.format("Error: %s", e.getMessage()));
-    	    alert.showAndWait();
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(String.format("Error: %s", e.toString()));
+            alert.showAndWait();
     	}
     }
     
     @FXML
     public void deleteClick() {
     	int selectedSuppIndex = viewSuppsTable.getSelectionModel().getSelectedIndex();
+    	
+    	SalesM_Suppliers delIndex = new SalesM_Suppliers(selectedSuppIndex, cacheList);
     	try {
     		
-    		cacheList.remove(selectedSuppIndex);
-    		dataRecord.put(txtID.getText(), "del");
+    		delIndex.DeleteFunc();
+    		ObservableList<SalesM_Suppliers>  tempList = delIndex.getCacheList();
+    		cacheList = tempList;
     		viewSuppsTable.setItems(cacheList);
+    		clearTextField();
     		
     	} catch (Exception e) {
     		
     		Alert alert = new Alert(AlertType.INFORMATION);
     		alert.setContentText("Okay this guy tried to remove something that doesnt exist");
+    		alert.showAndWait();
     	}
     }
     
     @FXML
-    public void saveClick() {
+    public void saveClick() throws IOException{
     	
     	StringBuilder result = new StringBuilder();
-    	for (SalesM_Suppliers supplier : itemList) {
+    	for (SalesM_Suppliers supplier : cacheList) {
             // 拼接属性，属性之间用 "-" 分隔
-            result.append(supplier.getId()).append("-")
-                  .append(supplier.getName()).append("-")
-                  .append(supplier.getAddress()).append("-")
-                  .append(supplier.getContactNum()).append("-")
+            result.append(supplier.getId()).append(",")
+                  .append(supplier.getName()).append(",")
+                  .append(supplier.getContactNum()).append(",")
+                  .append(supplier.getAddress()).append(",")
                   .append(supplier.getItem()).append("\n");  
         }
     	
     	String netString = result.toString();
-    	
-    	SalesM_Suppliers note = new SalesM_Suppliers(netString, dataRecord);
+    	SalesM_Suppliers note = new SalesM_Suppliers(netString);
     	note.SaveFunc();
+    	
+    	clearTextField();
+    	reloadClick();
     }
     
     @FXML
     public void reloadClick() throws IOException {
     	cacheList.clear();
     	load();
+    }
+    
+    public void clearTextField() {
+    	
+    	TextField[] textFields = {txtID, txtName, txtContactN, txtAddress, txtItemID};
+    	for (TextField field : textFields) {
+    	    field.clear();      	
+    	}
     }
 }
