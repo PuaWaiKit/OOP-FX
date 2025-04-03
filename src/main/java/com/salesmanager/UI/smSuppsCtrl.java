@@ -48,7 +48,9 @@ public class smSuppsCtrl {
     
     private ObservableList<SalesM_Suppliers> itemList= FXCollections.observableArrayList(); 
     
-    private ObservableList<SalesM_Suppliers> modifyList = FXCollections.observableArrayList();
+    private ObservableList<SalesM_Suppliers> saveList = FXCollections.observableArrayList();
+    
+    private ObservableList<SalesM_Suppliers> cacheList = FXCollections.observableArrayList();
     
     public void initialize() throws IOException 
     {
