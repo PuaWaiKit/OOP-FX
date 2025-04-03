@@ -4,7 +4,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+
+import java.util.Optional;
+
 import javafx.animation.TranslateTransition;
 
 public class App extends Application {
@@ -17,6 +23,20 @@ public class App extends Application {
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        primaryStage.setOnCloseRequest(event->{
+        	Alert alert= new Alert(AlertType.CONFIRMATION);
+        	alert.setTitle("Close App ?");
+        	alert.setHeaderText("Do You Want to Exit app?");
+        	alert.setContentText("All haven't save changes will not be saved ");
+        	
+        	Optional<ButtonType> result= alert.showAndWait();
+        	if(result.isPresent() && result.get()== ButtonType.CANCEL) 
+        	{
+        		event.consume();
+        	}
+        	
+        });
     }
 
     public static void main(String[] args) {

@@ -91,6 +91,8 @@ public class GenPOCtrl {
 //		alert.setContentText(auth.getName());
 //		alert.show();
 //    	
+    	
+
     	SetText();
     	load();
     }
@@ -145,7 +147,7 @@ public class GenPOCtrl {
     		Alert alert= new Alert(AlertType.INFORMATION);
     		alert.setTitle("Adding Sucess");
     		alert.setHeaderText(null);
-    		alert.setContentText("Adding Sucessfull !");
+    		alert.setContentText("Adding Sucessfull, Please Save Before Leaving !");
     		alert.showAndWait();
     	}
     	else 
@@ -243,6 +245,21 @@ public class GenPOCtrl {
     public void saveClick(MouseEvent event) {
     	PManagerOrder order= new PManagerOrder(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText());
     	order.SaveFunc();
+    	if(order.checkingFunc()) 
+    	{
+    		Alert alert= new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Saving");
+    		alert.setContentText(order.LineCount()+"row(s) has been saved !");
+    		alert.showAndWait();
+    		
+    	}
+    	else 
+    	{
+    		Alert alert= new Alert(AlertType.WARNING);
+    		alert.setTitle("Saving");
+    		alert.setContentText("Error Occur !");
+    		alert.showAndWait();
+    	}
     }
 
 
