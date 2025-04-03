@@ -71,6 +71,9 @@ public class GenPOCtrl {
     @FXML
     private Button EditBtn;
     
+    @FXML
+    private Button SaveBtn;
+    
     public void initialize() throws IOException
     {	
     	
@@ -235,7 +238,12 @@ public class GenPOCtrl {
     public void backClick(MouseEvent event) {
     	
     }
-
+    
+    @FXML
+    public void saveClick(MouseEvent event) {
+    	PManagerOrder order= new PManagerOrder(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText());
+    	order.SaveFunc();
+    }
 
 
 }

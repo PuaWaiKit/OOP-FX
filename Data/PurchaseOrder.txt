@@ -13,3 +13,6 @@ PO008,Things,100,9.0,Kong
 
 
 
+PO009,KKK,100,9.0,Ming
+PO009,KKK,100,9.0,Ming
+PO010,KK00,100,9.0,Ming

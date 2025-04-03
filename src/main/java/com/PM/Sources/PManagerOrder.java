@@ -25,6 +25,8 @@ public class PManagerOrder implements viewData, modifyData {
 	private boolean Checking=false;
 	private int LineNum;
 	private String newData;
+	private StringBuilder builder= new StringBuilder();
+	private ArrayList<String> dataList;
 
 	
 	public PManagerOrder() 
@@ -87,11 +89,8 @@ public class PManagerOrder implements viewData, modifyData {
 	@Override
 	public void AddFunc() 
 	{
-		StringBuilder builder= new StringBuilder();
-	
 		
-		
-		try(BufferedWriter writer= new BufferedWriter(new FileWriter(Filepath,true)))
+		try(BufferedWriter writer= new BufferedWriter(new FileWriter("Data/Cache.txt",true)))
 		{
 			//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
 			//writer.write(Data);
@@ -111,17 +110,7 @@ public class PManagerOrder implements viewData, modifyData {
 		}
 	}
 	
-	public StringBuilder NewData() 
-	{
-		StringBuilder builder= new StringBuilder();
-		builder.append(Id).append(",");
-		builder.append(name).append(",");
-		builder.append(Quantity).append(",");
-		builder.append(Price).append(",");
-		builder.append(Pm).append("\n");
-		
-		return builder;
-	}
+
 	
 	
 	
@@ -147,6 +136,41 @@ public class PManagerOrder implements viewData, modifyData {
 	@Override
 	public void SaveFunc() 
 	{
+		try(BufferedReader reader= new BufferedReader(new FileReader("Data/Cache.txt")))
+		{
+			try(BufferedWriter writer= new BufferedWriter(new FileWriter(Filepath,true)))
+			{
+				//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
+				//writer.write(Data);
+				String line;
+				while ((line=reader.readLine())!=null) 
+				{
+					String[] dataSet= line.split(",");
+					builder.append(dataSet[0]).append(",");
+					builder.append(dataSet[1]).append(",");
+					builder.append(dataSet[2]).append(",");
+					builder.append(dataSet[3]).append(",");
+					builder.append(dataSet[4]).append("\n");
+				}
+				writer.write(builder.toString());
+				builder.setLength(0);
+				//writer.newLine();
+				Checking=true;
+				BufferedWriter Delete= new BufferedWriter(new FileWriter("Data/Cache.txt"));
+			}
+			catch(IOException e) 
+			{	Checking=false;
+				e.printStackTrace();
+			}
+		}
+		catch(IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
+		
+		
 		
 	}
 	
