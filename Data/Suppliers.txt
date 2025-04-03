@@ -1,2 +1,2 @@
-001,Nixon Supply,011-0191910,14-Jalan Kembong 2001-Johor
-002,Tropical Market,07-0090101,18-Jalan N3/8-8090WPKL
+S001,Nixon Supply,011-0191910,14-Jalan Kembong 2001-Johor,I0001
+S002,Tropical Market,07-0090101,18-Jalan N3/8-8090WPKL,I0002

@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import com.groupfx.JavaFXApp.prSource;
+import com.groupfx.JavaFXApp.*;
 
-public class SalesM_PRs  extends SalesM implements prSource {
+public class SalesM_PRs  extends SalesM implements viewData {
 	
 	private String Id;
 	private String Item_ID;
@@ -40,21 +40,6 @@ public class SalesM_PRs  extends SalesM implements prSource {
     }
     
 	@Override
-	public void viewPR() {
-		try {
-            StringBuilder data = ReadTextFile();
-            System.out.println(data.toString()); 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-	}
-
-	@Override
-	public void modifyPR() {
-		
-	}
-	
-
 	public StringBuilder ReadTextFile() throws IOException
 	{	
 		
