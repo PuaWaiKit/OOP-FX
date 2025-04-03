@@ -10,6 +10,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Optional;
 
 import javafx.animation.TranslateTransition;
@@ -34,9 +35,16 @@ public class App extends Application {
         	Optional<ButtonType> result= alert.showAndWait();
         	if(result.isPresent() && result.get()== ButtonType.CANCEL) 
         	{	
-        		try(FileWriter writer= new FileWriter("Data/Cache.txt"))
-        		event.consume();
+					event.consume();	
         	}
+        	try (FileWriter writer = new FileWriter("Data/Cache.txt")) 
+        	{
+        		//NONE
+			} 
+        	catch (IOException e) 
+        	{
+				e.printStackTrace();
+			}
         	
         });
     }
