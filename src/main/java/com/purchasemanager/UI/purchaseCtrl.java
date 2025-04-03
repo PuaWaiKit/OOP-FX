@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import javafx.util.Duration;
@@ -92,6 +93,7 @@ public class purchaseCtrl implements Initializable{
         	      fadeIn.setToValue(1.0);
         	      fadeIn.setCycleCount(1);
         	      fadeIn.play();
+        	      
         	} catch (IOException e) {
         	        e.printStackTrace();
         	}
@@ -100,24 +102,49 @@ public class purchaseCtrl implements Initializable{
 	}
 	
 	
+	public boolean SwitchAlert() throws IOException
+	{
+		Alert alert= new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("Switch Pages?");
+    	alert.setContentText("All data haven't save will lost");
+    	alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO); //add button yes and no
+    	Optional<ButtonType> result= alert.showAndWait(); // wait until user select
+    	alert.setHeaderText("Do You Want To Switch Pages?");
+    	
+    	if(result.isPresent() && result.get()==ButtonType.YES) 
+    	{
+    		 FileWriter writer = new FileWriter("Data/Cache.txt");
+    		return true;
+    	}
+    	return false;
+	}
+	
+	
+	
     @FXML
-    public void handleChangeItems(ActionEvent event) {
+    public void handleChangeItems(ActionEvent event) throws IOException {
+    	if(SwitchAlert()) {
     	loadNewContent("/fxml/pmViewItems.fxml");
+    	}
     }
 
     @FXML
-    private void handleChangePO(ActionEvent event) {
+    private void handleChangePO(ActionEvent event) throws IOException {
+    	if(SwitchAlert()) {
     	loadNewContent("/fxml/PMGenPO.fxml");
+    	}
     }
 
     @FXML
     private void handleChangePR(ActionEvent event) {
-
+    	
     }
 
     @FXML
-    private void handleChangeSuppliers(ActionEvent event) {
+    private void handleChangeSuppliers(ActionEvent event) throws IOException {
+    	if(SwitchAlert()) {
     	loadNewContent("/fxml/pmViewSuppliers.fxml");
+    	}
     }
     
     private boolean drawerOpen = false;
@@ -136,17 +163,24 @@ public class purchaseCtrl implements Initializable{
         drawerOpen = !drawerOpen;
     }
     
+
+    
+    
     @FXML
     public void LogoutB(MouseEvent event) throws IOException {
     	Alert alert= new Alert(AlertType.CONFIRMATION);
     	alert.setTitle("LogOut?");
-    	alert.setContentText("Do You Want To Log Out ?");
+    	alert.setContentText("All data haven't save will lost");
     	alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO); //add button yes and no
     	Optional<ButtonType> result= alert.showAndWait(); // wait until user select
-    	alert.setHeaderText(null);
+    	alert.setHeaderText("Do You Want To Log Out ?");
     	
     	if(result.isPresent() && result.get()== ButtonType.YES) 
     	{
+    		
+    		FileWriter writer= new FileWriter("Data/Cache.txt");
+    		
+    		
 			Parent root= FXMLLoader.load(getClass().getResource("/fxml/Sample.fxml"));
 			stage=(Stage)((Node)event.getSource()).getScene().getWindow();
 			scene= new Scene(root);
