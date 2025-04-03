@@ -9,22 +9,46 @@ import com.groupfx.JavaFXApp.viewData;
 
 public class SalesM_Suppliers  extends SalesM implements viewData, modifyData{
 	
-	@Override
+	private String Id;
+	private String Name;
+	private String ContactNum;
+	private String Address;
+	private String Item;
+	
+	public SalesM_Suppliers() {
+		
+	}
+	
+	public SalesM_Suppliers(String id, String name, String contactNum, String address, String item) {
+        this.Id = id;
+        this.Name = name;
+        this.ContactNum = contactNum;
+        this.Address = address;
+        this.Item = item;
+    }
+	
+	public String getId() { return Id; }
+    public String getName() { return Name; }
+    public String getContactNum() { return ContactNum; }
+    public String getAddress() { return Address; }
+    public String getItem() { return Item; }
+	
+    @Override
 	public StringBuilder ReadTextFile() throws IOException
 	{	
 		//InputStream stream= getClass().getClassLoader().getResourceAsStream("Data/ItemsList.txt");
-		BufferedReader reader= new BufferedReader(new FileReader("Data/ItemsList.txt"));
+		BufferedReader reader= new BufferedReader(new FileReader("Data/Suppliers.txt"));
 		builder= new StringBuilder();
 		String line;
 		
 		while ((line=reader.readLine())!=null) 
 		{
 			String[] data=line.split(",");
-			builder.append(data[0]).append(","); //ID
-			builder.append(data[1]).append(","); //Name
-			builder.append(data[2]).append(","); //Supplier Name
-			builder.append(data[3]).append(","); //Stock
-			builder.append(data[4]).append("\n"); //UnitPrice
+			builder.append(data[0]).append(","); 
+			builder.append(data[1]).append(","); 
+			builder.append(data[2]).append(","); 
+			builder.append(data[3]).append(","); 
+			builder.append(data[4]).append("\n"); 
 			
 		}
 		return builder;

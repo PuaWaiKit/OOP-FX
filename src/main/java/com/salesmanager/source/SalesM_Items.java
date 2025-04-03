@@ -8,6 +8,53 @@ import com.groupfx.JavaFXApp.*;
 
 public class SalesM_Items extends SalesM implements viewData, modifyData{
 	
+	private String Name;
+	private String ID;
+	private double UnitPrice;
+	private String Supplier;
+	private int Stock;
+	protected StringBuilder builder;
+	
+	public SalesM_Items() 
+	{
+		
+	}
+	
+	public SalesM_Items(String ID, String Name, String Supplier,int Stock,double UnitPrice ) 
+	{
+	    this.ID = ID;
+        this.Name = Name;
+        this.Supplier = Supplier;
+        this.Stock = Stock;
+        this.UnitPrice = UnitPrice;
+	}
+	
+	
+    public String getId() 
+    { 
+    	return ID; 
+    }
+    
+    public String getName() 
+    { 
+    	return Name; 
+    }
+    
+    public String getSupplier() 
+    { 
+    	return Supplier; 
+    }
+    
+    public int getStock() 
+    { 
+    	return Stock; 
+    }
+    
+    public double getUnitPrice() 
+    { 
+    	return UnitPrice; 
+    }
+    
 	@Override
 	public StringBuilder ReadTextFile() throws IOException
 	{	

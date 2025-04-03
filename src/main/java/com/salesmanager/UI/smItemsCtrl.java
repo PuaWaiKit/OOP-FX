@@ -13,26 +13,26 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.groupfx.JavaFXApp.*;
+import com.salesmanager.source.*;
 
 public class smItemsCtrl {
 	@FXML
-    private TableColumn<ViewList, String> ItemsID;
+    private TableColumn<SalesM_Items, String> ItemsID;
 
     @FXML
-    private TableColumn<ViewList, String> ItemsName;
+    private TableColumn<SalesM_Items, String> ItemsName;
 
     @FXML
-    private TableColumn<ViewList, String> ItemsSupp;
+    private TableColumn<SalesM_Items, String> ItemsSupp;
 
     @FXML
-    private TableColumn<ViewList, Integer> itemsStock;
+    private TableColumn<SalesM_Items, Integer> itemsStock;
 
     @FXML
-    private TableColumn<ViewList, Double> itemsUP;
+    private TableColumn<SalesM_Items, Double> itemsUP;
 
     @FXML
-    private TableView<ViewList> viewItemTable;
+    private TableView<SalesM_Items> viewItemTable;
     
     @FXML
     private TextField txtItemsID;
@@ -68,8 +68,8 @@ public class smItemsCtrl {
     
     public void load() throws IOException 
     {
-    	ViewList listed= new ViewList();
-    	ObservableList<ViewList> itemList= FXCollections.observableArrayList(); 
+    	SalesM_Items listed= new SalesM_Items();
+    	ObservableList<SalesM_Items> itemList= FXCollections.observableArrayList(); 
     	String[] row= listed.ReadTextFile().toString().split("\n");
     	
     	for(String rows: row) 
@@ -77,7 +77,7 @@ public class smItemsCtrl {
     		String[] spl= rows.split(",");
     		if(spl.length==5) 
     		{
-    			itemList.add(new ViewList(
+    			itemList.add(new SalesM_Items(
     					spl[0],
     					spl[1],
     					spl[2],
@@ -103,29 +103,36 @@ public class smItemsCtrl {
     	viewStockChart.getData().add(series);
     	
     }
+    
     public void rowClick() {
-
-        ViewList selectedItem = viewItemTable.getSelectionModel().getSelectedItem();
-        
-        if (selectedItem != null) {
-            String id = selectedItem.getId();
-            String name = selectedItem.getName();
-            String supplier = selectedItem.getSupplier();
-            int stock = selectedItem.getStock();
-            double unitPrice = selectedItem.getUnitPrice();
-            
-//			  For Testing
-//            System.out.println("Selected Item:");
-//            System.out.println("ID: " + id);
-//            System.out.println("Name: " + name);
-//            System.out.println("Supplier: " + supplier);
-//            System.out.println("Stock: " + stock);
-//            System.out.println("Unit Price: " + unitPrice);
-            txtItemsID.setText(id);
-            txtItemsName.setText(name);
-            txtItemSupp.setText(supplier);
-            txtItemsStock.setText(String.valueOf(stock));
-            txtItemsUP.setText(String.valueOf(unitPrice));
-        }
+    	
+    	try {
+	    	SalesM_Items selectedItem = viewItemTable.getSelectionModel().getSelectedItem();
+	        
+	        if (selectedItem != null) {
+	            String id = selectedItem.getId();
+	            String name = selectedItem.getName();
+	            String supplier = selectedItem.getSupplier();
+	            int stock = selectedItem.getStock();
+	            double unitPrice = selectedItem.getUnitPrice();
+	            
+//				<<For Testing>>
+//	            System.out.println("Selected Item:");
+//	            System.out.println("ID: " + id);
+//	            System.out.println("Name: " + name);
+//	            System.out.println("Supplier: " + supplier);
+//	            System.out.println("Stock: " + stock);
+//	            System.out.println("Unit Price: " + unitPrice);
+	            
+	            txtItemsID.setText(id);
+	            txtItemsName.setText(name);
+	            txtItemSupp.setText(supplier);
+	            txtItemsStock.setText(String.valueOf(stock));
+	            txtItemsUP.setText(String.valueOf(unitPrice));
+	        }
+	    } catch (Exception e) {
+	    	
+	    }
+    	
     }
 }
