@@ -6,5 +6,3 @@ I0005,Laptop,Tropical Market,200,2000.00
 I0006,Cake,Nixon Supply,100,40.00
 I0007,Lotion,Tropical Market,500,24.5
 I0008,Shampoo,Nixon Supply,100,21.5
-I0009,Durain,Tropical Market,50,50.8
-I0010,Tyre,Nixon Supply,100,150.5
