@@ -24,6 +24,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -47,8 +48,8 @@ public class purchaseCtrl implements Initializable{
     @FXML
     private AnchorPane drawerPane;
 
-//    @FXML
-//    private FontIcon exitBtn;
+    @FXML
+    private Button menuBtn;
 
     @FXML
     private Button exitIco;
@@ -64,10 +65,12 @@ public class purchaseCtrl implements Initializable{
 
     private Scene scene;
     private Stage stage;
+    @FXML
+    private ImageView HomePng;
     
 	@Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadNewContent("/fxml/pmViewItems.fxml");
+        loadNewContent("/fxml/PMmenu.fxml");
     }
 	
 	
@@ -120,6 +123,8 @@ public class purchaseCtrl implements Initializable{
 	}
 	
 	
+
+
 	
     @FXML
     public void handleChangeItems(ActionEvent event) throws IOException {
@@ -191,6 +196,16 @@ public class purchaseCtrl implements Initializable{
     	
     	
     	
+    	
+    }
+    
+    
+    @FXML
+    public void MenuClick(MouseEvent event) throws IOException {
+    	if(SwitchAlert()) 
+    	{
+    		loadNewContent("/fxml/PMmenu.fxml");
+    	}
     	
     }
   }

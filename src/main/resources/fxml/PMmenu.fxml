@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="980.0" style="-fx-background-color: #5E6572;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.purchasemanager.UI.PMainMenu">
+   <children>
+      <AnchorPane layoutX="15.0" layoutY="15.0" prefHeight="670.0" prefWidth="950.0" style="-fx-background-color: #ffffff;" styleClass="loginbounded" stylesheets="@../css/styles.css">
+         <children>
+            <HBox layoutX="14.0" layoutY="14.0" prefHeight="178.0" prefWidth="897.0" spacing="15.0">
+               <children>
+                  <AnchorPane prefHeight="178.0" prefWidth="531.0" style="-fx-background-radius: 30px; -fx-background-color: #2c3e50;">
+                     <children>
+                        <Label fx:id="WelcomeLbl" layoutX="172.0" layoutY="34.0" text="Welcome ! Name" textFill="#ffae42">
+                           <font>
+                              <Font name="Berlin Sans FB" size="24.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="128.0" fitWidth="134.0" layoutX="27.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../img/businessman-icon.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="RoleLbl" layoutX="172.0" layoutY="82.0" prefHeight="27.0" prefWidth="172.0" text="role" textFill="#ffae42">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="178.0" prefWidth="365.0" style="-fx-background-color: #6A5ACD; -fx-background-radius: 30px;">
+                     <children>
+                        <Label layoutX="24.0" layoutY="36.0" prefHeight="27.0" prefWidth="137.0" text="Today Date">
+                           <font>
+                              <Font name="Berlin Sans FB" size="24.0" />
+                           </font>
+                        </Label>
+                        <FontIcon iconLiteral="anto-calendar" iconSize="40" layoutX="24.0" layoutY="127.0" wrappingWidth="40.0" />
+                        <Label fx:id="DateLbl" layoutX="79.0" layoutY="101.0" text="Label">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+            <VBox layoutX="14.0" layoutY="214.0" prefHeight="464.0" prefWidth="524.0">
+               <children>
+                  <AnchorPane prefHeight="254.0" prefWidth="524.0" style="-fx-background-color: #ADD8E6; -fx-background-radius: 20px;">
+                     <children>
+                        <Label fx:id="ReqNum" alignment="CENTER" contentDisplay="CENTER" layoutX="56.0" layoutY="70.0" prefHeight="138.0" prefWidth="79.0" text="3">
+                           <font>
+                              <Font name="Arial Black" size="64.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="22.0" layoutY="30.0" text="Pending Purchase Requisition">
+                           <font>
+                              <Font name="Berlin Sans FB" size="24.0" />
+                           </font>
+                        </Label>
+                        <PieChart fx:id="ReqChart" layoutX="196.0" layoutY="70.0" prefHeight="162.0" prefWidth="172.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

@@ -71,9 +71,8 @@ public class GenPOCtrl {
     @FXML
     private TableView<PManagerOrder> ViewPO;
 
-    @FXML
-    private Button backBtn;
-
+    
+    
     @FXML
     private Button EditBtn;
     
@@ -313,10 +312,7 @@ public class GenPOCtrl {
     	
     }
 
-    @FXML
-    public void backClick(MouseEvent event) {
-    	
-    }
+
     
     @FXML
     public void saveClick(MouseEvent event) {
