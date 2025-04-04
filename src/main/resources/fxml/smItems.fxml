@@ -77,19 +77,24 @@
                   <Separator prefWidth="200.0" />
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #1098F7;">
+                        <Button mnemonicParsing="false" onAction="#reloadClick" style="-fx-background-color: #1098F7;">
                            <graphic>
                               <FontIcon iconLiteral="anto-reload" />
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: green;">
+                        <Button mnemonicParsing="false" onAction="#addeditClick" style="-fx-background-color: green;">
                            <graphic>
                               <FontIcon iconLiteral="anto-check" />
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: red;">
+                        <Button mnemonicParsing="false" onAction="#deleteClick" style="-fx-background-color: red;">
                            <graphic>
                               <FontIcon iconLiteral="anto-close" />
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#saveClick" style="-fx-background-color: #FDE74C;">
+                           <graphic>
+                              <FontIcon iconLiteral="anto-upload" />
                            </graphic>
                         </Button>
                      </children>

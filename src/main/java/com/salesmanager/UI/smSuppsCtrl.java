@@ -50,8 +50,6 @@ public class smSuppsCtrl {
     @FXML
     private TextField txtItemID;
     
-    private ObservableList<SalesM_Suppliers> itemList= FXCollections.observableArrayList(); 
-    
     private ObservableList<SalesM_Suppliers> cacheList = FXCollections.observableArrayList();
     
     public void initialize() throws IOException 
@@ -68,6 +66,7 @@ public class smSuppsCtrl {
     public void load() throws IOException 
     {
     	SalesM_Suppliers listed= new SalesM_Suppliers();
+    	ObservableList<SalesM_Suppliers> itemList= FXCollections.observableArrayList();
     	String[] row= listed.ReadTextFile().toString().split("\n");
     	
     	for(String rows: row) 
@@ -190,7 +189,7 @@ public class smSuppsCtrl {
     	
     	StringBuilder result = new StringBuilder();
     	for (SalesM_Suppliers supplier : cacheList) {
-            // 拼接属性，属性之间用 "-" 分隔
+            
             result.append(supplier.getId()).append(",")
                   .append(supplier.getName()).append(",")
                   .append(supplier.getContactNum()).append(",")
