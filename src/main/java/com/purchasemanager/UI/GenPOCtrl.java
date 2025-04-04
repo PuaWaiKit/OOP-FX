@@ -4,16 +4,20 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
 
 import com.PM.Sources.*;
 import com.groupfx.JavaFXApp.Authentication;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -61,7 +65,9 @@ public class GenPOCtrl {
     @FXML
     private Button RefBtn;
 
-
+    @FXML
+    private ComboBox<String> PRidCb;
+    
     @FXML
     private TableView<PManagerOrder> ViewPO;
 
@@ -84,6 +90,10 @@ public class GenPOCtrl {
     	POso.setCellValueFactory(new PropertyValueFactory<>("pm"));
     	ViewPO.setSortPolicy(null); //disable sort
     	
+
+    	
+    	
+    	
     	
 //    	Alert alert= new Alert(AlertType.INFORMATION);
 //		alert.setTitle("Adding Sucess");
@@ -92,10 +102,41 @@ public class GenPOCtrl {
 //		alert.show();
 //    	
     	
-
+    	
     	SetText();
     	load();
     }
+    
+    
+    public int CbSelection() 
+    {
+    	int Cbselection=PRidCb.getSelectionModel().getSelectedIndex();
+    	return Cbselection;
+    }
+    
+    public void CleanTextbox(TextField...fields) 
+    {
+    	for(TextField field: fields) 
+    	{	
+    		field.clear();
+    	}
+    	PRidCb.getSelectionModel().select(-1);
+    }
+    
+    
+    public boolean CheckTxtbox(TextField...fields) 
+    {
+    	for(TextField field:fields ) 
+    	{	String content= field.getText();
+    		if(content.equals(null)||content.trim().isEmpty())
+    		{
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    
     
     public String SetText() throws IOException 
     {
@@ -134,31 +175,49 @@ public class GenPOCtrl {
     	}
     	ViewPO.setItems(obList);
     	
+    	String[] Prid= data.RetrivePR().toString().split("\n");
+    	List<String> ListData= Arrays.asList(Prid);
+    	PRidCb.getItems().addAll(ListData);
+    	
+    	
     }
     
     
     @FXML
     public void AddClick(MouseEvent event) {
     	//String Id, String name, String Quantity, String Price, String Pm
-    	PManagerOrder data= new PManagerOrder(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText());
-    	data.AddFunc();
-    	if(data.checkingFunc()) 
+    	
+    	if(!CheckTxtbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt)) 
     	{
-    		Alert alert= new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Adding Sucess");
-    		alert.setHeaderText(null);
-    		alert.setContentText("Adding Sucessfull, Please Save Before Leaving !");
-    		alert.showAndWait();
-    		ViewPO.getSelectionModel().clearSelection(); //clear selection
-    	}
+		    	PManagerOrder data= new PManagerOrder(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText());
+		    	data.AddFunc();
+		    	if(data.checkingFunc() && CbSelection()!=-1) 
+		    	{
+		    		Alert alert= new Alert(AlertType.INFORMATION);
+		    		alert.setTitle("Adding Sucess");
+		    		alert.setHeaderText(null);
+		    		alert.setContentText("Adding Sucessfull, Please Save Before Leaving !");
+		    		alert.showAndWait();
+		    		ViewPO.getSelectionModel().clearSelection(); //clear selection
+		    		CleanTextbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt);
+		    	}
+		    	else 
+		    	{
+		    		Alert alert= new Alert(AlertType.INFORMATION);
+		    		alert.setTitle("Adding Failed");
+		    		alert.setHeaderText(null);
+		    		alert.setContentText("Adding Failed or Please Select an PRID for Adding !");
+		    		alert.showAndWait();
+		    	}
+	    }
     	else 
-    	{
-    		Alert alert= new Alert(AlertType.INFORMATION);
+	    {
+    		Alert alert= new Alert(AlertType.ERROR);
     		alert.setTitle("Adding Failed");
     		alert.setHeaderText(null);
-    		alert.setContentText("Adding Failed !");
+    		alert.setContentText("Please Ensure All data is Filled !");
     		alert.showAndWait();
-    	}
+	    }
     }
 
  
@@ -183,7 +242,7 @@ public class GenPOCtrl {
     public void DelClick(MouseEvent event) {
     	int selectedIndex=ViewPO.getSelectionModel().getSelectedIndex();
     	
-    	if(selectedIndex>=0) 
+    	if(selectedIndex>=0 && CbSelection()==-1) 
     	{
     		ViewPO.getItems().remove(selectedIndex);
     		PManagerOrder del= new PManagerOrder(selectedIndex);
@@ -195,14 +254,22 @@ public class GenPOCtrl {
     			alert.setContentText("Delete Sucessfull");
     			alert.showAndWait();
     			ViewPO.getSelectionModel().clearSelection(); //clear the selection
+    			CleanTextbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt);
     		}
     		else 
     		{
     			Alert alert= new Alert(AlertType.ERROR);
     			alert.setTitle("Delete");
-    			alert.setContentText("Delete Failed");
+    			alert.setContentText("Delete Failed, Please Do not choose the PRID selection");
     			alert.showAndWait();
     		}
+    	}
+    	else 
+    	{
+    		Alert alert= new Alert(AlertType.ERROR);
+			alert.setTitle("Delete");
+			alert.setContentText(" Please Do not choose the PRID selection");
+			alert.showAndWait();
     	}
     }
 
@@ -211,7 +278,7 @@ public class GenPOCtrl {
     @FXML
     public void EditClick(MouseEvent event) {
     	int selectedIndex=ViewPO.getSelectionModel().getSelectedIndex();
-    	if(selectedIndex>=0) 
+    	if(selectedIndex>=0 && CbSelection()==-1) 
     	{
     		String format= MessageFormat.format("{0},{1},{2},{3},{4}\n",IdTxtbx.getText(),ItemsNameTxt.getText(),QtyTxt.getText(),Pricetxt.getText(),PMtxt.getText());
     		
@@ -226,12 +293,13 @@ public class GenPOCtrl {
     			alert.setContentText("Edit Sucessfull, Please Refresh Your Data");
     			alert.showAndWait();
     			ViewPO.getSelectionModel().clearSelection();
+    			CleanTextbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt);
     		}
     		else 
     		{
     			Alert alert= new Alert(AlertType.ERROR);
     			alert.setTitle("Edit");
-    			alert.setContentText("Edit Failed or Please select a row");
+    			alert.setContentText("Edit Failed or Please select a row and Do not Choose PRID selection");
     			alert.showAndWait();
     		}
     	}
@@ -239,6 +307,8 @@ public class GenPOCtrl {
     
     @FXML
     public void RefClick(MouseEvent event) throws IOException {
+    	PRidCb.getSelectionModel().select(-1);
+    	PRidCb.getItems().clear();
     	load();
     	
     }
@@ -259,6 +329,7 @@ public class GenPOCtrl {
     		alert.setContentText(order.LineCount()+"row(s) has been saved !");
     		alert.showAndWait();
     		ViewPO.getSelectionModel().clearSelection();
+    		PRidCb.getSelectionModel().select(-1);
     		
     	}
     	else 
@@ -267,6 +338,26 @@ public class GenPOCtrl {
     		alert.setTitle("Saving");
     		alert.setContentText("Error Occur or No Changes Made!");
     		alert.showAndWait();
+    	}
+    }
+    
+
+    @FXML
+    public void CBoxAction(ActionEvent event) throws IOException {
+    	PManagerOrder Act= new PManagerOrder();
+    	
+    	String Poid= PRidCb.getValue();
+    	int SelectionIndex= PRidCb.getSelectionModel().getSelectedIndex();
+    	
+    	if(SelectionIndex!=-1) 
+    	{
+    		String[] ItemsId=Act.RetriveItemsID(SelectionIndex).toString().split(",");
+    		String[] itemsChecking= Act.RetriveItems(Poid, ItemsId[0]).toString().split(",");
+    		
+    		
+    			QtyTxt.setText(ItemsId[1]);
+    			ItemsNameTxt.setText(itemsChecking[0]);
+    		
     	}
     }
 

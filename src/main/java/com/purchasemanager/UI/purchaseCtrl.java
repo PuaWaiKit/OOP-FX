@@ -136,8 +136,9 @@ public class purchaseCtrl implements Initializable{
     }
 
     @FXML
-    private void handleChangePR(ActionEvent event) {
-    	
+    private void handleChangePR(ActionEvent event) throws IOException {
+    	if(SwitchAlert()) {
+    	loadNewContent("/fxml/PMreq.fxml");}
     }
 
     @FXML

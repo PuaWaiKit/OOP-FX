@@ -88,6 +88,73 @@ public class PManagerOrder implements viewData, modifyData {
 	}
 	
 	
+	
+	public StringBuilder RetrivePR() throws IOException
+	{	String line;
+	
+		try (BufferedReader reader= new BufferedReader(new FileReader("Data/prList.txt")))
+		{
+			while((line=reader.readLine())!=null) 
+			{
+				String[] Prdata= line.split(",");
+				builder.append(Prdata[0]).append("\n"); // PRID
+
+			}
+			
+		}
+		return builder;
+	}
+	
+	public StringBuilder RetriveItemsID(int SelectionNum) throws IOException
+	{	String line;
+	
+		int lineNum=0;
+		try (BufferedReader reader= new BufferedReader(new FileReader("Data/prList.txt")))
+		{
+			while((line=reader.readLine())!=null) 
+			{
+				String[] Prdata= line.split(",");
+				if(lineNum==SelectionNum) 
+				{
+					builder.append(Prdata[1]).append(","); //items code
+					builder.append(Prdata[2]).append("\n"); //qty
+					break;
+				}
+				lineNum++;
+			}
+			
+		}
+		return builder;
+	}
+	
+	
+	public StringBuilder RetriveItems(String PRCode, String ItemsCode) throws IOException
+	{	String line;
+		StringBuilder Newbuild= new StringBuilder();
+		try(BufferedReader reader= new BufferedReader(new FileReader("Data/ItemsList.txt")))
+		{
+			while((line=reader.readLine())!=null) 
+			{
+				String[] ItemsName= line.split(",");
+				if(ItemsCode.equals(ItemsName[0])) 
+				{
+//					
+					Newbuild.append(ItemsName[1]); //name
+//					
+					break;
+				}
+				else 
+				{
+					continue;
+				}
+			}
+		}
+		return Newbuild;
+	}
+	
+	
+	
+	
 	public boolean checkingFunc() 
 	{
 		return Checking;

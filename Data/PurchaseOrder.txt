@@ -5,3 +5,7 @@ PO005,TestingEd,2000,10.9,Ming
 PO006,CheckFun,100,10.9,Ming
 PO008,Tangs,2000,10.9,Ming
 PO009,Ning,100,1.0,Ming
+PO009,Ning,100,1.0,Ming
+PO010,Apple,100,1.0,Ming
+PO11,Apple,100,2.0,Ming
+PO023,Apple,100,1.0,Ming
