@@ -107,7 +107,7 @@ public class Authentication {
 		{	
 			CurrRole=roleMap.getOrDefault(UserName, "Undentified");
 			BufferedWriter writer = new BufferedWriter(new FileWriter("Data/Log.txt"));
-			writer.write(UserName);
+			writer.write(UserName+","+CurrRole);
 			writer.newLine();
 			writer.close();
 			return true;

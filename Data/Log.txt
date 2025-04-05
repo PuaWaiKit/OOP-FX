@@ -1,1 +1,1 @@
-Ming
+Ming,purchaseManager
