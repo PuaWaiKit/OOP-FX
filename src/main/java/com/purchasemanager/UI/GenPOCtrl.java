@@ -141,13 +141,21 @@ public class GenPOCtrl {
     {
     	BufferedReader reader= new BufferedReader(new FileReader("Data/Log.txt"));
     	PMtxt.setEditable(false);
-    	String Name=reader.readLine();
-    	PMtxt.setText(Name);
-    	if(!PMtxt.getText().equals(Name)) 
-    	{
-    		PMtxt.setText(Name);
+    	String l,Name=null;
+    	while((l=reader.readLine())!=null) 
+    	{	
+    		String[] data= l.split(",");
+    		Name=data[0];
+	    	PMtxt.setText(Name);
+	    	if(!PMtxt.getText().equals(Name)) 
+	    	{
+	    		PMtxt.setText(Name);
+	    		
+	    	}
     		
     	}
+    	
+	    	
     	reader.close();
     	return Name;
     	
