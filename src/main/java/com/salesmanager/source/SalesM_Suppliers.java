@@ -12,7 +12,7 @@ import com.groupfx.JavaFXApp.viewData;
 
 import javafx.collections.ObservableList;
 
-public class SalesM_Suppliers  extends SalesM implements viewData, modifyData{
+public class SalesM_Suppliers extends SalesM implements viewData, modifyData{
 	
 	private String Id;
 	private String Name;

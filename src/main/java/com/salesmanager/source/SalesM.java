@@ -10,6 +10,11 @@ public class SalesM {
 		
 	}
 	
+	public SalesM(String userID) { 
+		
+		this.userID = userID;
+	}
+	
 	public SalesM(String userID, String type) {
 		
 		this.userID = userID;

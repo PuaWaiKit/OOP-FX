@@ -17,24 +17,25 @@ import java.util.Map;
 
 import com.salesmanager.source.*;
 
-public class smItemsCtrl {
+public class smDailySCtrl {
+
 	@FXML
-    private TableColumn<SalesM_Items, String> ItemsID;
+    private TableColumn<SalesM_DailyS, String> ItemsID;
 
     @FXML
-    private TableColumn<SalesM_Items, String> ItemsName;
+    private TableColumn<SalesM_DailyS, String> ItemsName;
 
     @FXML
-    private TableColumn<SalesM_Items, String> ItemsSupp;
+    private TableColumn<SalesM_DailyS, String> ItemsSupp;
 
     @FXML
-    private TableColumn<SalesM_Items, Integer> itemsStock;
+    private TableColumn<SalesM_DailyS, Integer> itemsStock;
 
     @FXML
-    private TableColumn<SalesM_Items, Double> itemsUP;
+    private TableColumn<SalesM_DailyS, Double> itemsUP;
 
     @FXML
-    private TableView<SalesM_Items> viewItemTable;
+    private TableView<SalesM_DailyS> viewItemTable;
     
     @FXML
     private TextField txtItemsID;
@@ -54,7 +55,7 @@ public class smItemsCtrl {
     @FXML
     private BarChart<?,?> viewStockChart;
     
-    ObservableList<SalesM_Items> cacheList = FXCollections.observableArrayList(); 
+    ObservableList<SalesM_DailyS> cacheList = FXCollections.observableArrayList(); 
     
     private HashMap<String, Integer> chartStore = new HashMap<>();
     
@@ -71,8 +72,8 @@ public class smItemsCtrl {
     
     public void load() throws IOException 
     {
-    	SalesM_Items listed= new SalesM_Items();
-    	ObservableList<SalesM_Items> itemList= FXCollections.observableArrayList(); 
+    	SalesM_DailyS listed= new SalesM_DailyS();
+    	ObservableList<SalesM_DailyS> itemList= FXCollections.observableArrayList(); 
     	String[] row= listed.ReadTextFile().toString().split("\n");
     	
     	for(String rows: row) 
@@ -80,7 +81,7 @@ public class smItemsCtrl {
     		String[] spl= rows.split(",");
     		if(spl.length==5) 
     		{
-    			itemList.add(new SalesM_Items(
+    			itemList.add(new SalesM_DailyS(
     					spl[0],
     					spl[1],
     					spl[2],
@@ -114,7 +115,7 @@ public class smItemsCtrl {
     public void rowClick() {
     	
     	try {
-	    	SalesM_Items selectedItem = viewItemTable.getSelectionModel().getSelectedItem();
+	    	SalesM_DailyS selectedItem = viewItemTable.getSelectionModel().getSelectedItem();
 	        
 	        if (selectedItem != null) {
 	            String id = selectedItem.getId();
@@ -143,8 +144,8 @@ public class smItemsCtrl {
     	
     }
     
-    private boolean containsID(ObservableList<SalesM_Items> List, String id, String Name, String suppId) {
-        for (SalesM_Items item : List) {
+    private boolean containsID(ObservableList<SalesM_DailyS> List, String id, String Name, String suppId) {
+        for (SalesM_DailyS item : List) {
             if (item.getId().equals(id)) {
             	
                 return true;
@@ -159,13 +160,13 @@ public class smItemsCtrl {
     @FXML
     public void addeditClick() {
     	
-    	SalesM_Items selectedSupp = viewItemTable.getSelectionModel().getSelectedItem();	
+    	SalesM_DailyS selectedSupp = viewItemTable.getSelectionModel().getSelectedItem();	
     	int selectedSuppIndex = viewItemTable.getSelectionModel().getSelectedIndex();
     	
     	try {
 	    	if(containsID(cacheList, txtItemsID.getText(), txtItemsName.getText(), txtItemSupp.getText()) && selectedSupp != null) {
 	
-	    		SalesM_Items dataEntry = new SalesM_Items(
+	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
 	    				
 	    				txtItemsID.getText().trim(),
 	    				txtItemsName.getText().trim(),
@@ -176,14 +177,14 @@ public class smItemsCtrl {
 	    				);
 	    		
 		    	dataEntry.EditFunc();
-		    	ObservableList<SalesM_Items>  tempList = dataEntry.getCacheList();
+		    	ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
 		    	cacheList = tempList;
 		    	viewItemTable.setItems(cacheList);
 		    	clearTextField();
 		    	
 	    	} else if (!(containsID(cacheList, txtItemsID.getText().trim(), txtItemsName.getText().trim(), txtItemSupp.getText().trim())) && selectedSupp == null){	
 	    		
-	    		SalesM_Items dataEntry = new SalesM_Items(
+	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
 	    				
 	    				txtItemsID.getText().trim(),
 	    				txtItemsName.getText().trim(),
@@ -194,7 +195,7 @@ public class smItemsCtrl {
 	    				);
 	    		
 			    dataEntry.AddFunc();
-			    ObservableList<SalesM_Items>  tempList = dataEntry.getCacheList();
+			    ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
 			    cacheList = tempList;
 			    viewItemTable.setItems(cacheList);
 			    clearTextField();
@@ -219,11 +220,11 @@ public class smItemsCtrl {
     public void deleteClick() {
     	int selectedSuppIndex = viewItemTable.getSelectionModel().getSelectedIndex();
     	
-    	SalesM_Items delIndex = new SalesM_Items(selectedSuppIndex, cacheList);
+    	SalesM_DailyS delIndex = new SalesM_DailyS(selectedSuppIndex, cacheList);
     	try {
     		
     		delIndex.DeleteFunc();
-    		ObservableList<SalesM_Items>  tempList = delIndex.getCacheList();
+    		ObservableList<SalesM_DailyS>  tempList = delIndex.getCacheList();
     		cacheList = tempList;
     		viewItemTable.setItems(cacheList);
     		clearTextField();
@@ -240,7 +241,7 @@ public class smItemsCtrl {
     public void saveClick() throws IOException{
     	
     	StringBuilder result = new StringBuilder();
-    	for (SalesM_Items supplier : cacheList) {
+    	for (SalesM_DailyS supplier : cacheList) {
             
             result.append(supplier.getId()).append(",")
                   .append(supplier.getName()).append(",")
@@ -250,7 +251,7 @@ public class smItemsCtrl {
         }
     	
     	String netString = result.toString();
-    	SalesM_Items note = new SalesM_Items(netString);
+    	SalesM_DailyS note = new SalesM_DailyS(netString);
     	note.SaveFunc();
     	
     	clearTextField();
