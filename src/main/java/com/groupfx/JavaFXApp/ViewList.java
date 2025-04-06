@@ -68,7 +68,8 @@ public class ViewList implements viewData
 		String line;
 		
 		while ((line=reader.readLine())!=null) 
-		{
+		{	
+			if(line.trim().isBlank())continue;
 			String[] data=line.split(",");
 			builder.append(data[0]).append(","); //ID
 			builder.append(data[1]).append(","); //Name
@@ -77,6 +78,7 @@ public class ViewList implements viewData
 			builder.append(data[4]).append("\n"); //UnitPrice
 			
 		}
+		reader.close();
 		return builder;
 		
 	}

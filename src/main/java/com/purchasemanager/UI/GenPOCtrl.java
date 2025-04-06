@@ -169,7 +169,7 @@ public class GenPOCtrl {
     	
     	for(String row:rows) 
     	{	String[] split=row.split(",");
-    		if(split.length==5) 
+    		if(split.length==6) 
     		{
     			obList.add(new PManagerOrder(
     					split[0],
@@ -183,6 +183,7 @@ public class GenPOCtrl {
     	ViewPO.setItems(obList);
     	
     	String[] Prid= data.RetrivePR().toString().split("\n");
+    	
     	List<String> ListData= Arrays.asList(Prid);
     	PRidCb.getItems().addAll(ListData);
     	
@@ -194,11 +195,11 @@ public class GenPOCtrl {
     public void AddClick(MouseEvent event) {
     	//String Id, String name, String Quantity, String Price, String Pm
     	
-    	if(!CheckTxtbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt)) 
+    	if(!CheckTxtbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt)&& CbSelection()!=-1) 
     	{
 		    	PManagerOrder data= new PManagerOrder(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText());
 		    	data.AddFunc();
-		    	if(data.checkingFunc() && CbSelection()!=-1) 
+		    	if(data.checkingFunc()) 
 		    	{
 		    		Alert alert= new Alert(AlertType.INFORMATION);
 		    		alert.setTitle("Adding Sucess");
@@ -223,7 +224,7 @@ public class GenPOCtrl {
     		Alert alert= new Alert(AlertType.ERROR);
     		alert.setTitle("Adding Failed");
     		alert.setHeaderText(null);
-    		alert.setContentText("Please Ensure All data is Filled !");
+    		alert.setContentText("Please Ensure All data is Filled ! And Perform Refresh!");
     		alert.showAndWait();
 	    }
     }
@@ -289,7 +290,7 @@ public class GenPOCtrl {
     	int selectedIndex=ViewPO.getSelectionModel().getSelectedIndex();
     	if(selectedIndex>=0 && CbSelection()==-1) 
     	{
-    		String format= MessageFormat.format("{0},{1},{2},{3},{4}\n",IdTxtbx.getText(),ItemsNameTxt.getText(),QtyTxt.getText(),Pricetxt.getText(),PMtxt.getText());
+    		String format= MessageFormat.format("{0},{1},{2},{3},{4},Pending\n",IdTxtbx.getText(),ItemsNameTxt.getText(),QtyTxt.getText(),Pricetxt.getText(),PMtxt.getText());
     		
     		
     		PManagerOrder edt= new PManagerOrder(selectedIndex,format);
@@ -368,6 +369,10 @@ public class GenPOCtrl {
     			QtyTxt.setText(ItemsId[2]);
     			ItemsNameTxt.setText(itemsChecking[0]);
     			ItemsNameTxt.setEditable(false);
+    	}
+    	else 
+    	{
+    		ItemsNameTxt.setEditable(true);
     	}
     }
 
