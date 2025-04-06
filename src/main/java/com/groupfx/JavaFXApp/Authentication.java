@@ -12,6 +12,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.salesmanager.source.SalesM;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -102,14 +103,36 @@ public class Authentication {
 	}
 	
 	public boolean UserAuth(String UserName, String Password) throws IOException 
-	{
-		if(UserMap.containsKey(UserName.trim()) && UserMap.get(UserName.trim()).equals(Password.trim())) 
+	{	
+		String trimmedUserName = UserName.trim();
+		
+		if(UserMap.containsKey(trimmedUserName) && UserMap.get(trimmedUserName).equals(Password.trim())) 
 		{	
 			CurrRole=roleMap.getOrDefault(UserName, "Undentified");
 			BufferedWriter writer = new BufferedWriter(new FileWriter("Data/Log.txt"));
 			writer.write(UserName+","+CurrRole);
 			writer.newLine();
 			writer.close();
+			
+			switch(CurrRole) {
+			
+				case "admin":
+					break;
+					
+				case "salesManager":
+					SalesM entryID = new SalesM(trimmedUserName);
+					break;
+					
+				case "purchaseManager":
+					break;
+					
+				case "inventoryManager":
+					break;
+					
+				case "financeManager":
+					break;
+				
+			}
 			return true;
 		}
 		return false;

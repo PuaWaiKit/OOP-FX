@@ -75,7 +75,7 @@
                               <Font name="DejaVu Serif Bold" size="14.0" />
                            </font></Label>
                         <TextField fx:id="txtStatus" />
-                        <Separator opacity="0.0" prefHeight="40.0" prefWidth="200.0" />
+                        <Separator prefHeight="40.0" prefWidth="200.0" />
                         <HBox alignment="TOP_RIGHT" prefHeight="36.0" prefWidth="190.0">
                            <children>
                               <Button mnemonicParsing="false" style="-fx-background-color: #1098F7;">
