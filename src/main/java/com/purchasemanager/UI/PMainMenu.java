@@ -8,8 +8,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import com.PM.Sources.PManagerOrder;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
@@ -54,10 +58,38 @@ public class PMainMenu {
     		TimeLbl.setText(Time.format(TimeFormat));
     		
     	}));
+    	SettingPieChart();
     	clock.setCycleCount(Timeline.INDEFINITE);
     	clock.play();
     			
     	
+    }
+    
+    
+    public void SettingPieChart() throws IOException 
+    {
+    	PManagerOrder Data= new PManagerOrder();
+    	String[]PrData= Data.PieCData().toString().split("\n");
+    	int PendingNum=0,ApproveNum=0;
+    	for(String Loop: PrData) 
+    	{
+    		if(Loop.equals("Pending")) 
+    		{
+    			PendingNum++;
+    		}
+    		else 
+    		{
+    			ApproveNum++;
+    		}
+    	}
+    	
+    	ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
+    		    new PieChart.Data("Approved", ApproveNum),
+    		    new PieChart.Data("Pending", PendingNum)
+    		);
+    	ReqChart.setData(pieData);
+    	ReqNum.setText(Integer.toString(PendingNum));
+
     }
     
     

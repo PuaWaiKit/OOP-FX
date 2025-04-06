@@ -17,6 +17,9 @@ import java.util.List;
 
 import com.groupfx.JavaFXApp.*;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class PManagerOrder implements viewData, modifyData {
 	private String Id,name,Pm;
 	private int Quantity;
@@ -29,11 +32,16 @@ public class PManagerOrder implements viewData, modifyData {
 	private StringBuilder builder= new StringBuilder();
 	private int lineCount;
 	private int ClickCount;
-
+	private ObservableList<PManagerOrder> Pie= FXCollections.observableArrayList();
 	
 	public PManagerOrder() 
 	{
 		
+	}
+	
+	public PManagerOrder(ObservableList<PManagerOrder> Pie) 
+	{
+		this.Pie=Pie;
 	}
 	
 	public PManagerOrder(int LineNum, String newData) 
@@ -89,6 +97,23 @@ public class PManagerOrder implements viewData, modifyData {
 	
 	
 	
+	public StringBuilder PieCData() throws IOException
+	{	String line;
+	
+		try (BufferedReader reader= new BufferedReader(new FileReader("Data/prList.txt")))
+		{
+			while((line=reader.readLine())!=null) 
+			{
+				String[] Prdata= line.split(",");
+				builder.append(Prdata[6]).append("\n"); //PRStatus
+			}
+			
+		}
+		return builder;
+	}
+	
+	
+	
 	public StringBuilder RetrivePR() throws IOException
 	{	String line;
 	
@@ -97,8 +122,7 @@ public class PManagerOrder implements viewData, modifyData {
 			while((line=reader.readLine())!=null) 
 			{
 				String[] Prdata= line.split(",");
-				builder.append(Prdata[0]).append("\n"); // PRID
-
+				builder.append(Prdata[0]).append("\n"); //PRID
 			}
 			
 		}
@@ -120,10 +144,7 @@ public class PManagerOrder implements viewData, modifyData {
 					builders.append(Prdata[0]).append(","); 
 					builders.append(Prdata[1]).append(","); //items code
 					builders.append(Prdata[2]).append(","); //qty
-					builders.append(Prdata[3]).append(",");
-					builders.append(Prdata[4]).append(",");
-					builders.append(Prdata[5]).append(",");
-					builders.append(Prdata[6]).append("\n"); 
+					builders.append(Prdata[3]).append("\n");
 					break;
 				}
 				lineNum++;
@@ -166,6 +187,22 @@ public class PManagerOrder implements viewData, modifyData {
 		return Checking;
 	}
 	
+	
+	public boolean CacheChecking() throws IOException
+	{
+		BufferedReader reader= new BufferedReader(new FileReader("Data/Cache.txt"));
+		boolean check;
+		if(check=reader.readLine()==null) 
+		{	
+			reader.close();
+			return true;
+		}
+		reader.close();
+		return false;
+		
+	}
+	
+	
 	@Override
 	public void AddFunc() 
 	{
@@ -190,16 +227,20 @@ public class PManagerOrder implements viewData, modifyData {
 		{
 			//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
 			//writer.write(Data);
-			
-			builder.append(Id).append(",");
-			builder.append(name).append(",");
-			builder.append(Quantity).append(",");
-			builder.append(Price).append(",");
-			builder.append(Pm).append("\n");
-			writer.write(builder.toString());
-			//writer.newLine();
-			Checking=true;
-			ClickCount++;
+			if(!CacheChecking()) 
+			{
+				builder.append(Id).append(",");
+				builder.append(name).append(",");
+				builder.append(Quantity).append(",");
+				builder.append(Price).append(",");
+				builder.append(Pm).append(",");
+				builder.append("Pending").append("\n");
+				writer.write(builder.toString());
+				//writer.newLine();
+				Checking=true;
+				ClickCount++;
+			}
+			else {Checking=false;}
 			
 		}
 		catch(IOException e) 
@@ -227,7 +268,8 @@ public class PManagerOrder implements viewData, modifyData {
 						builder.append(dataNew[1]).append(",");
 						builder.append(dataNew[2]).append(",");
 						builder.append(dataNew[3]).append(",");
-						builder.append(dataNew[4]).append("\n");
+						builder.append(dataNew[4]).append(",");
+						builder.append(dataNew[5]).append("\n");
 					}
 				} 
 				catch (IOException e) 
@@ -261,16 +303,19 @@ public class PManagerOrder implements viewData, modifyData {
 			}
 			
 			try {
-				List<String> lineR= new ArrayList<>(Files.readAllLines(Paths.get("Data/Cache.txt"))); //get file into Array
-				if(LineNum>=0 &&LineNum<lineR.size()) //size one based start from 1 
+				if(!CacheChecking()) 
 				{
-					lineR.remove(LineNum); //remove it
+					List<String> lineR= new ArrayList<>(Files.readAllLines(Paths.get("Data/Cache.txt"))); //get file into Array
+					if(LineNum>=0 &&LineNum<lineR.size()) //size one based start from 1 
+					{
+						lineR.remove(LineNum); //remove it
+					}
+					
+					//Write into file WRITE is to write in TRUNCATEEXISTING is to clear all the data in file and write new 
+					Files.write(Paths.get("Data/Cache.txt"), lineR, StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
+					Checking=true;
+					ClickCount++;
 				}
-				
-				//Write into file WRITE is to write in TRUNCATEEXISTING is to clear all the data in file and write new 
-				Files.write(Paths.get("Data/Cache.txt"), lineR, StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
-				Checking=true;
-				ClickCount++;
 			} catch (IOException e) {
 				Checking=false;
 				e.printStackTrace();
@@ -286,9 +331,11 @@ public class PManagerOrder implements viewData, modifyData {
 	{
 		try(BufferedReader reader= new BufferedReader(new FileReader("Data/Cache.txt")))
 		{
-			try(BufferedReader CheckLineEmpty= new BufferedReader(new FileReader("Data/Cache.txt")))
-			{
-				boolean isEmptyOrNot=CheckLineEmpty.readLine()==null;
+			
+				StringBuilder NewData= new StringBuilder();
+				reader.mark(1000); //set the reader length
+				boolean isEmptyOrNot=reader.readLine()==null;
+				reader.reset(); //reset the reader to first row
 				if(!isEmptyOrNot) 
 				{
 					try(BufferedWriter writer= new BufferedWriter(new FileWriter(Filepath)))
@@ -298,19 +345,19 @@ public class PManagerOrder implements viewData, modifyData {
 							String line;
 							
 							while ((line=reader.readLine())!=null) 
-							{
+							{	
+								if(line.trim().isBlank()) {continue;}
 								String[] dataSet= line.split(",");
-								if(line.trim().isEmpty()) continue;
-								
-								builder.append(dataSet[0]).append(",");
-								builder.append(dataSet[1]).append(",");
-								builder.append(dataSet[2]).append(",");
-								builder.append(dataSet[3]).append(",");
-								builder.append(dataSet[4]).append("\n");
+								NewData.append(dataSet[0]).append(",");
+								NewData.append(dataSet[1]).append(",");
+								NewData.append(dataSet[2]).append(",");
+								NewData.append(dataSet[3]).append(",");
+								NewData.append(dataSet[4]).append(",");
+								NewData.append(dataSet[5]).append("\n");
 								lineCount++;
 							}
-							writer.write(builder.toString());
-							builder.setLength(0);
+							writer.write(NewData.toString());
+							
 							//writer.newLine();
 
 							if(LineNum!=-1) //for Change Status on PR
@@ -359,9 +406,9 @@ public class PManagerOrder implements viewData, modifyData {
 							Checking=true;
 							BufferedWriter Delete= new BufferedWriter(new FileWriter("Data/Cache.txt"));
 							
-						}
+					}else {Checking=false;}
 						
-				}
+				
 				
 			}
 			catch(IOException e) 
@@ -395,6 +442,7 @@ public class PManagerOrder implements viewData, modifyData {
 					builder.append(oldData[2]).append(",");
 					builder.append(oldData[3]).append(",");
 					builder.append(oldData[4]).append(",");
+					builder.append(oldData[5]).append(",");
 				}
 			 }
 			catch(IOException e) 
@@ -404,25 +452,27 @@ public class PManagerOrder implements viewData, modifyData {
 			}
 		 }
 		
+			
 			try(BufferedReader reader= new BufferedReader(new FileReader("Data/Cache.txt")))
 			{
 				
-				while((line=reader.readLine())!=null) 
-				{	
-					if(line.trim().isEmpty())continue;
+					while((line=reader.readLine())!=null) 
+					{	
+						if(line.trim().isEmpty())continue;
+						
+						String[] data=line.split(",");
+						builder.append(data[0]).append(",");
+						builder.append(data[1]).append(",");
+						builder.append(data[2]).append(",");
+						builder.append(data[3]).append(",");
+						builder.append(data[4]).append(",");
+						builder.append(data[5]).append("\n");
+					}
 					
-					String[] data=line.split(",");
-					builder.append(data[0]).append(",");
-					builder.append(data[1]).append(",");
-					builder.append(data[2]).append(",");
-					builder.append(data[3]).append(",");
-					builder.append(data[4]).append("\n");
-				}
-				
-				try(FileWriter writer= new FileWriter("Data/Cache.txt"))
-				{
-					writer.write(builder.toString());
-				}
+					try(FileWriter writer= new FileWriter("Data/Cache.txt"))
+					{
+						writer.write(builder.toString());
+					}
 			
 			}
 			catch(IOException e) 
@@ -431,15 +481,18 @@ public class PManagerOrder implements viewData, modifyData {
 			}
 			
 			try
-			{
-				List<String> EditList= new ArrayList<>(Files.readAllLines(Paths.get("Data/Cache.txt")));
-				if(LineNum>=0 && LineNum<=EditList.size()) 
+			{ 
+				if(!CacheChecking()) 
 				{
-					EditList.set(LineNum,newData);
-					
-				}
-				Files.write(Paths.get("Data/Cache.txt"),EditList,StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
-				Checking=true;
+					List<String> EditList= new ArrayList<>(Files.readAllLines(Paths.get("Data/Cache.txt")));
+					if(LineNum>=0 && LineNum<=EditList.size()) 
+					{
+						EditList.set(LineNum,newData);
+						
+					}
+					Files.write(Paths.get("Data/Cache.txt"),EditList,StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
+					Checking=true;
+				}	
 			}
 			catch(IOException e) 
 			{
@@ -447,6 +500,7 @@ public class PManagerOrder implements viewData, modifyData {
 				Checking=false;
 			}
 		}
+		
 	
 	
 	@Override
@@ -466,7 +520,8 @@ public class PManagerOrder implements viewData, modifyData {
 			builder.append(data[1]).append(",");
 			builder.append(data[2]).append(",");
 			builder.append(data[3]).append(",");
-			builder.append(data[4]).append("\n");
+			builder.append(data[4]).append(",");
+			builder.append(data[5]).append("\n");
 		}
 		
 		
