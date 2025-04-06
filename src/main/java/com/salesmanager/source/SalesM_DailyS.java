@@ -14,15 +14,16 @@ import javafx.collections.ObservableList;
 public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	
 	private String Id;
-	private String Name;
-	private String ContactNum;
-	private String Address;
-	private String Item;
+	private String itemId;
+	private String itemName;
+	private int totalSales;
+	private final String author = getUserId();
+	private String tempAuthor;
 	
 	//Variable for the modification
 	private int selectedIndex;
 	private String resultString;
-	private ObservableList<SalesM_Suppliers> cachelist;
+	private ObservableList<SalesM_DailyS> cachelist;
 	
 	public SalesM_DailyS() {
 		
@@ -33,41 +34,41 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 		this.resultString = resultString;
 	}
 	
-	public SalesM_DailyS(int selectedIndex, ObservableList<SalesM_Suppliers> cacheList) {
+	public SalesM_DailyS(int selectedIndex, ObservableList<SalesM_DailyS> cacheList) {
 		
 		this.selectedIndex = selectedIndex;
 		this.cachelist = cacheList;
 	}
 	
-	public SalesM_DailyS(String id, String Name, String contactNum, String address, String item) {
-        this.Id = id;
-        this.Name = Name;
-        this.ContactNum = contactNum;
-        this.Address = address;
-        this.Item = item;
+	public SalesM_DailyS(String Id, String itemId, String itemName, int totalSales, String author) {
+        this.Id = Id;
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.totalSales = totalSales;
+        this.tempAuthor = author;
     }
 	
-	public SalesM_DailyS(String id, String Name, String contactNum, String address, String item, ObservableList<SalesM_Suppliers> cacheList, int Index) {
-        this.Id = id;
-        this.Name = Name;
-        this.ContactNum = contactNum;
-        this.Address = address;
-        this.Item = item;
+	public SalesM_DailyS(String Id, String itemId, String itemName, int totalSales, String author, ObservableList<SalesM_DailyS> cacheList, int Index) {
+		this.Id = Id;
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.totalSales = totalSales;
+        this.tempAuthor = author;
         this.cachelist = cacheList;
         this.selectedIndex = Index;
     }
 	
 	public String getId() { return Id; }
-    public String getName() { return Name; }
-    public String getContactNum() { return ContactNum; }
-    public String getAddress() { return Address; }
-    public String getItem() { return Item; }
+    public String getItemId() { return itemId; }
+    public String getItemName() { return itemName; }
+    public int getTotalSales() { return totalSales; }
+    public String getAuthor() { return tempAuthor; }
 	
     @Override
 	public StringBuilder ReadTextFile() throws IOException
 	{	
 		//InputStream stream= getClass().getClassLoader().getResourceAsStream("Data/ItemsList.txt");
-		BufferedReader reader= new BufferedReader(new FileReader("Data/Suppliers.txt"));
+		BufferedReader reader= new BufferedReader(new FileReader("Data/dailySales.txt"));
 		builder= new StringBuilder();
 		String line;
 		
@@ -88,13 +89,13 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	@Override
 	public void AddFunc() {
 		
-		cachelist.add(new SalesM_Suppliers(		
+		cachelist.add(new SalesM_DailyS(		
 				
 				Id,
-				Name,
-				ContactNum,
-				Address,
-				Item
+				itemId,
+				itemName,
+				totalSales,
+				author
 				
 				));
 		
@@ -103,13 +104,13 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	@Override
 	public void EditFunc() {
 		
-		cachelist.set(selectedIndex, new SalesM_Suppliers(		
+		cachelist.set(selectedIndex, new SalesM_DailyS(		
 				
 				Id,
-				Name,
-				ContactNum,
-				Address,
-				Item
+				itemId,
+				itemName,
+				totalSales,
+				author
 				
 				));
 		
@@ -125,7 +126,7 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	public void SaveFunc() {
 		
 		String[] parts = resultString.split("\n");
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter("Data/Suppliers.txt", false))) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("Data/dailySales.txt", false))) {
 			for (String part : parts) {
 				
             writer.write(part);
@@ -137,7 +138,7 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
         }
 	}
 	
-	public ObservableList<SalesM_Suppliers>  getCacheList() {
+	public ObservableList<SalesM_DailyS>  getCacheList() {
 		
 		return cachelist;
 	}

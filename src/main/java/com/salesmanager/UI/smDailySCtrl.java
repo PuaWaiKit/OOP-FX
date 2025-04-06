@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
 import java.util.HashMap;
@@ -20,40 +21,43 @@ import com.salesmanager.source.*;
 public class smDailySCtrl {
 
 	@FXML
-    private TableColumn<SalesM_DailyS, String> ItemsID;
+    private TableColumn<SalesM_DailyS, String> DSID;
 
     @FXML
-    private TableColumn<SalesM_DailyS, String> ItemsName;
+    private TableColumn<SalesM_DailyS, String> itemID;
 
     @FXML
-    private TableColumn<SalesM_DailyS, String> ItemsSupp;
+    private TableColumn<SalesM_DailyS, String> itemName;
 
     @FXML
-    private TableColumn<SalesM_DailyS, Integer> itemsStock;
+    private TableColumn<SalesM_DailyS, Integer> totalSales;
 
     @FXML
-    private TableColumn<SalesM_DailyS, Double> itemsUP;
+    private TableColumn<SalesM_DailyS, String> author;
 
     @FXML
-    private TableView<SalesM_DailyS> viewItemTable;
+    private TableView<SalesM_DailyS> viewSalesTable;
     
     @FXML
-    private TextField txtItemsID;
+    private ChoiceBox<String> sortChoice;
     
     @FXML
-    private TextField txtItemsName;
+    private TextField txtDSID;
     
     @FXML
-    private TextField txtItemsStock;
+    private TextField txtitemID;
     
     @FXML
-    private TextField txtItemsUP;
+    private TextField txtitemName;
     
     @FXML
-    private TextField txtItemSupp;
+    private TextField txttotalSales;
     
     @FXML
-    private BarChart<?,?> viewStockChart;
+    private TextField txtAuthor;
+    
+    @FXML
+    private BarChart<?,?> viewSalesChart;
     
     ObservableList<SalesM_DailyS> cacheList = FXCollections.observableArrayList(); 
     
@@ -61,12 +65,12 @@ public class smDailySCtrl {
     
     public void initialize() throws IOException 
     {
-    	ItemsID.setCellValueFactory(new PropertyValueFactory<>("id")); // Use the ViewItemList.getID method
-    	ItemsName.setCellValueFactory(new PropertyValueFactory<>("name"));// same as above but the method different
-        ItemsSupp.setCellValueFactory(new PropertyValueFactory<>("supplier"));
-        itemsStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        itemsUP.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-        
+    	DSID.setCellValueFactory(new PropertyValueFactory<>("id")); 
+    	itemID.setCellValueFactory(new PropertyValueFactory<>("itemId"));//
+    	itemName.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        totalSales.setCellValueFactory(new PropertyValueFactory<>("totalSales"));
+        author.setCellValueFactory(new PropertyValueFactory<>("author"));
+       
         load();
     }
     
@@ -76,53 +80,62 @@ public class smDailySCtrl {
     	ObservableList<SalesM_DailyS> itemList= FXCollections.observableArrayList(); 
     	String[] row= listed.ReadTextFile().toString().split("\n");
     	
-    	for(String rows: row) 
-    	{
-    		String[] spl= rows.split(",");
-    		if(spl.length==5) 
-    		{
-    			itemList.add(new SalesM_DailyS(
-    					spl[0],
-    					spl[1],
-    					spl[2],
-    					Integer.parseInt(spl[3]),
-    					Double.parseDouble(spl[4])
-    					));
-    			
-    			chartStore.put(spl[1], Integer.parseInt(spl[3]));
-    		}
+    	try {
+	    	for(String rows: row) 
+	    	{
+	    		String[] spl= rows.split(",");
+	    		if(spl.length==5) 
+	    		{
+	    			itemList.add(new SalesM_DailyS(
+	    					spl[0],
+	    					spl[1],
+	    					spl[2],
+	    					Integer.parseInt(spl[3]),
+	    					spl[4]
+	    					));
+	    			
+	    			chartStore.put(spl[1], Integer.parseInt(spl[3]));
+	    		}
+	    	}
+	    	
+	    	cacheList = itemList;
+	    	viewSalesTable.setItems(cacheList);
+	    	chartload();
+	    	clearTextField();
+    	} catch (Exception e) {
+    		
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    	    alert.setTitle("Error");
+    	    alert.setHeaderText("Something went wrong");
+    	    alert.setContentText("Error: " + e.getMessage());
+    	    alert.showAndWait();
     	}
-    	
-    	cacheList = itemList;
-    	viewItemTable.setItems(cacheList);
-    	chartload();
-    	clearTextField();
     }
     
     public void chartload() {
     	
-    	viewStockChart.getData().clear();
+    	viewSalesChart.getData().clear();
     	XYChart.Series series = new XYChart.Series();
     	series.setName("Items Stock");
     	for (Map.Entry<String, Integer> entry : chartStore.entrySet()) {
             series.getData().add(new XYChart.Data(entry.getKey(), entry.getValue()));
         }
     	
-    	viewStockChart.getData().add(series);
+    	viewSalesChart.getData().add(series);
     	
     }
     
-    public void rowClick() {
+	public void rowClick() {
     	
     	try {
-	    	SalesM_DailyS selectedItem = viewItemTable.getSelectionModel().getSelectedItem();
+	    	SalesM_DailyS selectedItem = viewSalesTable.getSelectionModel().getSelectedItem();
 	        
 	        if (selectedItem != null) {
 	            String id = selectedItem.getId();
-	            String name = selectedItem.getName();
-	            String supplier = selectedItem.getSupplier();
-	            int stock = selectedItem.getStock();
-	            double unitPrice = selectedItem.getUnitPrice();
+	            String itemId = selectedItem.getItemId();
+	            String itemName = selectedItem.getItemName();
+	            int totalSales = selectedItem.getTotalSales();
+	            String auhor = selectedItem.getAuthor();
 	            
 //				<<For Testing>>
 //	            System.out.println("Selected Item:");
@@ -132,72 +145,80 @@ public class smDailySCtrl {
 //	            System.out.println("Stock: " + stock);
 //	            System.out.println("Unit Price: " + unitPrice);
 	            
-	            txtItemsID.setText(id);
-	            txtItemsName.setText(name);
-	            txtItemSupp.setText(supplier);
-	            txtItemsStock.setText(String.valueOf(stock));
-	            txtItemsUP.setText(String.valueOf(unitPrice));
+	            txtDSID.setText(id);
+	            txtitemID.setText(itemId);
+	            txtitemName.setText(itemName);
+	            txttotalSales.setText(String.valueOf(totalSales));
+	            txtAuthor.setText(String.valueOf(author));
 	        }
 	    } catch (Exception e) {
 	    	
+	    	Alert alert = new Alert(AlertType.INFORMATION);
+	        alert.setTitle("Error");
+	        alert.setHeaderText("Something went wrong");
+	        alert.setContentText("Error: " + e.getMessage());
+	        alert.showAndWait();
 	    }
     	
     }
     
-    private boolean containsID(ObservableList<SalesM_DailyS> List, String id, String Name, String suppId) {
-        for (SalesM_DailyS item : List) {
-            if (item.getId().equals(id)) {
-            	
-                return true;
-            } else if (item.getName().equals(Name) && item.getSupplier().equals(suppId)) {
-            	
-            	return true;
-            }
-        }
-        return false;
-    }
+	private boolean containsID(ObservableList<SalesM_DailyS> List, String id, String itemId, String itemName) {
+		
+	    for (SalesM_DailyS item : List) {
+	        if (item.getId().equals(id)) {
+	        	
+	            return true;
+	        } else if (item.getItemName().equals(itemName) && item.getItemId().equals(itemId)) {
+	        	
+	        	return true;
+	        }
+	    }
+	    return false;
+	}
     
     @FXML
     public void addeditClick() {
     	
-    	SalesM_DailyS selectedSupp = viewItemTable.getSelectionModel().getSelectedItem();	
-    	int selectedSuppIndex = viewItemTable.getSelectionModel().getSelectedIndex();
+    	SalesM_DailyS selectedSupp = viewSalesTable.getSelectionModel().getSelectedItem();	
+    	int selectedSuppIndex = viewSalesTable.getSelectionModel().getSelectedIndex();
     	
     	try {
-	    	if(containsID(cacheList, txtItemsID.getText(), txtItemsName.getText(), txtItemSupp.getText()) && selectedSupp != null) {
+	    	if(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtitemName.getText().trim()) && selectedSupp != null) {
 	
 	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
 	    				
-	    				txtItemsID.getText().trim(),
-	    				txtItemsName.getText().trim(),
-	    				txtItemSupp.getText().trim(),
-	    				Integer.parseInt(txtItemsStock.getText()),
-	    				Double.parseDouble(txtItemsUP.getText()),
-	    				cacheList, selectedSuppIndex
+	    				txtDSID.getText().trim(),
+	    				txtitemID.getText().trim(),
+	    				txtitemName.getText().trim(),
+	    				Integer.parseInt(txttotalSales.getText()),
+	    				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
+	    				cacheList, 
+	    				selectedSuppIndex
 	    				);
 	    		
 		    	dataEntry.EditFunc();
 		    	ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
 		    	cacheList = tempList;
-		    	viewItemTable.setItems(cacheList);
+		    	viewSalesTable.setItems(cacheList);
 		    	clearTextField();
 		    	
-	    	} else if (!(containsID(cacheList, txtItemsID.getText().trim(), txtItemsName.getText().trim(), txtItemSupp.getText().trim())) && selectedSupp == null){	
+	    	} else if (!(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtitemName.getText().trim())) && selectedSupp == null){	
 	    		
 	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
 	    				
-	    				txtItemsID.getText().trim(),
-	    				txtItemsName.getText().trim(),
-	    				txtItemSupp.getText().trim(),
-	    				Integer.parseInt(txtItemsStock.getText()),
-	    				Double.parseDouble(txtItemsUP.getText()),
-	    				cacheList, selectedSuppIndex
+	    				txtDSID.getText().trim(),
+	    				txtitemID.getText().trim(),
+	    				txtitemName.getText().trim(),
+	    				Integer.parseInt(txttotalSales.getText()),
+	    				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
+	    				cacheList, 
+	    				selectedSuppIndex
 	    				);
 	    		
 			    dataEntry.AddFunc();
 			    ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
 			    cacheList = tempList;
-			    viewItemTable.setItems(cacheList);
+			    viewSalesTable.setItems(cacheList);
 			    clearTextField();
 	    	} else {
 	    		
@@ -208,6 +229,7 @@ public class smDailySCtrl {
 	    		alert.showAndWait();
 	    	}
     	} catch (Exception e) {
+    		
     		Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
@@ -218,7 +240,7 @@ public class smDailySCtrl {
     
     @FXML
     public void deleteClick() {
-    	int selectedSuppIndex = viewItemTable.getSelectionModel().getSelectedIndex();
+    	int selectedSuppIndex = viewSalesTable.getSelectionModel().getSelectedIndex();
     	
     	SalesM_DailyS delIndex = new SalesM_DailyS(selectedSuppIndex, cacheList);
     	try {
@@ -226,14 +248,16 @@ public class smDailySCtrl {
     		delIndex.DeleteFunc();
     		ObservableList<SalesM_DailyS>  tempList = delIndex.getCacheList();
     		cacheList = tempList;
-    		viewItemTable.setItems(cacheList);
+    		viewSalesTable.setItems(cacheList);
     		clearTextField();
     		
     	} catch (Exception e) {
     		
     		Alert alert = new Alert(AlertType.INFORMATION);
-    		alert.setContentText("Okay this guy tried to remove something that doesnt exist");
-    		alert.showAndWait();
+    	    alert.setTitle("Error");
+    	    alert.setHeaderText("Something went wrong");
+    	    alert.setContentText("Error: " + e.getMessage());
+    	    alert.showAndWait();
     	}
     }
     
@@ -241,22 +265,30 @@ public class smDailySCtrl {
     public void saveClick() throws IOException{
     	
     	StringBuilder result = new StringBuilder();
-    	for (SalesM_DailyS supplier : cacheList) {
-            
-            result.append(supplier.getId()).append(",")
-                  .append(supplier.getName()).append(",")
-                  .append(supplier.getSupplier()).append(",")
-                  .append(supplier.getStock()).append(",")
-                  .append(supplier.getUnitPrice()).append("\n");  
-        }
-    	
-    	String netString = result.toString();
-    	SalesM_DailyS note = new SalesM_DailyS(netString);
-    	note.SaveFunc();
-    	
-    	clearTextField();
-    	reloadClick();
-    	
+    	try {
+	    	for (SalesM_DailyS dailyS : cacheList) {
+	            
+	            result.append(dailyS.getId()).append(",")
+	                  .append(dailyS.getItemId()).append(",")
+	                  .append(dailyS.getItemName()).append(",")
+	                  .append(dailyS.getTotalSales()).append(",")
+	                  .append(dailyS.getAuthor()).append("\n");  
+	        }
+	    	
+	    	String netString = result.toString();
+	    	SalesM_DailyS note = new SalesM_DailyS(netString);
+	    	note.SaveFunc();
+	    	
+	    	clearTextField();
+	    	reloadClick();
+    	} catch (Exception e) {
+    		
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    	    alert.setTitle("Error");
+    	    alert.setHeaderText("Something went wrong");
+    	    alert.setContentText("Error: " + e.getMessage());
+    	    alert.showAndWait();
+    	}
     }
     
     @FXML
@@ -267,7 +299,7 @@ public class smDailySCtrl {
     
     public void clearTextField() {
     	
-    	TextField[] textFields = {txtItemsID, txtItemsName, txtItemsStock, txtItemsUP, txtItemSupp};
+    	TextField[] textFields = {txtDSID, txtitemID, txtitemName, txttotalSales, txtAuthor};
     	for (TextField field : textFields) {
     	    field.clear();      	
     	}

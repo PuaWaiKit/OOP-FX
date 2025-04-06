@@ -85,17 +85,22 @@ public class SalesM_Items extends SalesM implements viewData, modifyData{
 		
 		while ((line=reader.readLine())!=null) 
 		{
-			String[] data=line.split(",");
-			builder.append(data[0]).append(","); // ID
-            builder.append(data[1]).append(","); // Name
-            builder.append(data[2]).append(","); // Supplier ID
-            builder.append(data[3]).append(","); // Stock
-            builder.append(data[4]).append("\n"); // UnitPrice
-			
+			String[] data = line.split(",");
+
+	        if (data.length < 5) {
+	            System.out.println("Pass the wrong format line: " + line);
+	            continue;
+	        }
+
+	        builder.append(data[0]).append(","); // ID
+	        builder.append(data[1]).append(","); // Name
+	        builder.append(data[2]).append(","); // Supplier ID
+	        builder.append(data[3]).append(","); // Stock
+	        builder.append(data[4]).append("\n"); // UnitPrice
 		}
 		
+		reader.close();
 		return builder;
-		
 	}
 	
 	@Override

@@ -21,7 +21,7 @@ public class SalesM {
 		
 	}
 	
-	public String getId() { return userID; }
+	public String getUserId() { return userID; }
 	
 }
 	
