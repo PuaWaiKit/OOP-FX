@@ -105,10 +105,11 @@ public class PManagerOrder implements viewData, modifyData {
 		return builder;
 	}
 	
-	public StringBuilder RetriveItemsID(int SelectionNum) throws IOException
+	public StringBuffer RetriveItemsID(int SelectionNum) throws IOException
 	{	String line;
 	
 		int lineNum=0;
+		StringBuffer builders= new StringBuffer();
 		try (BufferedReader reader= new BufferedReader(new FileReader("Data/prList.txt")))
 		{
 			while((line=reader.readLine())!=null) 
@@ -116,15 +117,20 @@ public class PManagerOrder implements viewData, modifyData {
 				String[] Prdata= line.split(",");
 				if(lineNum==SelectionNum) 
 				{
-					builder.append(Prdata[1]).append(","); //items code
-					builder.append(Prdata[2]).append("\n"); //qty
+					builders.append(Prdata[0]).append(","); 
+					builders.append(Prdata[1]).append(","); //items code
+					builders.append(Prdata[2]).append(","); //qty
+					builders.append(Prdata[3]).append(",");
+					builders.append(Prdata[4]).append(",");
+					builders.append(Prdata[5]).append(",");
+					builders.append(Prdata[6]).append("\n"); 
 					break;
 				}
 				lineNum++;
 			}
 			
 		}
-		return builder;
+		return builders;
 	}
 	
 	
@@ -306,27 +312,65 @@ public class PManagerOrder implements viewData, modifyData {
 							writer.write(builder.toString());
 							builder.setLength(0);
 							//writer.newLine();
+
+							if(LineNum!=-1) //for Change Status on PR
+							{	
+								String[] PRID= RetriveItemsID(LineNum).toString().split(","); //get the target PRID
+								
+								try 
+								{
+									List<String> AllPr= new ArrayList<>(Files.readAllLines(Paths.get("Data/prList.txt"))); //read an save file into List
+									StringBuffer buffer= new StringBuffer();
+									
+									for(String lines:AllPr) 
+									{
+										String[] Part=lines.split(","); //split the data with ,//s* means space,empty and commas
+										System.out.println(Part.length);
+										if(Part[0].equals(PRID[0])) 	//check the target id is correct or not
+										{
+											Part[6]="Approved";
+											String newl= String.join(",", Part); //build the data with commas
+											buffer.append(newl).append("\n");
+										}
+										else 
+										{
+											buffer.append(lines).append("\n"); //build the data with normal data(no changes)
+										}
+									}
+									
+									Files.write(Paths.get("Data/prList.txt"), buffer.toString().getBytes(), StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
+									//write in the file ,clear the existing data in the file and rewrite it, use NIO method need transfer to byte
+								}
+								
+								
+								
+								catch(IOException e) 
+								{	
+									Checking=false;
+									e.printStackTrace();
+								}
+									
+									
+							}
+								
+								
+							
+							}
 							Checking=true;
 							BufferedWriter Delete= new BufferedWriter(new FileWriter("Data/Cache.txt"));
+							
 						}
-						catch(IOException e) 
-						{	Checking=false;
-							e.printStackTrace();
-						}
+						
 				}
-				else 
-				{
 				
-					Checking=false;
-				}
+			}
+			catch(IOException e) 
+			{
+				e.printStackTrace();
 			}
 		}
-		catch(IOException e) 
-		{
-			e.printStackTrace();
-		}
-			
-	}
+	
+	
 			
 		
 		

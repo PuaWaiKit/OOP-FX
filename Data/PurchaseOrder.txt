@@ -6,4 +6,7 @@ PO006,CheckFun,100,10.9,Ming
 PO008,Tangs,2000,10.9,Ming
 PO009,Ning,100,1.0,Ming
 PO009,Ning,100,1.0,Ming
-PO010,Apple,100,1.0,Ming
+PO010,Apple,100,20.0,Ming
+111,Apple,100,111.0,Ming
+1,Orange,150,10.11,Ming
+11,Banana,150,1233.0,Ming

@@ -119,7 +119,7 @@ public class GenPOCtrl {
     	{	
     		field.clear();
     	}
-    	PRidCb.getSelectionModel().select(-1);
+    	
     }
     
     
@@ -206,7 +206,8 @@ public class GenPOCtrl {
 		    		alert.setContentText("Adding Sucessfull, Please Save Before Leaving !");
 		    		alert.showAndWait();
 		    		ViewPO.getSelectionModel().clearSelection(); //clear selection
-		    		CleanTextbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt);
+		    		CleanTextbox(IdTxtbx,ItemsNameTxt,Pricetxt,QtyTxt);
+		    	
 		    	}
 		    	else 
 		    	{
@@ -261,7 +262,8 @@ public class GenPOCtrl {
     			alert.setContentText("Delete Sucessfull");
     			alert.showAndWait();
     			ViewPO.getSelectionModel().clearSelection(); //clear the selection
-    			CleanTextbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt);
+    			CleanTextbox(IdTxtbx,ItemsNameTxt,Pricetxt,QtyTxt);
+    			PRidCb.getSelectionModel().select(-1);
     		}
     		else 
     		{
@@ -300,7 +302,8 @@ public class GenPOCtrl {
     			alert.setContentText("Edit Sucessfull, Please Refresh Your Data");
     			alert.showAndWait();
     			ViewPO.getSelectionModel().clearSelection();
-    			CleanTextbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt);
+    			CleanTextbox(IdTxtbx,ItemsNameTxt,Pricetxt,QtyTxt);
+    			PRidCb.getSelectionModel().select(-1);
     		}
     		else 
     		{
@@ -324,10 +327,13 @@ public class GenPOCtrl {
     
     @FXML
     public void saveClick(MouseEvent event) {
-    	PManagerOrder order= new PManagerOrder();
+    	int SelectionIndex= PRidCb.getSelectionModel().getSelectedIndex();
+    	PManagerOrder order= new PManagerOrder(SelectionIndex);    	
     	order.SaveFunc();
     	if(order.checkingFunc()) 
     	{
+    		
+    		
     		Alert alert= new Alert(AlertType.INFORMATION);
     		alert.setTitle("Saving");
     		alert.setContentText(order.LineCount()+"row(s) has been saved !");
@@ -356,12 +362,12 @@ public class GenPOCtrl {
     	if(SelectionIndex!=-1) 
     	{
     		String[] ItemsId=Act.RetriveItemsID(SelectionIndex).toString().split(",");
-    		String[] itemsChecking= Act.RetriveItems(Poid, ItemsId[0]).toString().split(",");
+    		String[] itemsChecking= Act.RetriveItems(Poid, ItemsId[1]).toString().split(",");
     		
     		
-    			QtyTxt.setText(ItemsId[1]);
+    			QtyTxt.setText(ItemsId[2]);
     			ItemsNameTxt.setText(itemsChecking[0]);
-    		
+    			ItemsNameTxt.setEditable(false);
     	}
     }
 
