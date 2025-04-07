@@ -33,6 +33,7 @@ public class PManagerOrder implements viewData, modifyData {
 	private int lineCount;
 	private int ClickCount;
 	private ObservableList<PManagerOrder> Pie= FXCollections.observableArrayList();
+
 	
 	public PManagerOrder() 
 	{
@@ -97,36 +98,63 @@ public class PManagerOrder implements viewData, modifyData {
 	
 	
 	
+	
+	
 	public StringBuilder PieCData() throws IOException
 	{	String line;
-	
 		try (BufferedReader reader= new BufferedReader(new FileReader("Data/prList.txt")))
 		{
 			while((line=reader.readLine())!=null) 
 			{
 				String[] Prdata= line.split(",");
 				builder.append(Prdata[6]).append("\n"); //PRStatus
+				
+				}
+				
 			}
 			
-		}
 		return builder;
 	}
 	
 	public StringBuffer POStatus() throws IOException
 	{
 		String line;
+		int LineCount=0;
 		StringBuffer buffer= new StringBuffer();
 		try (BufferedReader reader= new BufferedReader(new FileReader("Data/PurchaseOrder.txt")))
 		{
 			while((line=reader.readLine())!=null) 
 			{
 				String[] PoStatus= line.split(",");
-				buffer.append(PoStatus[5]).append("\n"); //PRStatus
+				buffer.append(PoStatus[5]).append("\n"); //POStatus
 			}
 			
 		}
 		return buffer ;
 		
+	}
+	
+	//Override method
+	public StringBuffer POStatus(int SelectedNum ) throws IOException 
+	{
+		String line;
+		int LineCount=0;
+		StringBuffer buffer= new StringBuffer();
+		try (BufferedReader reader= new BufferedReader(new FileReader("Data/PurchaseOrder.txt")))
+		{
+			while((line=reader.readLine())!=null) 
+			{
+				String[] PoStatus= line.split(",");
+				if(LineCount==SelectedNum) 
+				{
+					buffer.append(PoStatus[5]).append("\n"); //POStatus
+					break;
+				}
+				LineCount++;
+			}
+			
+		}
+		return buffer ;
 	}
 	
 	public StringBuilder RetrivePR() throws IOException
@@ -159,7 +187,8 @@ public class PManagerOrder implements viewData, modifyData {
 					builders.append(Prdata[0]).append(","); 
 					builders.append(Prdata[1]).append(","); //items code
 					builders.append(Prdata[2]).append(","); //qty
-					builders.append(Prdata[3]).append("\n");
+					builders.append(Prdata[3]).append(",");
+					builders.append(Prdata[5]).append("\n"); //Status
 					break;
 				}
 				lineNum++;
@@ -225,7 +254,8 @@ public class PManagerOrder implements viewData, modifyData {
 		{
 			//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
 			//writer.write(Data);
-			if(!CacheChecking()) 
+			String[] Status= RetriveItemsID(LineNum).toString().split(",");
+			if(!CacheChecking() && Status[4].equals("Pending")) 
 			{
 				builder.append(Id).append(",");
 				builder.append(name).append(",");
@@ -301,7 +331,8 @@ public class PManagerOrder implements viewData, modifyData {
 			}
 			
 			try {
-				if(!CacheChecking()) 
+				String[] Status= POStatus(LineNum).toString().split("\n");
+				if(!CacheChecking() && Status[0].equals("Pending")) 
 				{
 					List<String> lineR= new ArrayList<>(Files.readAllLines(Paths.get("Data/Cache.txt"))); //get file into Array
 					if(LineNum>=0 &&LineNum<lineR.size()) //size one based start from 1 
@@ -313,6 +344,9 @@ public class PManagerOrder implements viewData, modifyData {
 					Files.write(Paths.get("Data/Cache.txt"), lineR, StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
 					Checking=true;
 					ClickCount++;
+				}else 
+				{
+					Checking=false;
 				}
 			} catch (IOException e) {
 				Checking=false;
@@ -363,28 +397,29 @@ public class PManagerOrder implements viewData, modifyData {
 								String[] PRID= RetriveItemsID(LineNum).toString().split(","); //get the target PRID
 								
 								try 
-								{
-									List<String> AllPr= new ArrayList<>(Files.readAllLines(Paths.get("Data/prList.txt"))); //read an save file into List
-									StringBuffer buffer= new StringBuffer();
-									
-									for(String lines:AllPr) 
-									{
-										String[] Part=lines.split(","); //split the data with ,//s* means space,empty and commas
-										System.out.println(Part.length);
-										if(Part[0].equals(PRID[0])) 	//check the target id is correct or not
+								{	
+										List<String> AllPr= new ArrayList<>(Files.readAllLines(Paths.get("Data/prList.txt"))); //read an save file into List
+										StringBuffer buffer= new StringBuffer();
+										
+										for(String lines:AllPr) 
 										{
-											Part[6]="Approved";
-											String newl= String.join(",", Part); //build the data with commas
-											buffer.append(newl).append("\n");
+											String[] Part=lines.split(","); //split the data with ,//s* means space,empty and commas
+											//System.out.println(Part.length);
+											if(Part[0].equals(PRID[0])) 	//check the target id is correct or not
+											{
+												Part[6]="Approved";
+												String newl= String.join(",", Part); //build the data with commas
+												buffer.append(newl).append("\n");
+											}
+											else 
+											{
+												buffer.append(lines).append("\n"); //build the data with normal data(no changes)
+											}
 										}
-										else 
-										{
-											buffer.append(lines).append("\n"); //build the data with normal data(no changes)
-										}
-									}
+										
+										Files.write(Paths.get("Data/prList.txt"), buffer.toString().getBytes(), StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
+										//write in the file ,clear the existing data in the file and rewrite it, use NIO method need transfer to byte
 									
-									Files.write(Paths.get("Data/prList.txt"), buffer.toString().getBytes(), StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
-									//write in the file ,clear the existing data in the file and rewrite it, use NIO method need transfer to byte
 								}
 								
 								
@@ -479,8 +514,9 @@ public class PManagerOrder implements viewData, modifyData {
 			}
 			
 			try
-			{ 
-				if(!CacheChecking()) 
+			{ 	
+				String[] Status= POStatus(LineNum).toString().split("\n");
+				if(!CacheChecking() && Status[0].equals("Pending")) 
 				{
 					List<String> EditList= new ArrayList<>(Files.readAllLines(Paths.get("Data/Cache.txt")));
 					if(LineNum>=0 && LineNum<=EditList.size()) 
@@ -490,12 +526,19 @@ public class PManagerOrder implements viewData, modifyData {
 					}
 					Files.write(Paths.get("Data/Cache.txt"),EditList,StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
 					Checking=true;
-				}	
+					
+				}
+				else 
+				{
+					Checking=false;
+					
+				}
 			}
 			catch(IOException e) 
 			{
 				e.printStackTrace();
 				Checking=false;
+				
 			}
 		}
 		
