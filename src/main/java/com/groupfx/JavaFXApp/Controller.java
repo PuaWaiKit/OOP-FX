@@ -45,7 +45,7 @@ public class Controller {
 
     private boolean isFirstImg=true;
 
-
+    private boolean Box=false;
 
    
     @FXML
@@ -73,7 +73,17 @@ public class Controller {
     public void loginAct(MouseEvent event) throws IOException {
     	Authentication auth= new Authentication();
 		auth.LoadData();
-		if(auth.UserAuth(UsernameBx.getText(),passwordbox.getText())) 
+		String Password;
+		if(Box) 
+		{
+			Password=Pwbx.getText();
+		}else
+		{
+			Password=passwordbox.getText();
+		}
+		
+		
+		if(auth.UserAuth(UsernameBx.getText(),Password)) 
 		{
 			auth.SwitchScene(event);
 		
@@ -104,6 +114,7 @@ public class Controller {
     		Pwbx.setText(passwordbox.getText());
     		passwordbox.setVisible(false);
     		Pwbx.setVisible(true);
+    		Box=true;
     	}
     	else
     	{
@@ -111,6 +122,7 @@ public class Controller {
     		passwordbox.setText(Pwbx.getText());
     		passwordbox.setVisible(true);
     		Pwbx.setVisible(false);
+    		Box=false;
     	}
     	isFirstImg=!isFirstImg;  //set the current status
     	

@@ -215,7 +215,7 @@ public class GenPOCtrl {
 		    		Alert alert= new Alert(AlertType.INFORMATION);
 		    		alert.setTitle("Adding Failed");
 		    		alert.setHeaderText(null);
-		    		alert.setContentText("Adding Failed or Please Select an PRID for Adding !");
+		    		alert.setContentText("Adding Failed or Please Select an PRID for Adding And Make Sure PO Status is NOT Approve!");
 		    		alert.showAndWait();
 		    	}
 	    }
@@ -253,11 +253,11 @@ public class GenPOCtrl {
     	
     	if(selectedIndex>=0 && CbSelection()==-1) 
     	{
-    		ViewPO.getItems().remove(selectedIndex);
+    		
     		PManagerOrder del= new PManagerOrder(selectedIndex);
     		del.DeleteFunc();
     		if(del.checkingFunc()) 
-    		{
+    		{	ViewPO.getItems().remove(selectedIndex);
     			Alert alert= new Alert(AlertType.INFORMATION);
     			alert.setTitle("Delete");
     			alert.setContentText("Delete Sucessfull");
@@ -270,7 +270,7 @@ public class GenPOCtrl {
     		{
     			Alert alert= new Alert(AlertType.ERROR);
     			alert.setTitle("Delete");
-    			alert.setContentText("Delete Failed, Please Do not choose the PRID selection");
+    			alert.setContentText("Delete Failed, Please Do not choose the PRID selection.Then Make Sure PO status is NOT Approve");
     			alert.showAndWait();
     		}
     	}
@@ -310,7 +310,7 @@ public class GenPOCtrl {
     		{
     			Alert alert= new Alert(AlertType.ERROR);
     			alert.setTitle("Edit");
-    			alert.setContentText("Edit Failed or Please select a row and Do not Choose PRID selection");
+    			alert.setContentText("Edit Failed or Please select a row and Do not Choose PRID selection, Make Sure PO status is NOT Approve");
     			alert.showAndWait();
     		}
     	}
@@ -347,7 +347,7 @@ public class GenPOCtrl {
     	{
     		Alert alert= new Alert(AlertType.WARNING);
     		alert.setTitle("Saving");
-    		alert.setContentText("Error Occur or No Changes Made!");
+    		alert.setContentText("Error Occur or No Changes Made! Please Make Sure the PO Status is not Approve");
     		alert.showAndWait();
     	}
     }
