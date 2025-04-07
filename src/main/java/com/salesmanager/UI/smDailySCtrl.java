@@ -3,7 +3,7 @@ package com.salesmanager.UI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
@@ -12,7 +12,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +39,7 @@ public class smDailySCtrl {
     private TableColumn<SalesM_DailyS, String> itemID;
 
     @FXML
-    private TableColumn<SalesM_DailyS, String> itemName;
+    private TableColumn<SalesM_DailyS, String> date;
 
     @FXML
     private TableColumn<SalesM_DailyS, Integer> totalSales;
@@ -48,7 +60,7 @@ public class smDailySCtrl {
     private TextField txtitemID;
     
     @FXML
-    private TextField txtitemName;
+    private TextField txtDate;
     
     @FXML
     private TextField txttotalSales;
@@ -57,17 +69,21 @@ public class smDailySCtrl {
     private TextField txtAuthor;
     
     @FXML
-    private BarChart<?,?> viewSalesChart;
+    private LineChart<?,?> viewSalesChart;
     
     ObservableList<SalesM_DailyS> cacheList = FXCollections.observableArrayList(); 
     
-    private HashMap<String, Integer> chartStore = new HashMap<>();
+    private HashMap<DayOfWeek, Integer> chartStore = new HashMap<>();
     
+//    private String[] week = {
+//    	"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"	
+//    };
+//    
     public void initialize() throws IOException 
     {
     	DSID.setCellValueFactory(new PropertyValueFactory<>("id")); 
     	itemID.setCellValueFactory(new PropertyValueFactory<>("itemId"));//
-    	itemName.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+    	date.setCellValueFactory(new PropertyValueFactory<>("date"));
         totalSales.setCellValueFactory(new PropertyValueFactory<>("totalSales"));
         author.setCellValueFactory(new PropertyValueFactory<>("author"));
        
@@ -79,6 +95,8 @@ public class smDailySCtrl {
     	SalesM_DailyS listed= new SalesM_DailyS();
     	ObservableList<SalesM_DailyS> itemList= FXCollections.observableArrayList(); 
     	String[] row= listed.ReadTextFile().toString().split("\n");
+    	DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    	LocalDate date = null;
     	
     	try {
 	    	for(String rows: row) 
@@ -94,10 +112,13 @@ public class smDailySCtrl {
 	    					spl[4]
 	    					));
 	    			
-	    			chartStore.put(spl[1], Integer.parseInt(spl[3]));
+	    			date = LocalDate.parse(spl[2], format);
+	    			chartStore.put(date.getDayOfWeek(), Integer.parseInt(spl[3]));
+	    		
 	    		}
 	    	}
 	    	
+	    	resetWeek(date, format);
 	    	cacheList = itemList;
 	    	viewSalesTable.setItems(cacheList);
 	    	chartload();
@@ -112,12 +133,51 @@ public class smDailySCtrl {
     	}
     }
     
+    public void resetWeek(LocalDate dateEnd, DateTimeFormatter format) {
+    	
+    	try (BufferedReader reader = new BufferedReader(new FileReader("Data/weekRecord.txt"))) {
+    		
+    		String fileDateStr = reader.readLine();
+    		LocalDate lastReset = LocalDate.parse(fileDateStr, format);
+    		
+    		if(dateEnd.get(WeekFields.ISO.weekOfYear()) != lastReset.get(WeekFields.ISO.weekOfYear())
+                || dateEnd.getYear() != lastReset.getYear()) {
+    			
+    			try (FileWriter writer = new FileWriter("Data/weekRecord.txt", false)) {
+    				
+    				writer.write(dateEnd.toString());
+    	        } catch (IOException e) {
+    	            e.printStackTrace();
+    	        }
+    			
+    			chartStore.clear();
+    		} else {
+    			
+    		
+    		}
+    		
+    	} catch (Exception e) {
+    		
+    		System.out.println(e);
+    	}
+//    	if (now.get(WeekFields.ISO.weekOfYear()) != dateEnd.get(WeekFields.ISO.weekOfYear())
+//                || now.getYear() != dateEnd.getYear()) {
+//
+//            Files.write(Paths.get("Data/dailySales.txt"), new byte[0]);
+//            Files.write(Paths.get("Data/weekRecord.txt"), now.format(formatter).getBytes());
+//            System.out.println("Weekly file has been reset.");
+//        } else {
+//            System.out.println("Same week, no reset needed.");
+//        }
+    }
+    
     public void chartload() {
     	
     	viewSalesChart.getData().clear();
     	XYChart.Series series = new XYChart.Series();
-    	series.setName("Items Stock");
-    	for (Map.Entry<String, Integer> entry : chartStore.entrySet()) {
+    	series.setName("Items Sales");
+    	
+    	for (Map.Entry<DayOfWeek, Integer> entry : chartStore.entrySet()) {
             series.getData().add(new XYChart.Data(entry.getKey(), entry.getValue()));
         }
     	
@@ -133,7 +193,7 @@ public class smDailySCtrl {
 	        if (selectedItem != null) {
 	            String id = selectedItem.getId();
 	            String itemId = selectedItem.getItemId();
-	            String itemName = selectedItem.getItemName();
+	            String itemName = selectedItem.getDate();
 	            int totalSales = selectedItem.getTotalSales();
 	            String auhor = selectedItem.getAuthor();
 	            
@@ -147,9 +207,11 @@ public class smDailySCtrl {
 	            
 	            txtDSID.setText(id);
 	            txtitemID.setText(itemId);
-	            txtitemName.setText(itemName);
+	            txtDate.setText(itemName);
 	            txttotalSales.setText(String.valueOf(totalSales));
 	            txtAuthor.setText(String.valueOf(author));
+	            
+	            chartload();
 	        }
 	    } catch (Exception e) {
 	    	
@@ -168,7 +230,7 @@ public class smDailySCtrl {
 	        if (item.getId().equals(id)) {
 	        	
 	            return true;
-	        } else if (item.getItemName().equals(itemName) && item.getItemId().equals(itemId)) {
+	        } else if (item.getDate().equals(itemName) && item.getItemId().equals(itemId)) {
 	        	
 	        	return true;
 	        }
@@ -183,13 +245,13 @@ public class smDailySCtrl {
     	int selectedSuppIndex = viewSalesTable.getSelectionModel().getSelectedIndex();
     	
     	try {
-	    	if(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtitemName.getText().trim()) && selectedSupp != null) {
+	    	if(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtDate.getText().trim()) && selectedSupp != null) {
 	
 	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
 	    				
 	    				txtDSID.getText().trim(),
 	    				txtitemID.getText().trim(),
-	    				txtitemName.getText().trim(),
+	    				txtDate.getText().trim(),
 	    				Integer.parseInt(txttotalSales.getText()),
 	    				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
 	    				cacheList, 
@@ -202,13 +264,13 @@ public class smDailySCtrl {
 		    	viewSalesTable.setItems(cacheList);
 		    	clearTextField();
 		    	
-	    	} else if (!(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtitemName.getText().trim())) && selectedSupp == null){	
+	    	} else if (!(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtDate.getText().trim())) && selectedSupp == null){	
 	    		
 	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
 	    				
 	    				txtDSID.getText().trim(),
 	    				txtitemID.getText().trim(),
-	    				txtitemName.getText().trim(),
+	    				txtDate.getText().trim(),
 	    				Integer.parseInt(txttotalSales.getText()),
 	    				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
 	    				cacheList, 
@@ -270,7 +332,7 @@ public class smDailySCtrl {
 	            
 	            result.append(dailyS.getId()).append(",")
 	                  .append(dailyS.getItemId()).append(",")
-	                  .append(dailyS.getItemName()).append(",")
+	                  .append(dailyS.getDate()).append(",")
 	                  .append(dailyS.getTotalSales()).append(",")
 	                  .append(dailyS.getAuthor()).append("\n");  
 	        }
@@ -299,7 +361,7 @@ public class smDailySCtrl {
     
     public void clearTextField() {
     	
-    	TextField[] textFields = {txtDSID, txtitemID, txtitemName, txttotalSales, txtAuthor};
+    	TextField[] textFields = {txtDSID, txtitemID, txtDate, txttotalSales, txtAuthor};
     	for (TextField field : textFields) {
     	    field.clear();      	
     	}

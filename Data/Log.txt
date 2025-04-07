@@ -1,1 +1,1 @@
-Ming,purchaseManager
+John,salesManager

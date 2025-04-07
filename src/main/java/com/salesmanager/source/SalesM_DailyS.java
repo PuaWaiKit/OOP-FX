@@ -15,7 +15,7 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	
 	private String Id;
 	private String itemId;
-	private String itemName;
+	private String date;
 	private int totalSales;
 	private final String author = getUserId();
 	private String tempAuthor;
@@ -40,18 +40,18 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 		this.cachelist = cacheList;
 	}
 	
-	public SalesM_DailyS(String Id, String itemId, String itemName, int totalSales, String author) {
+	public SalesM_DailyS(String Id, String itemId, String date, int totalSales, String author) {
         this.Id = Id;
         this.itemId = itemId;
-        this.itemName = itemName;
+        this.date = date;
         this.totalSales = totalSales;
         this.tempAuthor = author;
     }
 	
-	public SalesM_DailyS(String Id, String itemId, String itemName, int totalSales, String author, ObservableList<SalesM_DailyS> cacheList, int Index) {
+	public SalesM_DailyS(String Id, String itemId, String date, int totalSales, String author, ObservableList<SalesM_DailyS> cacheList, int Index) {
 		this.Id = Id;
         this.itemId = itemId;
-        this.itemName = itemName;
+        this.date = date;
         this.totalSales = totalSales;
         this.tempAuthor = author;
         this.cachelist = cacheList;
@@ -60,7 +60,7 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	
 	public String getId() { return Id; }
     public String getItemId() { return itemId; }
-    public String getItemName() { return itemName; }
+    public String getDate() { return date; }
     public int getTotalSales() { return totalSales; }
     public String getAuthor() { return tempAuthor; }
 	
@@ -93,7 +93,7 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 				
 				Id,
 				itemId,
-				itemName,
+				date,
 				totalSales,
 				author
 				
@@ -108,7 +108,7 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 				
 				Id,
 				itemId,
-				itemName,
+				date,
 				totalSales,
 				author
 				
