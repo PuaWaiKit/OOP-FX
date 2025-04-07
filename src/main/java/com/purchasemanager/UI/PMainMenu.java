@@ -109,16 +109,15 @@ public class PMainMenu {
     {
     	PManagerOrder Data= new PManagerOrder();
     	BufferedReader reader= new BufferedReader(new FileReader("Data/Log.txt"));
-    	String line,Po;
+    	String line;
     	int Approve=0,Rejected=0,Pending=0;
     	while((line=reader.readLine())!=null) 
     	{
     		data=line.split(",");
     	}
     	
-    	BufferedReader PoStat= new BufferedReader(new FileReader("Data/PurchaseOrder.txt"));
-    	String[]Po= Data.POStatus().toString().split("\n");
-    	for(String Stat :Po) 
+    	String[]PoS= Data.POStatus().toString().split("\n");
+    	for(String Stat :PoS) 
     	{
     		if(Stat.contains("Rejected")) 
     		{

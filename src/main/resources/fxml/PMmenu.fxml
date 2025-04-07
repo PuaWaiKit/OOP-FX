@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -87,12 +88,12 @@
                               <Font name="Berlin Sans FB" size="24.0" />
                            </font>
                         </Label>
-                        <Label fx:id="PORejlbl" layoutX="54.0" layoutY="55.0" text="0" textFill="RED">
+                        <Label fx:id="PORejlbl" alignment="CENTER" layoutX="33.0" layoutY="55.0" prefHeight="70.0" prefWidth="70.0" text="0" textFill="RED">
                            <font>
                               <Font name="System Bold" size="48.0" />
                            </font>
                         </Label>
-                        <Label fx:id="POApplbl" layoutX="373.0" layoutY="55.0" text="0" textFill="GREEN">
+                        <Label fx:id="POApplbl" alignment="CENTER" layoutX="348.0" layoutY="55.0" prefHeight="70.0" prefWidth="84.0" text="0" textFill="GREEN">
                            <font>
                               <Font name="System Bold" size="48.0" />
                            </font>
@@ -107,18 +108,23 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="POPendinglbl" layoutX="216.0" layoutY="55.0" text="0" textFill="WHITE">
+                        <Label fx:id="POPendinglbl" alignment="CENTER" layoutX="193.0" layoutY="55.0" prefHeight="70.0" prefWidth="70.0" text="0" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="48.0" />
                            </font>
                         </Label>
-                        <Label layoutX="193.0" layoutY="120.0" text="Pending" textFill="WHITE">
+                        <Label layoutX="195.0" layoutY="120.0" text="Pending" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
                      </children>
                   </AnchorPane>
+               </children>
+            </VBox>
+            <VBox layoutX="536.0" layoutY="214.0" prefHeight="455.0" prefWidth="375.0">
+               <children>
+                  <DatePicker />
                </children>
             </VBox>
          </children></AnchorPane>
