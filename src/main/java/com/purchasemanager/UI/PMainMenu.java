@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 
@@ -48,6 +49,7 @@ public class PMainMenu {
     @FXML
     private Label PORejlbl;
 
+
     private String[] data;
    
     @FXML
@@ -65,8 +67,11 @@ public class PMainMenu {
     		LocalTime Time= LocalTime.now();
     		DateLbl.setText(Date.format(format));
     		TimeLbl.setText(Time.format(TimeFormat));
+    	
+    		
     		
     	}));
+   
     	SettingPieChart();
     	clock.setCycleCount(Timeline.INDEFINITE);
     	clock.play();
