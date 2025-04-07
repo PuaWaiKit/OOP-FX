@@ -6,8 +6,8 @@ PO006,CheckFun,100,10.9,Ming,Pending
 PO008,Tangs,2000,10.9,Ming,Pending
 PO009,Ning,100,1.0,Ming,Pending
 PO009,Ning,100,1.0,Ming,Pending
-PO01011,Apple,100,20.0,Ming,Pending
+PO01011,Apple,100,20.0,Ming,Rejected
 PO011,NONE,100,20.0,Ming,Pending
-111,Banana,150,111.0,Ming,Pending
+111,Banana,150,111.0,Ming,Approve
 gg11,Apple,100,0.0,Ming,Pending
 111111,Apple,100,1111.0,Ming,Pending

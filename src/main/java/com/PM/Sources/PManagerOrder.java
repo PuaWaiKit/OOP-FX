@@ -112,7 +112,22 @@ public class PManagerOrder implements viewData, modifyData {
 		return builder;
 	}
 	
-	
+	public StringBuffer POStatus() throws IOException
+	{
+		String line;
+		StringBuffer buffer= new StringBuffer();
+		try (BufferedReader reader= new BufferedReader(new FileReader("Data/PurchaseOrder.txt")))
+		{
+			while((line=reader.readLine())!=null) 
+			{
+				String[] PoStatus= line.split(",");
+				buffer.append(PoStatus[5]).append("\n"); //PRStatus
+			}
+			
+		}
+		return buffer ;
+		
+	}
 	
 	public StringBuilder RetrivePR() throws IOException
 	{	String line;
@@ -206,23 +221,6 @@ public class PManagerOrder implements viewData, modifyData {
 	@Override
 	public void AddFunc() 
 	{
-//		try(BufferedReader Read= new BufferedReader(new FileReader("Data/PurchaseOrder.txt"))) 
-//		{
-//			String line;
-//			while((line=Read.readLine())!=null) 
-//			{
-//				String[] dataOld= line.split(",");
-//				builder.append(dataOld[0]).append(",");
-//				builder.append(dataOld[1]).append(",");
-//				builder.append(dataOld[2]).append(",");
-//				builder.append(dataOld[3]).append(",");
-//				builder.append(dataOld[4]).append("\n");
-//			}
-//		}
-//		catch(IOException e) 
-//		{
-//			e.printStackTrace();
-//		}
 		try(BufferedWriter writer= new BufferedWriter(new FileWriter("Data/Cache.txt",true)))
 		{
 			//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
