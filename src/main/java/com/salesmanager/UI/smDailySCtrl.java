@@ -14,15 +14,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
 import java.util.HashMap;
@@ -69,12 +64,11 @@ public class smDailySCtrl {
     private TextField txtAuthor;
     
     @FXML
-    private LineChart<?,?> viewSalesChart;
+    private LineChart<String,Integer> viewSalesChart;
     
     ObservableList<SalesM_DailyS> cacheList = FXCollections.observableArrayList(); 
     
-    private HashMap<DayOfWeek, Integer> chartStore = new HashMap<>();
-    
+    private int oriSales;
 //    private String[] week = {
 //    	"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"	
 //    };
@@ -95,7 +89,7 @@ public class smDailySCtrl {
     	SalesM_DailyS listed= new SalesM_DailyS();
     	ObservableList<SalesM_DailyS> itemList= FXCollections.observableArrayList(); 
     	String[] row= listed.ReadTextFile().toString().split("\n");
-    	DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    	DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     	LocalDate date = null;
     	
     	try {
@@ -113,23 +107,17 @@ public class smDailySCtrl {
 	    					));
 	    			
 	    			date = LocalDate.parse(spl[2], format);
-	    			chartStore.put(date.getDayOfWeek(), Integer.parseInt(spl[3]));
-	    		
 	    		}
 	    	}
 	    	
 	    	resetWeek(date, format);
 	    	cacheList = itemList;
 	    	viewSalesTable.setItems(cacheList);
-	    	chartload();
 	    	clearTextField();
+	    	
     	} catch (Exception e) {
     		
-    		Alert alert = new Alert(AlertType.INFORMATION);
-    	    alert.setTitle("Error");
-    	    alert.setHeaderText("Something went wrong");
-    	    alert.setContentText("Error: " + e.getMessage());
-    	    alert.showAndWait();
+    		System.out.println(e);
     	}
     }
     
@@ -146,20 +134,24 @@ public class smDailySCtrl {
     			try (FileWriter writer = new FileWriter("Data/weekRecord.txt", false)) {
     				
     				writer.write(dateEnd.toString());
+    				
+    				try (FileWriter writerData = new FileWriter("Data/dailySales.txt", false)){
+    					
+    					load();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
     	        } catch (IOException e) {
     	            e.printStackTrace();
     	        }
-    			
-    			chartStore.clear();
-    		} else {
-    			
-    		
-    		}
+ 
+    		} 
     		
     	} catch (Exception e) {
     		
     		System.out.println(e);
     	}
+    	
 //    	if (now.get(WeekFields.ISO.weekOfYear()) != dateEnd.get(WeekFields.ISO.weekOfYear())
 //                || now.getYear() != dateEnd.getYear()) {
 //
@@ -171,18 +163,20 @@ public class smDailySCtrl {
 //        }
     }
     
-    public void chartload() {
+    
+    public void chartload(String itemId) {
     	
-    	viewSalesChart.getData().clear();
-    	XYChart.Series series = new XYChart.Series();
-    	series.setName("Items Sales");
-    	
-    	for (Map.Entry<DayOfWeek, Integer> entry : chartStore.entrySet()) {
-            series.getData().add(new XYChart.Data(entry.getKey(), entry.getValue()));
+        viewSalesChart.getData().clear();
+        XYChart.Series<String, Integer> series = new XYChart.Series<>();
+        series.setName("Items Sales");
+        
+        for (SalesM_DailyS item : cacheList) {
+        	if(item.getItemId().equals(itemId)) {
+        		series.getData().add(new XYChart.Data<>(item.getDate(), item.getTotalSales()));
+        	}
         }
-    	
-    	viewSalesChart.getData().add(series);
-    	
+
+       viewSalesChart.getData().addAll(series);
     }
     
 	public void rowClick() {
@@ -193,9 +187,12 @@ public class smDailySCtrl {
 	        if (selectedItem != null) {
 	            String id = selectedItem.getId();
 	            String itemId = selectedItem.getItemId();
-	            String itemName = selectedItem.getDate();
+	            String date = selectedItem.getDate();
 	            int totalSales = selectedItem.getTotalSales();
-	            String auhor = selectedItem.getAuthor();
+	            String author = selectedItem.getAuthor();
+	            
+	            //for edit Sales usage
+	            oriSales = totalSales;
 	            
 //				<<For Testing>>
 //	            System.out.println("Selected Item:");
@@ -207,11 +204,12 @@ public class smDailySCtrl {
 	            
 	            txtDSID.setText(id);
 	            txtitemID.setText(itemId);
-	            txtDate.setText(itemName);
+	            txtDate.setText(date);
 	            txttotalSales.setText(String.valueOf(totalSales));
 	            txtAuthor.setText(String.valueOf(author));
 	            
-	            chartload();
+
+	            chartload(itemId);
 	        }
 	    } catch (Exception e) {
 	    	
@@ -224,13 +222,13 @@ public class smDailySCtrl {
     	
     }
     
-	private boolean containsID(ObservableList<SalesM_DailyS> List, String id, String itemId, String itemName) {
+	private boolean containsID(ObservableList<SalesM_DailyS> List, String id, String itemId, String date) {
 		
 	    for (SalesM_DailyS item : List) {
 	        if (item.getId().equals(id)) {
 	        	
 	            return true;
-	        } else if (item.getDate().equals(itemName) && item.getItemId().equals(itemId)) {
+	        } else if (item.getDate().equals(date) && item.getItemId().equals(itemId)) {
 	        	
 	        	return true;
 	        }
@@ -255,7 +253,8 @@ public class smDailySCtrl {
 	    				Integer.parseInt(txttotalSales.getText()),
 	    				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
 	    				cacheList, 
-	    				selectedSuppIndex
+	    				selectedSuppIndex,
+	    				oriSales
 	    				);
 	    		
 		    	dataEntry.EditFunc();

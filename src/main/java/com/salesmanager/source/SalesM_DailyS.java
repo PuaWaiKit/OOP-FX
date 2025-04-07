@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.groupfx.JavaFXApp.modifyData;
 import com.groupfx.JavaFXApp.viewData;
@@ -24,6 +26,7 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	private int selectedIndex;
 	private String resultString;
 	private ObservableList<SalesM_DailyS> cachelist;
+	private int oriSales;
 	
 	public SalesM_DailyS() {
 		
@@ -34,6 +37,19 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 		this.resultString = resultString;
 	}
 	
+	public SalesM_DailyS(String itemId, int totalSales) {
+		
+		this.itemId = itemId;
+        this.totalSales = totalSales;
+	}
+
+	public SalesM_DailyS(String itemId, int totalSales, int oriSales) {
+		
+		this.itemId = itemId;
+        this.totalSales = totalSales;
+        this.oriSales = oriSales;
+	}
+
 	public SalesM_DailyS(int selectedIndex, ObservableList<SalesM_DailyS> cacheList) {
 		
 		this.selectedIndex = selectedIndex;
@@ -56,6 +72,17 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
         this.tempAuthor = author;
         this.cachelist = cacheList;
         this.selectedIndex = Index;
+    }
+	
+	public SalesM_DailyS(String Id, String itemId, String date, int totalSales, String author, ObservableList<SalesM_DailyS> cacheList, int Index, int oriSales) {
+		this.Id = Id;
+        this.itemId = itemId;
+        this.date = date;
+        this.totalSales = totalSales;
+        this.tempAuthor = author;
+        this.cachelist = cacheList;
+        this.selectedIndex = Index;
+        this.oriSales = oriSales;
     }
 	
 	public String getId() { return Id; }
@@ -99,6 +126,12 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 				
 				));
 		
+		ModifyDS(new SalesM_DailyS(		
+				
+				itemId,
+				totalSales
+				
+				), "add");
 	}
 	
 	@Override
@@ -114,6 +147,12 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 				
 				));
 		
+		ModifyDS(new SalesM_DailyS(		
+				
+				itemId,
+				totalSales
+
+				), "edit");
 	}
 	
 	@Override
@@ -141,5 +180,84 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	public ObservableList<SalesM_DailyS>  getCacheList() {
 		
 		return cachelist;
+	}
+	
+	public void ModifyDS(SalesM_DailyS obj, String type) {
+		
+		List<String> updatedLines = new ArrayList<>();
+		
+		switch(type) {
+		
+			case "add":
+				try (BufferedReader reader = new BufferedReader(new FileReader("Data/ItemsList.txt"))) {
+					
+		            String line;
+
+		            while ((line = reader.readLine()) != null) {
+		                String[] spl = line.split(",");
+		                if (spl.length == 5) {
+
+		                    if (spl[0].equals(obj.getItemId())) {
+
+		                        int totalSales = Integer.parseInt(spl[3]);
+		                        totalSales -= obj.getTotalSales();
+		                        spl[3] = String.valueOf(totalSales);
+		                    }
+
+		                    updatedLines.add(String.join(",", spl));
+		                }
+		            }
+
+		            try (BufferedWriter writer = new BufferedWriter(new FileWriter("Data/ItemsList.txt"))) {
+		                for (String updatedLine : updatedLines) {
+		                    writer.write(updatedLine);
+		                    writer.newLine();
+		                }
+		            }
+		            System.out.println("Updated");
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+		        break;
+		    
+			case "edit":
+				try (BufferedReader reader = new BufferedReader(new FileReader("Data/ItemsList.txt"))) {
+					
+		            String line;
+
+		            while ((line = reader.readLine()) != null) {
+		                String[] spl = line.split(",");
+		                if (spl.length == 5) {
+
+		                    if (spl[0].equals(obj.getItemId())) {
+
+		                        int totalSales = Integer.parseInt(spl[3]);
+		                        if(oriSales <= obj.getTotalSales()) {
+		                        	int change = obj.getTotalSales() - oriSales;
+		                        	totalSales -= change;
+		                        	spl[3] = String.valueOf(totalSales);
+		                        } else {
+		                        	int change = oriSales - obj.getTotalSales();
+		                        	totalSales -= change;
+		                        	spl[3] = String.valueOf(totalSales);
+		                        }   
+		                    }
+
+		                    updatedLines.add(String.join(",", spl));
+		                }
+		            }
+
+		            try (BufferedWriter writer = new BufferedWriter(new FileWriter("Data/ItemsList.txt"))) {
+		                for (String updatedLine : updatedLines) {
+		                    writer.write(updatedLine);
+		                    writer.newLine();
+		                }
+		            }
+		            System.out.println("Updated");
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+		        break;
+		}
 	}
 }
