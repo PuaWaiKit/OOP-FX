@@ -38,6 +38,15 @@ public class PMainMenu {
 
     @FXML
     private Label WelcomeLbl;
+   
+    @FXML
+    private Label POApplbl;
+
+    @FXML
+    private Label POPendinglbl;
+
+    @FXML
+    private Label PORejlbl;
 
     private String[] data;
    
@@ -64,6 +73,8 @@ public class PMainMenu {
     			
     	
     }
+    
+    
     
     
     public void SettingPieChart() throws IOException 
@@ -96,12 +107,33 @@ public class PMainMenu {
     
     public String SetText() throws IOException 
     {
+    	PManagerOrder Data= new PManagerOrder();
     	BufferedReader reader= new BufferedReader(new FileReader("Data/Log.txt"));
-    	String line;
+    	String line,Po;
+    	int Approve=0,Rejected=0,Pending=0;
     	while((line=reader.readLine())!=null) 
     	{
     		data=line.split(",");
     	}
+    	
+    	BufferedReader PoStat= new BufferedReader(new FileReader("Data/PurchaseOrder.txt"));
+    	String[]Po= Data.POStatus().toString().split("\n");
+    	for(String Stat :Po) 
+    	{
+    		if(Stat.contains("Rejected")) 
+    		{
+    			Rejected++;
+    		}
+    		else if(Stat.contains("Approve"))
+    		{Approve++;}
+    		else {Pending++;}
+    		POApplbl.setText(Integer.toString(Approve));
+    		POPendinglbl.setText(Integer.toString(Pending));
+    		PORejlbl.setText(Integer.toString(Rejected));
+    		
+    	}
+    	
+    	
     	String Name=data[0];
     	reader.close();
     	return Name;

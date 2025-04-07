@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="980.0" style="-fx-background-color: #5E6572;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.purchasemanager.UI.PMainMenu">
    <children>
-      <AnchorPane layoutX="15.0" layoutY="15.0" prefHeight="670.0" prefWidth="950.0" style="-fx-background-color: #ffffff;" styleClass="loginbounded" stylesheets="@../css/styles.css">
+      <AnchorPane layoutX="15.0" layoutY="14.0" prefHeight="670.0" prefWidth="950.0" style="-fx-background-color: #ffffff;" styleClass="loginbounded" stylesheets="@../css/styles.css">
          <children>
             <HBox layoutX="14.0" layoutY="14.0" prefHeight="178.0" prefWidth="897.0" spacing="15.0">
                <children>
@@ -58,9 +58,9 @@
                   </AnchorPane>
                </children>
             </HBox>
-            <VBox layoutX="14.0" layoutY="214.0" prefHeight="464.0" prefWidth="524.0">
+            <VBox layoutX="14.0" layoutY="214.0" prefHeight="464.0" prefWidth="501.0" spacing="10.0">
                <children>
-                  <AnchorPane prefHeight="254.0" prefWidth="524.0" style="-fx-background-color: #ADD8E6; -fx-background-radius: 20px;">
+                  <AnchorPane prefHeight="250.0" prefWidth="502.0" style="-fx-background-color: #ADD8E6; -fx-background-radius: 20px;">
                      <children>
                         <Label fx:id="ReqNum" alignment="CENTER" contentDisplay="CENTER" layoutX="34.0" layoutY="73.0" prefHeight="138.0" prefWidth="79.0" text="3">
                            <font>
@@ -72,10 +72,49 @@
                               <Font name="Berlin Sans FB" size="24.0" />
                            </font>
                         </Label>
-                        <PieChart fx:id="ReqChart" layoutX="148.0" layoutY="70.0" prefHeight="214.0" prefWidth="342.0" />
+                        <PieChart fx:id="ReqChart" layoutX="148.0" layoutY="70.0" prefHeight="189.0" prefWidth="342.0" />
                         <Label layoutX="22.0" layoutY="90.0" text="Remaining Number">
                            <font>
                               <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="181.0" prefWidth="502.0" style="-fx-background-radius: 20px; -fx-background-color: #FFAE42;">
+                     <children>
+                        <Label layoutX="22.0" layoutY="14.0" text="Purchase Order Status">
+                           <font>
+                              <Font name="Berlin Sans FB" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="PORejlbl" layoutX="54.0" layoutY="55.0" text="0" textFill="RED">
+                           <font>
+                              <Font name="System Bold" size="48.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="POApplbl" layoutX="373.0" layoutY="55.0" text="0" textFill="GREEN">
+                           <font>
+                              <Font name="System Bold" size="48.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="34.0" layoutY="120.0" text="Rejected" textFill="RED">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="348.0" layoutY="120.0" text="Approved" textFill="GREEN">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="POPendinglbl" layoutX="216.0" layoutY="55.0" text="0" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="48.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="193.0" layoutY="120.0" text="Pending" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
                      </children>
