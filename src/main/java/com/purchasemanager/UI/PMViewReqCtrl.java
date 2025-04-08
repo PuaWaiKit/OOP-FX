@@ -31,8 +31,6 @@ public class PMViewReqCtrl {
     @FXML
     private TableColumn<PMViewReq, String> ReqStatus;
 
-    @FXML
-    private TableColumn<PMViewReq, String> ReqSuppID;
 
     @FXML
     private TableView<PMViewReq> ViewReq;
@@ -47,7 +45,6 @@ public class PMViewReqCtrl {
     	ReqQty.setCellValueFactory(new PropertyValueFactory<>("qty"));
     	ReqDate.setCellValueFactory(new PropertyValueFactory<>("date"));
     	ReqSM.setCellValueFactory(new PropertyValueFactory<>("salesM"));
-    	ReqSuppID.setCellValueFactory(new PropertyValueFactory<>("supp"));
     	ReqStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
     	
     	load();
@@ -63,7 +60,7 @@ public class PMViewReqCtrl {
     	for(String row:rows) 
     	{
     		String[] split= row.split(",");
-    		if(split.length==7) 
+    		if(split.length==6) 
     		{
     			ObList.add(new PMViewReq(
     						split[0],
@@ -71,8 +68,8 @@ public class PMViewReqCtrl {
     						Integer.parseInt(split[2]),
     						split[3],
     						split[4],
-    						split[5],
-    						split[6]
+    						split[5]
+    						
     					));
     		}
     	}

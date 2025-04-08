@@ -56,6 +56,15 @@ public class PManagerOrder implements viewData, modifyData {
 		this.LineNum=LineNum;
 	}
 	
+	public PManagerOrder(String Id, String name, int Quantity, double Price, String Pm,int LineNum ) 
+	{
+		this.Id=Id;
+		this.name=name;
+		this.Quantity=Quantity;
+		this.Price=Price;
+		this.Pm=Pm;
+		this.LineNum=LineNum;
+	}
 	
 	public PManagerOrder(String Id, String name, int Quantity, double Price, String Pm ) 
 	{
@@ -107,7 +116,7 @@ public class PManagerOrder implements viewData, modifyData {
 			while((line=reader.readLine())!=null) 
 			{
 				String[] Prdata= line.split(",");
-				builder.append(Prdata[6]).append("\n"); //PRStatus
+				builder.append(Prdata[5]).append("\n"); //PRStatus
 				
 				}
 				
@@ -119,7 +128,6 @@ public class PManagerOrder implements viewData, modifyData {
 	public StringBuffer POStatus() throws IOException
 	{
 		String line;
-		int LineCount=0;
 		StringBuffer buffer= new StringBuffer();
 		try (BufferedReader reader= new BufferedReader(new FileReader("Data/PurchaseOrder.txt")))
 		{
@@ -134,7 +142,7 @@ public class PManagerOrder implements viewData, modifyData {
 		
 	}
 	
-	//Override method
+	//Overloading method
 	public StringBuffer POStatus(int SelectedNum ) throws IOException 
 	{
 		String line;
@@ -188,7 +196,7 @@ public class PManagerOrder implements viewData, modifyData {
 					builders.append(Prdata[1]).append(","); //items code
 					builders.append(Prdata[2]).append(","); //qty
 					builders.append(Prdata[3]).append(",");
-					builders.append(Prdata[5]).append("\n"); //Status
+					builders.append(Prdata[5]); //Status
 					break;
 				}
 				lineNum++;
@@ -210,7 +218,7 @@ public class PManagerOrder implements viewData, modifyData {
 				if(ItemsCode.equals(ItemsName[0])) 
 				{
 //					
-					Newbuild.append(ItemsName[1]); //name
+					Newbuild.append(ItemsName[0]); //name
 //					
 					break;
 				}
@@ -255,6 +263,9 @@ public class PManagerOrder implements viewData, modifyData {
 			//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
 			//writer.write(Data);
 			String[] Status= RetriveItemsID(LineNum).toString().split(",");
+			System.out.println(Status[3]);
+			System.out.println(Status[4]);
+			System.out.println(LineNum);
 			if(!CacheChecking() && Status[4].equals("Pending")) 
 			{
 				builder.append(Id).append(",");
@@ -391,10 +402,10 @@ public class PManagerOrder implements viewData, modifyData {
 							writer.write(NewData.toString());
 							
 							//writer.newLine();
-
-							if(LineNum!=-1) //for Change Status on PR
+							String[] PRID= RetriveItemsID(LineNum).toString().split(","); //get the target PRID
+							if(LineNum!=-1 && PRID[4].equals("Pending")) //for Change Status on PR
 							{	
-								String[] PRID= RetriveItemsID(LineNum).toString().split(","); //get the target PRID
+								
 								
 								try 
 								{	
@@ -407,7 +418,7 @@ public class PManagerOrder implements viewData, modifyData {
 											//System.out.println(Part.length);
 											if(Part[0].equals(PRID[0])) 	//check the target id is correct or not
 											{
-												Part[6]="Approved";
+												Part[5]="Approved";
 												String newl= String.join(",", Part); //build the data with commas
 												buffer.append(newl).append("\n");
 											}

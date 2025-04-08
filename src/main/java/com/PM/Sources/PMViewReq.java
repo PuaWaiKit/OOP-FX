@@ -17,14 +17,13 @@ public class PMViewReq  implements viewData{
 	
 	public PMViewReq() {}
 	
-	public PMViewReq(String Prid, String ItemsId, int Qty, String date, String SalesM ,String suppId,String status) 
+	public PMViewReq(String Prid, String ItemsId, int Qty, String date, String SalesM ,String status) 
 	{
 		this.Prid=Prid;
 		this.ItemsId=ItemsId;
 		this.Quantity=Qty;
 		this.date=date;
 		this.SalesM=SalesM;
-		this.suppId=suppId;
 		this.status=status;
 	}
 	
@@ -54,11 +53,6 @@ public class PMViewReq  implements viewData{
 		return SalesM;
 	}
 	
-	public String getSupp() 
-	{
-		return suppId;
-	}
-	
 	
 	public String getStatus() 
 	{
@@ -80,8 +74,7 @@ public class PMViewReq  implements viewData{
 				builder.append(data[2]).append(",");
 				builder.append(data[3]).append(",");
 				builder.append(data[4]).append(",");
-				builder.append(data[5]).append(",");
-				builder.append(data[6]).append("\n");
+				builder.append(data[5]).append("\n");
 			}
 		}
 		return builder;
