@@ -25,7 +25,7 @@ public class smPRsCtrl {
     private TableColumn<SalesM_PRs, Integer> Quantity;
 
     @FXML
-    private TableColumn<SalesM_PRs, Integer> Date;
+    private TableColumn<SalesM_PRs, String> Date;
 
     @FXML
     private TableColumn<SalesM_PRs, String> SalesM;
@@ -101,14 +101,14 @@ public class smPRsCtrl {
             String id = selectedItem.getId();
             String itemId = selectedItem.getItem_ID();
             int quantity = selectedItem.getQuantity();
-            String budget = selectedItem.getDate();
+            String date = selectedItem.getDate();
             String salesM = selectedItem.getSalesM();
             String status = selectedItem.getStatus();
             
             txtPRsID.setText(id);
             txtItem_ID.setText(itemId);
             txtQuantity.setText(String.valueOf(quantity));
-            txtDate.setText(String.valueOf(budget));
+            txtDate.setText(String.valueOf(date));
             txtSalesM.setText(salesM);
             txtStatus.setText(status);
         }
