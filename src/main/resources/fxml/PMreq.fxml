@@ -17,14 +17,13 @@
                </font>
             </Label>
             <Separator layoutX="31.0" layoutY="80.0" prefHeight="10.0" prefWidth="578.0" />
-            <TableView fx:id="ViewReq" layoutX="31.0" layoutY="99.0" prefHeight="531.0" prefWidth="914.0" stylesheets="@../css/tableStyle.css">
+            <TableView fx:id="ViewReq" layoutX="31.0" layoutY="99.0" prefHeight="531.0" prefWidth="828.0" stylesheets="@../css/tableStyle.css">
               <columns>
                 <TableColumn fx:id="ReqId" prefWidth="75.0" text="ID" />
                 <TableColumn fx:id="ReqItems" prefWidth="154.40000915527344" text="Items ID" />
                   <TableColumn fx:id="ReqQty" prefWidth="152.0" text="Quantity" />
                   <TableColumn fx:id="ReqDate" prefWidth="152.0" text="Date" />
                   <TableColumn fx:id="ReqSM" prefWidth="152.0" text="Sales Manager" />
-                  <TableColumn fx:id="ReqSuppID" prefWidth="87.19989013671875" text="Supplier ID" />
                   <TableColumn fx:id="ReqStatus" prefWidth="140.800048828125" text="Status" />
               </columns>
             </TableView>

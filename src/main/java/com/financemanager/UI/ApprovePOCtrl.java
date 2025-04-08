@@ -53,7 +53,7 @@ public class ApprovePOCtrl {
     
     public void initialize() 
     {
-    	
+    	AppID.setCellValueFactory(new PropertyValueFactory<>("itemsId"));
     }
 
     @FXML

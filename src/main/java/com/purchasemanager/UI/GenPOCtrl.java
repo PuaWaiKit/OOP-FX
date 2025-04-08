@@ -196,8 +196,8 @@ public class GenPOCtrl {
     	//String Id, String name, String Quantity, String Price, String Pm
     	
     	if(!CheckTxtbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt)&& CbSelection()!=-1) 
-    	{
-		    	PManagerOrder data= new PManagerOrder(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText());
+    	{		int SelectedIndex= PRidCb.getSelectionModel().getSelectedIndex();
+		    	PManagerOrder data= new PManagerOrder(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText(),SelectedIndex);
 		    	data.AddFunc();
 		    	if(data.checkingFunc()) 
 		    	{
