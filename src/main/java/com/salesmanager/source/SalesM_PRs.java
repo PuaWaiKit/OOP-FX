@@ -1,16 +1,18 @@
 package com.salesmanager.source;
 
 import java.io.BufferedReader;
-
+import java.io.BufferedWriter;
 import java.io.FileReader;
-
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import com.groupfx.JavaFXApp.*;
 
-public class SalesM_PRs  extends SalesM implements viewData {
+import javafx.collections.ObservableList;
+
+public class SalesM_PRs  extends SalesM implements viewData, modifyData {
 	
 	private String Id;
 	private String Item_ID;
@@ -19,6 +21,11 @@ public class SalesM_PRs  extends SalesM implements viewData {
 	private String SalesM;
 	private String Status;
 
+	//Variable for the modification
+	private int selectedIndex;
+	private String resultString;
+	private ObservableList<SalesM_PRs> cacheList;
+		
 	public String getId() { return Id; }
     public String getItem_ID() { return Item_ID; }
     public int getQuantity() { return Quantity; }
@@ -30,6 +37,17 @@ public class SalesM_PRs  extends SalesM implements viewData {
     	
     }
     
+    public SalesM_PRs(String resultString) {
+    	
+    	this.resultString = resultString;
+    }
+    
+    public SalesM_PRs(int selectedIndex, ObservableList<SalesM_PRs> cacheList) {
+    	
+    	this.cacheList = cacheList;
+        this.selectedIndex = selectedIndex;
+    }
+    
     public SalesM_PRs(String Id, String Item_ID, int Quantity, String Date, String SalesM, String Status) {
         this.Id = Id;
         this.Item_ID = Item_ID;
@@ -37,6 +55,18 @@ public class SalesM_PRs  extends SalesM implements viewData {
         this.Date = Date;
         this.SalesM = SalesM;
         this.Status = Status;
+    }
+    
+    public SalesM_PRs(String Id, String Item_ID, int Quantity, String Date, String SalesM, String Status, ObservableList<SalesM_PRs> cacheList,int selectedIndex) {
+        this.Id = Id;
+        this.Item_ID = Item_ID;
+        this.Quantity = Quantity;
+        this.Date = Date;
+        this.SalesM = SalesM;
+        this.Status = Status;
+        this.cacheList = cacheList;
+        this.selectedIndex = selectedIndex;
+        
     }
     
 	@Override
@@ -61,5 +91,64 @@ public class SalesM_PRs  extends SalesM implements viewData {
 		
 		return builder;
 		
+	}
+	
+	@Override
+	public void AddFunc() {
+		
+		cacheList.add(new SalesM_PRs(		
+				
+				Id,
+				Item_ID,
+				Quantity,
+				Date,
+				SalesM,
+				Status
+				
+				));
+		
+	}
+	
+	@Override
+	public void EditFunc() {
+		
+		cacheList.set(selectedIndex, new SalesM_PRs(		
+				
+				Id,
+				Item_ID,
+				Quantity,
+				Date,
+				SalesM,
+				Status
+				
+				));
+		
+	}
+	
+	@Override
+	public void DeleteFunc() {
+		
+		cacheList.remove(selectedIndex);
+	}
+	
+	@Override
+	public void SaveFunc() {
+		
+		String[] parts = resultString.split("\n");
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("Data/Suppliers.txt", false))) {
+			for (String part : parts) {
+				
+            writer.write(part);
+            writer.newLine(); 
+            
+			}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public ObservableList<SalesM_PRs>  getCacheList() {
+		
+		return cacheList;
 	}
 }
