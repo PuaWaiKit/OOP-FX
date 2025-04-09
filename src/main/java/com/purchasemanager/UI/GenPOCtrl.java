@@ -183,7 +183,7 @@ public class GenPOCtrl {
     	
     	for(String row:rows) 
     	{	String[] split=row.split(",");
-    		if(split.length==6) 
+    		if(split.length==7) 
     		{
     			obList.add(new PManagerOrder(
     					split[0],
@@ -305,7 +305,7 @@ public class GenPOCtrl {
     	int selectedIndex=ViewPO.getSelectionModel().getSelectedIndex();
     	if(selectedIndex>=0 && CbSelection()==-1) 
     	{
-    		String format= MessageFormat.format("{0},{1},{2},{3},{4},Pending\n",IdTxtbx.getText(),ItemsNameTxt.getText(),QtyTxt.getText(),Pricetxt.getText(),PMtxt.getText());
+    		String format= MessageFormat.format("{0},{1},{2},{3},{4},Pending,Supplier\n",IdTxtbx.getText(),ItemsNameTxt.getText(),QtyTxt.getText(),Pricetxt.getText(),PMtxt.getText());
     		
     		
     		PManagerOrder edt= new PManagerOrder(selectedIndex,format);

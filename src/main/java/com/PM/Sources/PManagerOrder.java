@@ -26,7 +26,7 @@ public class PManagerOrder implements viewData, modifyData {
 	private double Price;
 	private InputStream stream;
 	private String Filepath="Data/PurchaseOrder.txt";
-	private boolean Checking=false;
+	protected boolean Checking=false;
 	private int LineNum;
 	private String newData;
 	private StringBuilder builder= new StringBuilder();
@@ -40,6 +40,7 @@ public class PManagerOrder implements viewData, modifyData {
 	{
 		
 	}
+	
 	
 	public PManagerOrder(ObservableList<PManagerOrder> Pie) 
 	{
@@ -185,6 +186,10 @@ public class PManagerOrder implements viewData, modifyData {
 		return builder;
 	}
 	
+	
+	/**
+	 * Get Items Code/PrID/Qty/Status/Date from PRList TXT *
+	 */
 	public StringBuffer RetriveItemsID(int SelectionNum) throws IOException
 	{	String line;
 	
@@ -211,7 +216,9 @@ public class PManagerOrder implements viewData, modifyData {
 		return builders;
 	}
 	
-	
+	/**
+	 * Get Items ID from TXT *
+	 */
 	public StringBuilder RetriveItems(String PRCode, String ItemsCode) throws IOException
 	{	String line;
 		StringBuilder Newbuild= new StringBuilder();
@@ -268,9 +275,6 @@ public class PManagerOrder implements viewData, modifyData {
 			//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
 			//writer.write(Data);
 			String[] Status= RetriveItemsID(LineNum).toString().split(",");
-			System.out.println(Status[3]);
-			System.out.println(Status[4]);
-			System.out.println(LineNum);
 			if(!CacheChecking() && Status[4].equals("Pending")) 
 			{
 				builder.append(Id).append(",");
@@ -278,7 +282,8 @@ public class PManagerOrder implements viewData, modifyData {
 				builder.append(Quantity).append(",");
 				builder.append(Price).append(",");
 				builder.append(Pm).append(",");
-				builder.append("Pending").append("\n");
+				builder.append("Pending").append(",");
+				builder.append("Supplier").append("\n");
 				writer.write(builder.toString());
 				//writer.newLine();
 				Checking=true;
@@ -313,7 +318,8 @@ public class PManagerOrder implements viewData, modifyData {
 						builder.append(dataNew[2]).append(",");
 						builder.append(dataNew[3]).append(",");
 						builder.append(dataNew[4]).append(",");
-						builder.append(dataNew[5]).append("\n");
+						builder.append(dataNew[5]).append(",");
+						builder.append(dataNew[6]).append("\n");
 					}
 				} 
 				catch (IOException e) 
@@ -374,6 +380,10 @@ public class PManagerOrder implements viewData, modifyData {
 		
 	
 	
+	/**
+	 * Perform Saving While User Click *
+	 */
+	
 	@Override
 	public void SaveFunc() 
 	{
@@ -401,7 +411,8 @@ public class PManagerOrder implements viewData, modifyData {
 								NewData.append(dataSet[2]).append(",");
 								NewData.append(dataSet[3]).append(",");
 								NewData.append(dataSet[4]).append(",");
-								NewData.append(dataSet[5]).append("\n");
+								NewData.append(dataSet[5]).append(",");
+								NewData.append(dataSet[6]).append("\n");
 								lineCount++;
 							}
 							writer.write(NewData.toString());
@@ -492,6 +503,7 @@ public class PManagerOrder implements viewData, modifyData {
 					builder.append(oldData[3]).append(",");
 					builder.append(oldData[4]).append(",");
 					builder.append(oldData[5]).append(",");
+					builder.append(oldData[6]).append(",");
 				}
 			 }
 			catch(IOException e) 
@@ -515,7 +527,8 @@ public class PManagerOrder implements viewData, modifyData {
 						builder.append(data[2]).append(",");
 						builder.append(data[3]).append(",");
 						builder.append(data[4]).append(",");
-						builder.append(data[5]).append("\n");
+						builder.append(data[5]).append(",");
+						builder.append(data[6]).append("\n");
 					}
 					
 					try(FileWriter writer= new FileWriter("Data/Cache.txt"))
@@ -578,7 +591,8 @@ public class PManagerOrder implements viewData, modifyData {
 			builder.append(data[2]).append(",");
 			builder.append(data[3]).append(",");
 			builder.append(data[4]).append(",");
-			builder.append(data[5]).append("\n");
+			builder.append(data[5]).append(",");
+			builder.append(data[6]).append("\n");
 		}
 		
 		

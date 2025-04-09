@@ -145,15 +145,14 @@ public class Authentication {
 	}
 	
 	
-	
-	public void SwitchScene(MouseEvent event) throws IOException
-	{			
 	/**
 	 * String[] data= {"sm","pm","im","ad","fm"};
 	 * Please Mind that all the role interface/main menu must start with sm/pmInterface...
-	 * And the Text File Data must same as enum values 
+	 * And the Text File Data must same as enum values *
 	 * 
-	 * */
+	  */
+	public void SwitchScene(MouseEvent event) throws IOException
+	{			
 		for(UserRole rol: UserRole.values()) 
 		{
 			if (CurrRole.equals(rol.toString())) 
