@@ -4,7 +4,9 @@ import java.io.IOException;
 
 public interface viewData {
 	
-	//For txt file reading
+	/**
+	 * Read Text Function, For Txt Reading *
+	 */
 	public StringBuilder ReadTextFile() throws IOException;
 	
 }
