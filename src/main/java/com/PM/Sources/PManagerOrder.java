@@ -33,6 +33,7 @@ public class PManagerOrder implements viewData, modifyData {
 	private int lineCount;
 	private int ClickCount;
 	private ObservableList<PManagerOrder> Pie= FXCollections.observableArrayList();
+	private String Status;
 
 	
 	public PManagerOrder() 
@@ -66,13 +67,14 @@ public class PManagerOrder implements viewData, modifyData {
 		this.LineNum=LineNum;
 	}
 	
-	public PManagerOrder(String Id, String name, int Quantity, double Price, String Pm ) 
+	public PManagerOrder(String Id, String name, int Quantity, double Price, String Pm,String Status ) 
 	{
 		this.Id=Id;
 		this.name=name;
 		this.Quantity=Quantity;
 		this.Price=Price;
 		this.Pm=Pm;
+		this.Status=Status;
 	}
 	
 	public String getName() 
@@ -105,7 +107,10 @@ public class PManagerOrder implements viewData, modifyData {
 		return lineCount;
 	}
 	
-	
+	public String getStatus() 
+	{
+		return Status;
+	}
 	
 	
 	

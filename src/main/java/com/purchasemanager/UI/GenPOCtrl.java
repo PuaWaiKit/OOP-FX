@@ -19,10 +19,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.css.*;
 
 public class GenPOCtrl {
 
@@ -89,21 +91,33 @@ public class GenPOCtrl {
     	POso.setCellValueFactory(new PropertyValueFactory<>("pm"));
     	ViewPO.setSortPolicy(null); //disable sort
     	
-
-    	
-    	
-    	
-    	
-//    	Alert alert= new Alert(AlertType.INFORMATION);
-//		alert.setTitle("Adding Sucess");
-//		alert.setHeaderText(null);
-//		alert.setContentText(auth.getName());
-//		alert.show();
-//    	
-    	
-    	
     	SetText();
     	load();
+    	
+    	//Change Color on TableView 
+    	ViewPO.setRowFactory(tableView -> new TableRow<>() {
+    	    @Override
+    	    protected void updateItem(PManagerOrder item, boolean empty) {
+    	        super.updateItem(item, empty);
+    	        if (item == null || empty) {
+    	            setStyle("");
+    	        } else {
+    	            switch (item.getStatus()) {
+    	                case "Approve":
+    	                    setStyle("-fx-background-color: #008000;");
+    	                    break;
+    	                case "Rejected":
+    	                    setStyle("-fx-background-color: #FF0000;");
+    	                    break;
+    	                default:
+    	                    setStyle("");
+    	                    break;
+    	            }
+    	        }
+    	    }
+    	});
+    	
+    	
     }
     
     
@@ -176,12 +190,13 @@ public class GenPOCtrl {
     					split[1],
     					Integer.parseInt(split[2]),
     					Double.parseDouble(split[3]),
-    					split[4]
+    					split[4],
+    					split[5]
     					));
     		}
     	}
     	ViewPO.setItems(obList);
-    	
+    	    	
     	String[] Prid= data.RetrivePR().toString().split("\n");
     	
     	List<String> ListData= Arrays.asList(Prid);
