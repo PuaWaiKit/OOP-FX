@@ -112,9 +112,9 @@ public class smSuppsCtrl {
         }
     }
     
-    private boolean containsID(ObservableList<SalesM_Suppliers> List, String id) {
+    private boolean containsID(ObservableList<SalesM_Suppliers> List, String id, String itemId) {
         for (SalesM_Suppliers supplier : List) {
-            if (supplier.getId().equals(id)) {
+            if (supplier.getId().equals(id) || supplier.getItem().equals(itemId)) {
             	
                 return true;
             }
@@ -129,7 +129,7 @@ public class smSuppsCtrl {
     	int selectedSuppIndex = viewSuppsTable.getSelectionModel().getSelectedIndex();
     	
     	try {
-	    	if(containsID(cacheList, txtID.getText()) && selectedSupp != null) {
+	    	if(containsID(cacheList, txtID.getText(), txtItemID.getText()) && selectedSupp != null) {
 	
 	    		SalesM_Suppliers dataEntry = new SalesM_Suppliers(txtID.getText(), txtName.getText(),txtContactN.getText(),txtAddress.getText(),txtItemID.getText(), cacheList, selectedSuppIndex);
 		    	dataEntry.EditFunc();
@@ -138,7 +138,7 @@ public class smSuppsCtrl {
 		    	viewSuppsTable.setItems(cacheList);
 		    	clearTextField();
 		    	
-	    	} else if (!(containsID(cacheList, txtID.getText())) && selectedSupp == null){	
+	    	} else if (!(containsID(cacheList, txtID.getText(), txtItemID.getText())) && selectedSupp == null){	
 	    		
 	    		SalesM_Suppliers dataEntry = new SalesM_Suppliers(txtID.getText(), txtName.getText(),txtContactN.getText(),txtAddress.getText(),txtItemID.getText(), cacheList, selectedSuppIndex);
 			    dataEntry.AddFunc();
@@ -148,6 +148,7 @@ public class smSuppsCtrl {
 			    clearTextField();
 	    	} else {
 	    		
+	    		clearTextField();
 	    		Alert alert = new Alert(AlertType.INFORMATION);
 	    		alert.setTitle("Information");
 	    		alert.setHeaderText(null);
@@ -155,6 +156,8 @@ public class smSuppsCtrl {
 	    		alert.showAndWait();
 	    	}
     	} catch (Exception e) {
+    		
+    		clearTextField();
     		Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
