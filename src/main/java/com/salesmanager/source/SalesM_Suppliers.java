@@ -3,6 +3,7 @@ package com.salesmanager.source;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Map;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,7 +13,7 @@ import com.groupfx.JavaFXApp.viewData;
 
 import javafx.collections.ObservableList;
 
-public class SalesM_Suppliers extends SalesM implements viewData, modifyData{
+public class SalesM_Suppliers implements viewData, modifyData{
 	
 	private String Id;
 	private String Name;
@@ -69,7 +70,7 @@ public class SalesM_Suppliers extends SalesM implements viewData, modifyData{
 	{	
 		//InputStream stream= getClass().getClassLoader().getResourceAsStream("Data/ItemsList.txt");
 		BufferedReader reader= new BufferedReader(new FileReader("Data/Suppliers.txt"));
-		builder= new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		String line;
 		
 		while ((line=reader.readLine())!=null) 

@@ -21,7 +21,11 @@ public class SalesM {
 		
 	}
 	
-	public String getUserId() { return userID; }
+	public String getUserId() { 
+		
+		System.out.println("lol"+userID);
+		return userID;
+		}
 	
 }
 	

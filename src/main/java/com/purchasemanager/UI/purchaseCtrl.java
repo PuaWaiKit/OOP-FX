@@ -181,11 +181,11 @@ public class purchaseCtrl implements Initializable{
     	Optional<ButtonType> result= alert.showAndWait(); // wait until user select
     	alert.setHeaderText("Do You Want To Log Out ?");
     	
-    	if(result.isPresent() && result.get()== ButtonType.YES) 
-    	{
+    	if(result.isPresent() && result.get()== ButtonType.YES) {
     		
     		FileWriter writer= new FileWriter("Data/Cache.txt");
     		
+    		FileWriter writerLog = new FileWriter("Data/Log.txt");
     		
 			Parent root= FXMLLoader.load(getClass().getResource("/fxml/Sample.fxml"));
 			stage=(Stage)((Node)event.getSource()).getScene().getWindow();
@@ -193,9 +193,6 @@ public class purchaseCtrl implements Initializable{
 			stage.setScene(scene);
 			stage.show();
     	}
-    	
-    	
-    	
     	
     }
     
