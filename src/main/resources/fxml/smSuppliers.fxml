@@ -25,19 +25,29 @@
          </children></AnchorPane>
       <HBox layoutX="39.0" layoutY="98.0" prefHeight="556.0" prefWidth="901.0">
          <children>
-            <TableView fx:id="viewSuppsTable" onMouseClicked="#rowClick" prefHeight="555.0" prefWidth="710.0">
-               <columns>
-                  <TableColumn fx:id="SuppsID" prefWidth="85.18545913696289" text="SUPP_ID" />
-                  <TableColumn fx:id="Name" minWidth="0.0" prefWidth="128.8892593383789" text="Name" />
-                  <TableColumn fx:id="ContactNum" prefWidth="147.4079132080078" text="Contact Number" />
-                  <TableColumn fx:id="Address" prefWidth="258.51922607421875" text="Address" />
-                  <TableColumn fx:id="Item_ID" prefWidth="80.7410888671875" text="Item_ID" />
-               </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="555.0" prefWidth="20.0" />
+            <VBox prefHeight="556.0" prefWidth="707.0">
+               <children>
+                  <TableView fx:id="viewSuppsTable" onMouseClicked="#rowClick" prefHeight="391.0" prefWidth="697.0">
+                     <columns>
+                        <TableColumn fx:id="SuppsID" prefWidth="152.79998397827148" text="SUPP_ID" />
+                        <TableColumn fx:id="Name" minWidth="0.0" prefWidth="173.6000213623047" text="Name" />
+                        <TableColumn fx:id="ContactNum" prefWidth="172.7999267578125" text="Contact Number" />
+                        <TableColumn fx:id="Address" prefWidth="187.2000732421875" text="Address" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <Separator prefWidth="200.0" />
+                  <TableView prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn prefWidth="349.5999565124512" text="SUPP_ID" />
+                      <TableColumn prefWidth="347.2000732421875" text="Item_ID" />
+                    </columns>
+                  </TableView>
+               </children>
+            </VBox>
+            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="556.0" prefWidth="33.0" />
             <VBox prefHeight="556.0" prefWidth="190.0">
                <children>
                   <Label text="MODIFICATION" textFill="#5e6572">

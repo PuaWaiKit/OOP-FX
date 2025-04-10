@@ -1,4 +1,4 @@
-package com.salesmanager.source;
+package com.salesmanager.source;	
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,8 +10,10 @@ import com.groupfx.JavaFXApp.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
-public class SalesM_Items extends SalesM implements viewData, modifyData{
+public class SalesM_Items implements viewData, modifyData{
 	
 	private String Name;
 	private String ID;
@@ -153,8 +155,44 @@ public class SalesM_Items extends SalesM implements viewData, modifyData{
         }
 	}
 	
-	public ObservableList<SalesM_Items>  getCacheList() {
+	public void insertCheck(String txtItemsID, String txtItemsName, String txtItemSupp, SalesM_Items selectedSupp) {
 		
+		if(containsID(cacheList, txtItemsID, txtItemsName, txtItemSupp) && selectedSupp != null) {
+    		
+	    	EditFunc();
+	     
+	    	
+    	} else if (!(containsID(cacheList, txtItemsID.trim(), txtItemsName.trim(), txtItemSupp.trim())) && selectedSupp == null){	
+    		
+		    AddFunc();
+		    
+    	} else {
+    		
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Information");
+    		alert.setHeaderText(null);
+    		alert.setContentText("Please select the supplier if you want to edit\n OR \n If you want to add a supplier please dont repeat the ID");
+    		alert.showAndWait();
+    	}
+	} 
+	
+	
+	private boolean containsID(ObservableList<SalesM_Items> List, String id, String Name, String suppId) {
+        for (SalesM_Items item : List) {
+            if (item.getId().equals(id)) {
+            	
+                return true;
+            } else if (item.getName().equals(Name) && item.getSupplier().equals(suppId)) {
+            	
+            	return true;
+            }
+        }
+        return false;
+    }
+	
+	public ObservableList<SalesM_Items>  getCacheList() {
+			
 		return cacheList;
 	}
+	
 }
