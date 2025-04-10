@@ -22,7 +22,7 @@
                         <FontIcon iconColor="WHITE" iconLiteral="anto-info-circle" iconSize="20" />
                      </graphic>
                   </Button>
-                  <Button layoutX="10.0" layoutY="658.0" mnemonicParsing="false" style="-fx-background-color: #1C2321;">
+                  <Button layoutX="10.0" layoutY="658.0" mnemonicParsing="false" onMouseClicked="#LogoutB" style="-fx-background-color: #1C2321;">
                      <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="anto-logout" iconSize="20" text="" />
                      </graphic>
