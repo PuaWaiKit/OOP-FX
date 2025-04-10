@@ -53,14 +53,15 @@ public class ApprovePOCtrl {
     @FXML
     private TableColumn<FMAppPO, String> AppStat;
 
-    @FXML
-    private TextField AppSuppBx;
 
     @FXML
     private TableView<FMAppPO> ViewPO;
     
     @FXML
     private ComboBox<String> SupplierCbx;
+    
+    @FXML
+    private ComboBox<String> StatusSelection;
     
     
     public void initialize() throws IOException 
@@ -71,10 +72,23 @@ public class ApprovePOCtrl {
     	AppPrice.setCellValueFactory(new PropertyValueFactory<>("cost"));
     	AppPM.setCellValueFactory(new PropertyValueFactory<>("pm"));
     	AppStat.setCellValueFactory(new PropertyValueFactory<>("status"));
-    	
+    	AppIdBx.setEditable(false);
     	load();
     }
 
+
+    @FXML
+    public void RowClick(MouseEvent event) {
+    	FMAppPO selectedItems=ViewPO.getSelectionModel().getSelectedItem();
+    	if(selectedItems!=null) 
+    	{
+    		AppIdBx.setText(selectedItems.getId());
+    		AppQtyBx.setText(Integer.toString(selectedItems.getQty()));
+    		
+    	}
+    }
+    
+    
     public void load() throws IOException 
     {	FMAppPO data= new FMAppPO();
     	ObservableList<FMAppPO> obList= FXCollections.observableArrayList();
@@ -96,7 +110,21 @@ public class ApprovePOCtrl {
     	
     	String[] CbData= data.GetSupplier().toArray(new String[0]);
     	SupplierCbx.getItems().addAll(CbData);
+    	StatusSelection.getItems().addAll("Approve","Rejected");
     	
+    }
+    
+    
+    public boolean CheckComboBox(ComboBox<?>...boxs) 
+    {
+    	for(ComboBox<?> boxes: boxs) 
+    	{
+    		if(boxes.getSelectionModel().getSelectedIndex()==-1) 
+    		{
+    			return true;
+    		}
+    	}
+    	return false;
     }
     
     
@@ -118,11 +146,12 @@ public class ApprovePOCtrl {
     public void EditClick(MouseEvent event) {
     	
     	String SelectedSupplier= SupplierCbx.getSelectionModel().getSelectedItem();
+    	String SelectedStatus=StatusSelection.getSelectionModel().getSelectedItem();
     	int SelectedIndex=ViewPO.getSelectionModel().getSelectedIndex();
     	
-    	if(!CheckTextField(AppQtyBx)) 
+    	if(!CheckTextField(AppQtyBx) && !CheckComboBox(SupplierCbx,StatusSelection)) 
     	{
-		    	FMAppPO data= new FMAppPO(SelectedIndex,AppQtyBx.getText(),SelectedSupplier);
+		    	FMAppPO data= new FMAppPO(SelectedIndex,AppQtyBx.getText(),SelectedSupplier,SelectedStatus);
 		    	data.EditFunc();
 		    	System.out.println(data.checkingFunc());
 		    	if(data.checkingFunc()) 
@@ -134,6 +163,7 @@ public class ApprovePOCtrl {
 		    		alert.setContentText("Edit Sucessfull, Please Save Before Leaving !");
 		    		alert.showAndWait();
 		    		ViewPO.getSelectionModel().clearSelection(); //clear selection
+		    		
 		    	}
 		    	else 
 		    	{
@@ -157,8 +187,13 @@ public class ApprovePOCtrl {
     }
 
     @FXML
-    void RefreshClick(MouseEvent event) {
-
+   public void RefreshClick(MouseEvent event) throws IOException {
+    	StatusSelection.getSelectionModel().select(-1);
+    	SupplierCbx.getSelectionModel().select(-1);
+    	StatusSelection.getItems().clear();
+    	SupplierCbx.getItems().clear();
+    	load();
+    
     }
 
     @FXML

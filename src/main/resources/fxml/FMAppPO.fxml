@@ -17,7 +17,7 @@
    <children>
       <AnchorPane layoutX="15.0" layoutY="15.0" prefHeight="670.0" prefWidth="950.0" style="-fx-background-color: #ffffff;" styleClass="loginbounded" stylesheets="@../css/styles.css">
          <children>
-            <TableView fx:id="ViewPO" layoutX="8.0" layoutY="52.0" prefHeight="608.0" prefWidth="686.0" stylesheets="@../css/tableStyle.css">
+            <TableView fx:id="ViewPO" layoutX="8.0" layoutY="52.0" onMouseClicked="#RowClick" prefHeight="608.0" prefWidth="686.0" stylesheets="@../css/tableStyle.css">
               <columns>
                 <TableColumn fx:id="AppID" prefWidth="75.0" text="ID" />
                 <TableColumn fx:id="AppItem" prefWidth="144.80001831054688" text="Items Name" />
@@ -38,7 +38,7 @@
                </font>
             </Label>
             <Separator layoutX="705.0" layoutY="78.0" prefHeight="10.0" prefWidth="200.0" />
-            <VBox layoutX="706.0" layoutY="87.0" prefHeight="224.0" prefWidth="206.0" style="-fx-spacing: 10px;">
+            <VBox layoutX="706.0" layoutY="87.0" prefHeight="304.0" prefWidth="206.0" style="-fx-spacing: 10px;">
                <children>
                   <Label text="ID" />
                   <TextField fx:id="AppIdBx" />
@@ -46,6 +46,8 @@
                   <TextField fx:id="AppQtyBx" />
                   <Label text="Suppliers" />
                   <ComboBox fx:id="SupplierCbx" prefHeight="26.0" prefWidth="210.0" />
+                  <Label text="Status" />
+                  <ComboBox fx:id="StatusSelection" prefHeight="26.0" prefWidth="206.0" />
                </children>
             </VBox>
             <HBox layoutX="707.0" layoutY="475.0" prefHeight="64.0" prefWidth="234.0" style="-fx-spacing: 10px;">

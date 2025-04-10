@@ -27,16 +27,17 @@ public class FMAppPO extends Purchase_Order{
 	private String newdata;
 	private String supplier;
 	private boolean check=false;
+	private String newStatus;
 	
 	
 	public FMAppPO() {}
 	
-	public FMAppPO(int SelectedLine, String data,String supplier) 
+	public FMAppPO(int SelectedLine, String data,String supplier,String Status) 
 	{	
 		this.newdata=data;
 		this.SelectedLine=SelectedLine;
 		this.supplier=supplier;
-		
+		this.newStatus=Status;
 	}
 	
 	public FMAppPO(String PoId, String ItemsId, int Qty, double cost, String PM,String Status) 
@@ -189,25 +190,31 @@ public class FMAppPO extends Purchase_Order{
 					
 					for(String P: CacheData) 
 					{	String[] parts= P.toString().split(",");
-						if(index[1].equals(parts[5]) && index[0].equals(parts[0])) 
+						System.out.println(index[1]+"P"+parts[5]);
+						System.out.println(SelectedLine);System.out.println(newStatus);
+						if(index[1].equals(parts[5])&& parts[5].equals("Pending") && index[0].equals(parts[0])) 
 						{	
 							parts[2]=newdata;
-							parts[5]="Approve";
+							parts[5]=newStatus;
 							parts[6]=supplier;
 							String NewData= String.join(",", parts);
 							EditBuff.append(NewData).append("\n");
+							check=true;
 						}else 
 						{
 							EditBuff.append(P).append("\n");
+							
 						}
 						
 					}
 					
 					Files.write(Paths.get("Data/Cache.txt"), EditBuff.toString().getBytes(), StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
-					check=true;
-					System.out.println("Adding Sucess"+"Checking"+check);
 					
-				}else {Checking=false;}
+					
+				}else 
+				{check=false;
+				 System.out.println("HHH");
+				}
 				
 				
 			}
