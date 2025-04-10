@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 
 
 
-public class ViewList implements viewData
+public class ViewItemList implements viewData
 {
 	private String Name;
 	private String ID;
@@ -17,14 +17,14 @@ public class ViewList implements viewData
 	private int Stock;
 	protected StringBuilder builder;
 	
-	public ViewList() 
+	public ViewItemList() 
 	{
 		
 	}
 	
 	
 	
-	public ViewList(String ID, String Name, String Supplier,int Stock,double UnitPrice ) 
+	public ViewItemList(String ID, String Name, String Supplier,int Stock,double UnitPrice ) 
 	{
 	    this.ID = ID;
         this.Name = Name;

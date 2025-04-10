@@ -3,6 +3,7 @@ package com.financemanager.UI;
 import java.io.IOException;
 
 import com.financemanager.source.FMAppPO;
+import com.groupfx.JavaFXApp.Purchase_Order;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -121,7 +122,7 @@ public class ApprovePOCtrl {
     	
     	if(!CheckTextField(AppQtyBx)) 
     	{
-		    	FMAppPO data= new FMAppPO(SelectedIndex,AppQtyBx.getText().toString(),SelectedSupplier);
+		    	FMAppPO data= new FMAppPO(SelectedIndex,AppQtyBx.getText(),SelectedSupplier);
 		    	data.EditFunc();
 		    	System.out.println(data.checkingFunc());
 		    	if(data.checkingFunc()) 
@@ -161,8 +162,26 @@ public class ApprovePOCtrl {
     }
 
     @FXML
-    void SaveClick(MouseEvent event) {
-
+   public void SaveClick(MouseEvent event) {
+    	FMAppPO approve= new FMAppPO();
+    	approve.SaveFunc();
+    	if(approve.checkingFunc()) 
+    	{
+    		Alert alert= new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Save Sucess");
+    		alert.setHeaderText(null);
+    		alert.setContentText("Save Sucessfull");
+    		alert.showAndWait();
+    		ViewPO.getSelectionModel().clearSelection(); //clear selection
+    	}else 
+    	{
+    		Alert alert= new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Save Unsucess");
+    		alert.setHeaderText(null);
+    		alert.setContentText("Save Unsucessfull");
+    		alert.showAndWait();
+    		ViewPO.getSelectionModel().clearSelection(); //clear selection
+    	}
     }
 
 }

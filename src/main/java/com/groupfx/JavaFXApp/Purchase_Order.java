@@ -1,4 +1,4 @@
-package com.PM.Sources;
+package com.groupfx.JavaFXApp;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,12 +15,10 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.groupfx.JavaFXApp.*;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class PManagerOrder implements viewData, modifyData {
+public class Purchase_Order implements viewData, modifyData {
 	private String Id,name,Pm;
 	private int Quantity;
 	private double Price;
@@ -32,33 +30,33 @@ public class PManagerOrder implements viewData, modifyData {
 	private StringBuilder builder= new StringBuilder();
 	private int lineCount;
 	private int ClickCount;
-	private ObservableList<PManagerOrder> Pie= FXCollections.observableArrayList();
+	private ObservableList<Purchase_Order> Pie= FXCollections.observableArrayList();
 	private String Status;
 
 	
-	public PManagerOrder() 
+	public Purchase_Order() 
 	{
 		
 	}
 	
 	
-	public PManagerOrder(ObservableList<PManagerOrder> Pie) 
+	public Purchase_Order(ObservableList<Purchase_Order> Pie) 
 	{
 		this.Pie=Pie;
 	}
 	
-	public PManagerOrder(int LineNum, String newData) 
+	public Purchase_Order(int LineNum, String newData) 
 	{
 		this.LineNum= LineNum;
 		this.newData= newData;
 	}
 	
-	public PManagerOrder(int LineNum) 
+	public Purchase_Order(int LineNum) 
 	{
 		this.LineNum=LineNum;
 	}
 	
-	public PManagerOrder(String Id, String name, int Quantity, double Price, String Pm,int LineNum ) 
+	public Purchase_Order(String Id, String name, int Quantity, double Price, String Pm,int LineNum ) 
 	{
 		this.Id=Id;
 		this.name=name;
@@ -68,7 +66,7 @@ public class PManagerOrder implements viewData, modifyData {
 		this.LineNum=LineNum;
 	}
 	
-	public PManagerOrder(String Id, String name, int Quantity, double Price, String Pm,String Status ) 
+	public Purchase_Order(String Id, String name, int Quantity, double Price, String Pm,String Status ) 
 	{
 		this.Id=Id;
 		this.name=name;
@@ -251,6 +249,14 @@ public class PManagerOrder implements viewData, modifyData {
 		return Checking;
 	}
 	
+	
+	/**
+	 * *
+	 * Checking Cache is Empty or Not
+	 * (NULL Return True, else return false)
+	 * @return Boolean
+	 * @throws IOException
+	 */
 	
 	public boolean CacheChecking() throws IOException
 	{

@@ -2,7 +2,7 @@ package com.salesmanager.UI;
 
 import java.io.IOException;
 
-import com.groupfx.JavaFXApp.ViewList;
+import com.groupfx.JavaFXApp.ViewItemList;
 import com.salesmanager.source.*;
 
 import javafx.collections.FXCollections;

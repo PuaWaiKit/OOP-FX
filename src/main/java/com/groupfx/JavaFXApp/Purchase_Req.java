@@ -1,12 +1,10 @@
-package com.PM.Sources;
+package com.groupfx.JavaFXApp;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.groupfx.JavaFXApp.viewData;
-
-public class PMViewReq  implements viewData{
+public class Purchase_Req  implements viewData{
 	private String Prid;
 	private String ItemsId;
 	private int Quantity;
@@ -15,9 +13,9 @@ public class PMViewReq  implements viewData{
 	private String status;
 	private String suppId;
 	
-	public PMViewReq() {}
+	public Purchase_Req() {}
 	
-	public PMViewReq(String Prid, String ItemsId, int Qty, String date, String SalesM ,String status) 
+	public Purchase_Req(String Prid, String ItemsId, int Qty, String date, String SalesM ,String status) 
 	{
 		this.Prid=Prid;
 		this.ItemsId=ItemsId;

@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.PM.Sources.*;
 import com.groupfx.JavaFXApp.Authentication;
+import com.groupfx.JavaFXApp.Purchase_Order;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,19 +45,19 @@ public class GenPOCtrl {
     private TextField PMtxt;
 
     @FXML
-    private TableColumn<PManagerOrder, String> POIName;
+    private TableColumn<Purchase_Order, String> POIName;
 
     @FXML
-    private TableColumn<PManagerOrder, String> POid;
+    private TableColumn<Purchase_Order, String> POid;
 
     @FXML
-    private TableColumn<PManagerOrder, Double> POprice;
+    private TableColumn<Purchase_Order, Double> POprice;
 
     @FXML
-    private TableColumn<PManagerOrder, Integer> POqty;
+    private TableColumn<Purchase_Order, Integer> POqty;
 
     @FXML
-    private TableColumn<PManagerOrder, String> POso;
+    private TableColumn<Purchase_Order, String> POso;
 
     @FXML
     private TextField Pricetxt;
@@ -71,7 +72,7 @@ public class GenPOCtrl {
     private ComboBox<String> PRidCb;
     
     @FXML
-    private TableView<PManagerOrder> ViewPO;
+    private TableView<Purchase_Order> ViewPO;
 
     
     
@@ -97,7 +98,7 @@ public class GenPOCtrl {
     	//Change Color on TableView 
     	ViewPO.setRowFactory(tableView -> new TableRow<>() {
     	    @Override
-    	    protected void updateItem(PManagerOrder item, boolean empty) {
+    	    protected void updateItem(Purchase_Order item, boolean empty) {
     	        super.updateItem(item, empty);
     	        if (item == null || empty) {
     	            setStyle("");
@@ -177,15 +178,15 @@ public class GenPOCtrl {
     
     public void load() throws IOException 
     {
-    	PManagerOrder data= new PManagerOrder();
-    	ObservableList<PManagerOrder> obList= FXCollections.observableArrayList();
+    	Purchase_Order data= new Purchase_Order();
+    	ObservableList<Purchase_Order> obList= FXCollections.observableArrayList();
     	String[] rows= data.ReadTextFile().toString().split("\n");
     	
     	for(String row:rows) 
     	{	String[] split=row.split(",");
     		if(split.length==7) 
     		{
-    			obList.add(new PManagerOrder(
+    			obList.add(new Purchase_Order(
     					split[0],
     					split[1],
     					Integer.parseInt(split[2]),
@@ -212,7 +213,7 @@ public class GenPOCtrl {
     	
     	if(!CheckTxtbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt)&& CbSelection()!=-1) 
     	{		int SelectedIndex= PRidCb.getSelectionModel().getSelectedIndex();
-		    	PManagerOrder data= new PManagerOrder(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText(),SelectedIndex);
+		    	Purchase_Order data= new Purchase_Order(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText(),SelectedIndex);
 		    	data.AddFunc();
 		    	if(data.checkingFunc()) 
 		    	{
@@ -249,7 +250,7 @@ public class GenPOCtrl {
     @FXML
     public void RowSelection(MouseEvent e) throws IOException 
     {
-    	PManagerOrder selectedItems= ViewPO.getSelectionModel().getSelectedItem();
+    	Purchase_Order selectedItems= ViewPO.getSelectionModel().getSelectedItem();
     	if(selectedItems!=null) 
     	{
     		IdTxtbx.setText(selectedItems.getId());
@@ -269,7 +270,7 @@ public class GenPOCtrl {
     	if(selectedIndex>=0 && CbSelection()==-1) 
     	{
     		
-    		PManagerOrder del= new PManagerOrder(selectedIndex);
+    		Purchase_Order del= new Purchase_Order(selectedIndex);
     		del.DeleteFunc();
     		if(del.checkingFunc()) 
     		{	ViewPO.getItems().remove(selectedIndex);
@@ -308,7 +309,7 @@ public class GenPOCtrl {
     		String format= MessageFormat.format("{0},{1},{2},{3},{4},Pending,Supplier\n",IdTxtbx.getText(),ItemsNameTxt.getText(),QtyTxt.getText(),Pricetxt.getText(),PMtxt.getText());
     		
     		
-    		PManagerOrder edt= new PManagerOrder(selectedIndex,format);
+    		Purchase_Order edt= new Purchase_Order(selectedIndex,format);
     		edt.EditFunc();
     		
     		if(edt.checkingFunc()) 
@@ -344,7 +345,7 @@ public class GenPOCtrl {
     @FXML
     public void saveClick(MouseEvent event) {
     	int SelectionIndex= PRidCb.getSelectionModel().getSelectedIndex();
-    	PManagerOrder order= new PManagerOrder(SelectionIndex);    	
+    	Purchase_Order order= new Purchase_Order(SelectionIndex);    	
     	order.SaveFunc();
     	if(order.checkingFunc()) 
     	{
@@ -370,7 +371,7 @@ public class GenPOCtrl {
 
     @FXML
     public void CBoxAction(ActionEvent event) throws IOException {
-    	PManagerOrder Act= new PManagerOrder();
+    	Purchase_Order Act= new Purchase_Order();
     	
     	String Poid= PRidCb.getValue();
     	int SelectionIndex= PRidCb.getSelectionModel().getSelectedIndex();
