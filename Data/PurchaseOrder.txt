@@ -1,5 +1,5 @@
-PO001,I0001,100,1.0,Ming,Pending,Supplier
-PO002,I0002,200,10.9,Ming,Pending,Supplier
+PO001,I0001,100,1.0,Ming,Pending,S001
+PO002,I0002,200,10.9,Ming,Pending,S001
 PO003,I0003,200,1.10,Ming,Rejected,Supplier
 PO004,I0004,2000,10.90,Ming,Pending,Supplier
 PO005,I0004,2000,10.9,Ming,Approve,Supplier
