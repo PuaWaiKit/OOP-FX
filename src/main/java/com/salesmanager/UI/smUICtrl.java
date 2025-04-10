@@ -4,10 +4,22 @@ import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import javafx.util.Duration;
+
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.fxml.Initializable;
@@ -119,5 +131,28 @@ public class smUICtrl implements Initializable {
 
         transition.play();
         drawerOpen = !drawerOpen;
+    }
+    
+    @FXML
+    public void LogoutB(MouseEvent event) throws IOException {
+    	Alert alert= new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("LogOut?");
+    	alert.setContentText("All data haven't save will lost");
+    	alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO); //add button yes and no
+    	Optional<ButtonType> result= alert.showAndWait(); // wait until user select
+    	alert.setHeaderText("Do You Want To Log Out ?");
+    	
+    	if(result.isPresent() && result.get()== ButtonType.YES) {
+    		
+    		FileWriter writer= new FileWriter("Data/Cache.txt");
+    		
+    		FileWriter writerLog = new FileWriter("Data/Log.txt");
+    		
+			Parent root= FXMLLoader.load(getClass().getResource("/fxml/Sample.fxml"));
+			Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+    	}
     }
 }

@@ -120,6 +120,7 @@ public class Authentication {
 					break;
 					
 				case "salesManager":
+					System.out.println(trimmedUserName);
 					SalesM entryID = new SalesM(trimmedUserName);
 					break;
 					

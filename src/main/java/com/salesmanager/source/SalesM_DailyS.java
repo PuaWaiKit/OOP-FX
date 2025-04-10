@@ -214,7 +214,7 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 		                    writer.newLine();
 		                }
 		            }
-		            System.out.println("Updated");
+
 		        } catch (IOException e) {
 		            e.printStackTrace();
 		        }

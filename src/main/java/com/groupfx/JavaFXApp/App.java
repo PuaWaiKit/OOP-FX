@@ -41,7 +41,10 @@ public class App extends Application {
         	}
         	try (FileWriter writer = new FileWriter("Data/Cache.txt")) 
         	{
-        		//NONE
+        		try (FileWriter writerLog = new FileWriter("Data/Log.txt"))
+        		{
+        			
+        		}
 			} 
         	catch (IOException e) 
         	{
