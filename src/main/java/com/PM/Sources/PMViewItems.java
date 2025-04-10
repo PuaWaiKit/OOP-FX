@@ -1,0 +1,80 @@
+package com.PM.Sources;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import com.groupfx.JavaFXApp.ViewItemList;
+
+
+
+public class PMViewItems extends ViewItemList
+{
+	private String Name;
+	private String ID;
+	private double UnitPrice;
+	private int Stock;
+	protected StringBuilder builder;
+	
+	public PMViewItems() 
+	{
+		
+	}
+	
+	
+	
+	public PMViewItems(String ID, String Name,int Stock,double UnitPrice ) 
+	{
+	    this.ID = ID;
+        this.Name = Name;
+        this.Stock = Stock;
+        this.UnitPrice = UnitPrice;
+	}
+	
+	
+    public String getId() 
+    { 
+    	return ID; 
+    }
+    
+    public String getName() 
+    { 
+    	return Name; 
+    }
+    
+ 
+    public int getStock() 
+    { 
+    	return Stock; 
+    }
+    
+    public double getUnitPrice() 
+    { 
+    	return UnitPrice; 
+    }
+	
+    @Override
+    public StringBuilder ReadTextFile() throws IOException
+	{	
+		//InputStream stream= getClass().getClassLoader().getResourceAsStream("Data/ItemsList.txt");
+		BufferedReader reader= new BufferedReader(new FileReader("Data/ItemsList.txt"));
+		builder= new StringBuilder();
+		String line;
+		
+		while ((line=reader.readLine())!=null) 
+		{	
+			if(line.trim().isBlank())continue;
+			String[] data=line.split(",");
+			builder.append(data[0]).append(","); //ID
+			builder.append(data[1]).append(","); //Name
+			builder.append(data[3]).append(","); //Stock
+			builder.append(data[4]).append("\n"); //UnitPrice
+			
+		}
+		reader.close();
+		return builder;
+		
+	}
+}

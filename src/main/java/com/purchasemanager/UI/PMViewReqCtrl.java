@@ -2,7 +2,7 @@ package com.purchasemanager.UI;
 
 import java.io.IOException;
 
-import com.PM.Sources.PMViewReq;
+import com.groupfx.JavaFXApp.Purchase_Req;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,26 +14,26 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class PMViewReqCtrl {
 
     @FXML
-    private TableColumn<PMViewReq, String> ReqDate;
+    private TableColumn<Purchase_Req, String> ReqDate;
 
     @FXML
-    private TableColumn<PMViewReq, String> ReqId;
+    private TableColumn<Purchase_Req, String> ReqId;
 
     @FXML
-    private TableColumn<PMViewReq, String> ReqItems;
+    private TableColumn<Purchase_Req, String> ReqItems;
 
     @FXML
-    private TableColumn<PMViewReq, Integer> ReqQty;
+    private TableColumn<Purchase_Req, Integer> ReqQty;
 
     @FXML
-    private TableColumn<PMViewReq, String> ReqSM;
+    private TableColumn<Purchase_Req, String> ReqSM;
 
     @FXML
-    private TableColumn<PMViewReq, String> ReqStatus;
+    private TableColumn<Purchase_Req, String> ReqStatus;
 
 
     @FXML
-    private TableView<PMViewReq> ViewReq;
+    private TableView<Purchase_Req> ViewReq;
     
     
     
@@ -53,8 +53,8 @@ public class PMViewReqCtrl {
     
     public void load() throws IOException
     {
-    	PMViewReq req= new PMViewReq();
-    	ObservableList<PMViewReq> ObList= FXCollections.observableArrayList();
+    	Purchase_Req req= new Purchase_Req();
+    	ObservableList<Purchase_Req> ObList= FXCollections.observableArrayList();
     	String[] rows= req.ReadTextFile().toString().split("\n");
     	
     	for(String row:rows) 
@@ -62,7 +62,7 @@ public class PMViewReqCtrl {
     		String[] split= row.split(",");
     		if(split.length==6) 
     		{
-    			ObList.add(new PMViewReq(
+    			ObList.add(new Purchase_Req(
     						split[0],
     						split[1],
     						Integer.parseInt(split[2]),

@@ -1,6 +1,7 @@
 package com.financemanager.source;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,9 +12,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.PM.Sources.PManagerOrder;
+import com.groupfx.JavaFXApp.Purchase_Order;
 
-public class FMAppPO extends PManagerOrder{
+public class FMAppPO extends Purchase_Order{
 	
 	private String PoId;
 	private String ItemsId;
@@ -25,7 +26,7 @@ public class FMAppPO extends PManagerOrder{
 	private int SelectedLine;
 	private String newdata;
 	private String supplier;
-	private boolean check;
+	private boolean check=false;
 	
 	
 	public FMAppPO() {}
@@ -109,7 +110,12 @@ public class FMAppPO extends PManagerOrder{
 		return RSupplier;
 	}
 	
-	
+	/**
+	 * *
+	 * @param selectedIndex
+	 * @return StringBuffer
+	 * GET PO ID and Staus and Supplier from PurchaseOrder.txt (FM Function)
+	 */
 	
 	public StringBuffer GetPoId(int selectedIndex) throws IOException
 	{
@@ -121,7 +127,7 @@ public class FMAppPO extends PManagerOrder{
 		{	
 			String[] data=line.split(",");
 			if(LineCount==selectedIndex) 
-			{
+			{	buffer.append(data[0]).append(",");
 				buffer.append(data[5]).append(","); //status
 				buffer.append(data[6]).append("\n"); //Supplier
 				reader.close();
@@ -135,7 +141,7 @@ public class FMAppPO extends PManagerOrder{
 	
 	
 	/**
-	 * Problem Occur Please Mind *
+	 * Change and Edit on PO(FM Function) *
 	 */
 	@Override
 	public void EditFunc() 
@@ -176,25 +182,37 @@ public class FMAppPO extends PManagerOrder{
 		{
 			List<String> CacheData= new ArrayList<>(Files.readAllLines(Paths.get("Data/Cache.txt")));
 			String[] index= GetPoId(SelectedLine).toString().split(",");
-			
-			if(index[0].equals("Pending")) 
-			{
-				if(SelectedLine>=0 || SelectedLine<=CacheData.size()) 
-				{  
-					String NewData= String.join(",", newdata,supplier);
-					CacheData.set(SelectedLine, NewData);
-				}
+			StringBuffer EditBuff= new StringBuffer();
 				
-				Files.write(Paths.get("Data/Cache.txt"), CacheData, StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
-				check=true;
-				System.out.println("Adding Sucess"+ super.checkingFunc()+"Checking"+check);
-			}else 
-			{	
-				check=false;
-				System.out.println("Adding Not"+"Checking"+check);
+				if(SelectedLine>=0 || SelectedLine<=CacheData.size()) 
+				{  	
+					
+					for(String P: CacheData) 
+					{	String[] parts= P.toString().split(",");
+						if(index[1].equals(parts[5]) && index[0].equals(parts[0])) 
+						{	
+							parts[2]=newdata;
+							parts[5]="Approve";
+							parts[6]=supplier;
+							String NewData= String.join(",", parts);
+							EditBuff.append(NewData).append("\n");
+						}else 
+						{
+							EditBuff.append(P).append("\n");
+						}
+						
+					}
+					
+					Files.write(Paths.get("Data/Cache.txt"), EditBuff.toString().getBytes(), StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
+					check=true;
+					System.out.println("Adding Sucess"+"Checking"+check);
+					
+				}else {Checking=false;}
+				
+				
 			}
 			
-		}catch(IOException e) 
+		catch(IOException e) 
 		{
 			e.printStackTrace();
 		}
@@ -205,8 +223,40 @@ public class FMAppPO extends PManagerOrder{
 	
 	@Override
 	public void SaveFunc() 
-	{	
-
+	{	String line;
+		StringBuffer buffer= new StringBuffer();
+			
+		
+			try(BufferedReader reader= new BufferedReader(new FileReader("Data/Cache.txt")))
+				{	
+					if(!super.CacheChecking()) 
+					{
+						while((line=reader.readLine())!=null) 
+						{
+							String[] dataParts= line.split(",");
+							buffer.append(dataParts[0]).append(",");
+							buffer.append(dataParts[1]).append(",");
+							buffer.append(dataParts[2]).append(",");
+							buffer.append(dataParts[3]).append(",");
+							buffer.append(dataParts[4]).append(",");
+							buffer.append(dataParts[5]).append(",");
+							buffer.append(dataParts[6]).append("\n");
+						}
+						
+						BufferedWriter writer = new BufferedWriter(new FileWriter("Data/PurchaseOrder.txt"));
+						writer.write(buffer.toString());
+						writer.close();
+						check=true;
+						
+						FileWriter ClearCache= new FileWriter("Data/Cache.txt");
+						ClearCache.close();
+					
+					}else {check=false;}
+				}catch(IOException e) 
+				{
+					check=false;
+					e.printStackTrace();
+				}
 		
 		
 	}

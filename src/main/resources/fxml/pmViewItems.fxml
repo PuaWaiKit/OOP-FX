@@ -10,11 +10,10 @@
    <children>
       <AnchorPane layoutX="15.0" layoutY="15.0" prefHeight="670.0" prefWidth="950.0" style="-fx-background-color: #ffffff;" styleClass="loginbounded" stylesheets="@../css/styles.css">
          <children>
-            <TableView fx:id="viewItemTable" layoutX="14.0" layoutY="116.0" prefHeight="528.0" prefWidth="934.0" stylesheets="@../css/tableStyle.css">
+            <TableView fx:id="viewItemTable" layoutX="14.0" layoutY="116.0" prefHeight="528.0" prefWidth="696.0" stylesheets="@../css/tableStyle.css">
               <columns>
                 <TableColumn fx:id="ItemsID" prefWidth="75.0" text="Items_ID" />
                 <TableColumn fx:id="ItemsName" prefWidth="180.00003814697266" text="Items_Name" />
-                  <TableColumn fx:id="ItemsSupp" prefWidth="219.199951171875" text="Supplier" />
                   <TableColumn fx:id="itemsStock" prefWidth="219.199951171875" text="Stock" />
                   <TableColumn fx:id="itemsUP" prefWidth="219.199951171875" text="Unit_Price" />
               </columns>

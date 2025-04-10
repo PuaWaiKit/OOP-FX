@@ -166,7 +166,7 @@ public class financeCtrl implements Initializable {
     public void handleChangePO(ActionEvent event) throws IOException {
     	if(SwitchAlert()) 
     	{
-    		loadNewContent("fxml/FMAppPO.fxml");
+    		loadNewContent("/fxml/FMAppPO.fxml");
     	}
     }
 
