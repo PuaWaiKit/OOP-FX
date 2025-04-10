@@ -301,6 +301,7 @@ public class smDailySCtrl {
     
     @FXML
     public void deleteClick() {
+    	
     	int selectedSuppIndex = viewSalesTable.getSelectionModel().getSelectedIndex();
     	
     	SalesM_DailyS delIndex = new SalesM_DailyS(selectedSuppIndex, cacheList);

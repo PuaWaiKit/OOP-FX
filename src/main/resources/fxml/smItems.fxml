@@ -59,12 +59,12 @@
                      </font>
                   </Label>
                   <TextField fx:id="txtItemsName" />
-                  <Label text="QUANTITY">
+                  <Label text="STOCK">
                      <font>
                         <Font name="DejaVu Serif Bold" size="14.0" />
                      </font></Label>
                   <TextField fx:id="txtItemsStock" />
-                  <Label text="PRICE">
+                  <Label text="UNIT PRICE">
                      <font>
                         <Font name="DejaVu Serif Bold" size="14.0" />
                      </font></Label>
