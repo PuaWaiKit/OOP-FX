@@ -2,6 +2,8 @@ package com.purchasemanager.UI;
 
 import java.io.IOException;
 
+import com.PM.Sources.ListSupplier;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

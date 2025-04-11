@@ -12,10 +12,10 @@ import com.groupfx.JavaFXApp.ViewItemList;
 
 public class PMViewItems extends ViewItemList
 {
-	private String Name;
-	private String ID;
-	private double UnitPrice;
-	private int Stock;
+//	private String Name;
+//	private String ID;
+//	private double UnitPrice;
+//	private int Stock;
 	protected StringBuilder builder;
 	
 	public PMViewItems() 
@@ -23,37 +23,12 @@ public class PMViewItems extends ViewItemList
 		
 	}
 	
-	
-	
 	public PMViewItems(String ID, String Name,int Stock,double UnitPrice ) 
-	{
-	    this.ID = ID;
-        this.Name = Name;
-        this.Stock = Stock;
-        this.UnitPrice = UnitPrice;
+	{	
+		super(ID,Name,Stock,UnitPrice);	    
 	}
 	
 	
-    public String getId() 
-    { 
-    	return ID; 
-    }
-    
-    public String getName() 
-    { 
-    	return Name; 
-    }
-    
- 
-    public int getStock() 
-    { 
-    	return Stock; 
-    }
-    
-    public double getUnitPrice() 
-    { 
-    	return UnitPrice; 
-    }
 	
     @Override
     public StringBuilder ReadTextFile() throws IOException

@@ -45,19 +45,19 @@ public class GenPOCtrl {
     private TextField PMtxt;
 
     @FXML
-    private TableColumn<Purchase_Order, String> POIName;
+    private TableColumn<PMGenPO, String> POIName;
 
     @FXML
-    private TableColumn<Purchase_Order, String> POid;
+    private TableColumn<PMGenPO, String> POid;
 
     @FXML
-    private TableColumn<Purchase_Order, Double> POprice;
+    private TableColumn<PMGenPO, Double> POprice;
 
     @FXML
-    private TableColumn<Purchase_Order, Integer> POqty;
+    private TableColumn<PMGenPO, Integer> POqty;
 
     @FXML
-    private TableColumn<Purchase_Order, String> POso;
+    private TableColumn<PMGenPO, String> POso;
 
     @FXML
     private TextField Pricetxt;
@@ -72,7 +72,7 @@ public class GenPOCtrl {
     private ComboBox<String> PRidCb;
     
     @FXML
-    private TableView<Purchase_Order> ViewPO;
+    private TableView<PMGenPO> ViewPO;
 
     
     
@@ -98,7 +98,7 @@ public class GenPOCtrl {
     	//Change Color on TableView 
     	ViewPO.setRowFactory(tableView -> new TableRow<>() {
     	    @Override
-    	    protected void updateItem(Purchase_Order item, boolean empty) {
+    	    protected void updateItem(PMGenPO item, boolean empty) {
     	        super.updateItem(item, empty);
     	        if (item == null || empty) {
     	            setStyle("");
@@ -178,15 +178,15 @@ public class GenPOCtrl {
     
     public void load() throws IOException 
     {
-    	Purchase_Order data= new Purchase_Order();
-    	ObservableList<Purchase_Order> obList= FXCollections.observableArrayList();
+    	PMGenPO data= new PMGenPO();
+    	ObservableList<PMGenPO> obList= FXCollections.observableArrayList();
     	String[] rows= data.ReadTextFile().toString().split("\n");
     	
     	for(String row:rows) 
     	{	String[] split=row.split(",");
     		if(split.length==7) 
     		{
-    			obList.add(new Purchase_Order(
+    			obList.add(new PMGenPO(
     					split[0],
     					split[1],
     					Integer.parseInt(split[2]),
@@ -213,7 +213,7 @@ public class GenPOCtrl {
     	
     	if(!CheckTxtbox(IdTxtbx,ItemsNameTxt,PMtxt,Pricetxt,QtyTxt)&& CbSelection()!=-1) 
     	{		int SelectedIndex= PRidCb.getSelectionModel().getSelectedIndex();
-		    	Purchase_Order data= new Purchase_Order(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText(),SelectedIndex);
+		    	PMGenPO data= new PMGenPO(IdTxtbx.getText(),ItemsNameTxt.getText(),Integer.parseInt(QtyTxt.getText()),Double.parseDouble(Pricetxt.getText()),PMtxt.getText(),SelectedIndex);
 		    	data.AddFunc();
 		    	if(data.checkingFunc()) 
 		    	{
@@ -270,7 +270,7 @@ public class GenPOCtrl {
     	if(selectedIndex>=0 && CbSelection()==-1) 
     	{
     		
-    		Purchase_Order del= new Purchase_Order(selectedIndex);
+    		PMGenPO del= new PMGenPO(selectedIndex);
     		del.DeleteFunc();
     		if(del.checkingFunc()) 
     		{	ViewPO.getItems().remove(selectedIndex);
@@ -309,7 +309,7 @@ public class GenPOCtrl {
     		String format= MessageFormat.format("{0},{1},{2},{3},{4},Pending,Supplier\n",IdTxtbx.getText(),ItemsNameTxt.getText(),QtyTxt.getText(),Pricetxt.getText(),PMtxt.getText());
     		
     		
-    		Purchase_Order edt= new Purchase_Order(selectedIndex,format);
+    		PMGenPO edt= new PMGenPO(selectedIndex,format);
     		edt.EditFunc();
     		
     		if(edt.checkingFunc()) 
@@ -345,7 +345,7 @@ public class GenPOCtrl {
     @FXML
     public void saveClick(MouseEvent event) {
     	int SelectionIndex= PRidCb.getSelectionModel().getSelectedIndex();
-    	Purchase_Order order= new Purchase_Order(SelectionIndex);    	
+    	PMGenPO order= new PMGenPO(SelectionIndex);    	
     	order.SaveFunc();
     	if(order.checkingFunc()) 
     	{
@@ -371,7 +371,7 @@ public class GenPOCtrl {
 
     @FXML
     public void CBoxAction(ActionEvent event) throws IOException {
-    	Purchase_Order Act= new Purchase_Order();
+    	PMGenPO Act= new PMGenPO();
     	
     	String Poid= PRidCb.getValue();
     	int SelectionIndex= PRidCb.getSelectionModel().getSelectedIndex();

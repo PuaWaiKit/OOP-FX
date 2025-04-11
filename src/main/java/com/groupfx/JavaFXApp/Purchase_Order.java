@@ -18,31 +18,24 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class Purchase_Order implements viewData, modifyData {
+public abstract class Purchase_Order implements viewData, modifyData {
 	private String Id,name,Pm;
 	private int Quantity;
 	private double Price;
 	private InputStream stream;
-	private String Filepath="Data/PurchaseOrder.txt";
+	protected String Filepath="Data/PurchaseOrder.txt";
 	protected boolean Checking=false;
 	private int LineNum;
 	private String newData;
 	private StringBuilder builder= new StringBuilder();
 	private int lineCount;
 	private int ClickCount;
-	private ObservableList<Purchase_Order> Pie= FXCollections.observableArrayList();
 	private String Status;
-
+	private String Supplier;
 	
 	public Purchase_Order() 
 	{
 		
-	}
-	
-	
-	public Purchase_Order(ObservableList<Purchase_Order> Pie) 
-	{
-		this.Pie=Pie;
 	}
 	
 	public Purchase_Order(int LineNum, String newData) 
@@ -66,7 +59,7 @@ public class Purchase_Order implements viewData, modifyData {
 		this.LineNum=LineNum;
 	}
 	
-	public Purchase_Order(String Id, String name, int Quantity, double Price, String Pm,String Status ) 
+	public Purchase_Order(String Id, String name, int Quantity, double Price, String Pm,String Status ) //click
 	{
 		this.Id=Id;
 		this.name=name;
@@ -74,6 +67,17 @@ public class Purchase_Order implements viewData, modifyData {
 		this.Price=Price;
 		this.Pm=Pm;
 		this.Status=Status;
+	}
+	
+	public Purchase_Order(String Id, String name, int Quantity, double Price, String Pm,String Status,String Supplier ) //click
+	{
+		this.Id=Id;
+		this.name=name;
+		this.Quantity=Quantity;
+		this.Price=Price;
+		this.Pm=Pm;
+		this.Status=Status;
+		this.Supplier=Supplier;
 	}
 	
 	public String getName() 
@@ -110,6 +114,18 @@ public class Purchase_Order implements viewData, modifyData {
 	{
 		return Status;
 	}
+	
+	public String getSupplier() 
+	{
+		return Supplier;
+	}
+	
+	
+//	public String IDGenerator(String PurchaseId, String prefex) 
+//	{
+//		
+//	}
+//	
 	
 	
 	
@@ -272,6 +288,15 @@ public class Purchase_Order implements viewData, modifyData {
 		
 	}
 	
+	/**
+	 * Add data to Cache.txt </br>
+	 * Default Settings:</br>
+	 * <ul>
+	 * <li>Status Pending</li>
+	 * <li>Supplier Supplier</li>
+	 * <li>Payment Unpaid</li>
+	 * </ul>
+	 * */
 	
 	@Override
 	public void AddFunc() 
@@ -289,7 +314,8 @@ public class Purchase_Order implements viewData, modifyData {
 				builder.append(Price).append(",");
 				builder.append(Pm).append(",");
 				builder.append("Pending").append(",");
-				builder.append("Supplier").append("\n");
+				builder.append("Supplier").append(",");
+				
 				writer.write(builder.toString());
 				//writer.newLine();
 				Checking=true;
@@ -326,6 +352,7 @@ public class Purchase_Order implements viewData, modifyData {
 						builder.append(dataNew[4]).append(",");
 						builder.append(dataNew[5]).append(",");
 						builder.append(dataNew[6]).append("\n");
+						
 					}
 				} 
 				catch (IOException e) 
@@ -419,6 +446,7 @@ public class Purchase_Order implements viewData, modifyData {
 								NewData.append(dataSet[4]).append(",");
 								NewData.append(dataSet[5]).append(",");
 								NewData.append(dataSet[6]).append("\n");
+								
 								lineCount++;
 							}
 							writer.write(NewData.toString());
@@ -579,34 +607,13 @@ public class Purchase_Order implements viewData, modifyData {
 		
 	
 	
+	/**
+	 * Read all Text File While Needs, abstract methods
+	 * @return StringBuilder 
+	 * @exception IOException
+	 * */
+	
 	@Override
-	public StringBuilder ReadTextFile() throws IOException
-	{
-		StringBuilder builder= new StringBuilder();
-		
-		BufferedReader reader= new BufferedReader(new FileReader(Filepath));
-		
-		String line;
-		while ((line=reader.readLine())!=null) 
-		{
-			if(line.trim().isEmpty()) continue; //Skip Empty Space/Data
-			
-			String[] data=line.split(",");
-			builder.append(data[0]).append(",");
-			builder.append(data[1]).append(",");
-			builder.append(data[2]).append(",");
-			builder.append(data[3]).append(",");
-			builder.append(data[4]).append(",");
-			builder.append(data[5]).append(",");
-			builder.append(data[6]).append("\n");
-		}
-		
-		
-		try (BufferedWriter ReadCache = new BufferedWriter(new FileWriter("Data/Cache.txt"))) {
-			ReadCache.write(builder.toString());
-		}
-		reader.close();
-		return builder;
-		
-	}
+	public abstract StringBuilder ReadTextFile() throws IOException;
+	
 }
