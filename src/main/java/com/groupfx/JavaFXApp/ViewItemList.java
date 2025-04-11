@@ -21,6 +21,13 @@ public abstract class ViewItemList implements viewData
 		
 	}
 	
+	public ViewItemList(String ID, String Name,int Stock,double UnitPrice ) 
+	{
+	    this.ID = ID;
+        this.Name = Name;
+        this.Stock = Stock;
+        this.UnitPrice = UnitPrice;
+	}
 	
 	
 	public ViewItemList(String ID, String Name, String Supplier,int Stock,double UnitPrice ) 

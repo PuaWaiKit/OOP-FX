@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Purchase_Req  implements viewData{
+public abstract class Purchase_Req  implements viewData{
 	private String Prid;
 	private String ItemsId;
 	private int Quantity;
@@ -58,25 +58,8 @@ public class Purchase_Req  implements viewData{
 	}
 	
 	@Override
-	public StringBuilder ReadTextFile() throws IOException
-	{
-		StringBuilder builder= new StringBuilder();
-		String line;
-		try(BufferedReader reader= new BufferedReader(new FileReader("Data/prList.txt")))
-		{
-			while((line=reader.readLine())!=null) 
-			{
-				String[] data= line.split(",");
-				builder.append(data[0]).append(",");
-				builder.append(data[1]).append(",");
-				builder.append(data[2]).append(",");
-				builder.append(data[3]).append(",");
-				builder.append(data[4]).append(",");
-				builder.append(data[5]).append("\n");
-			}
-		}
-		return builder;
-	}
+	public abstract StringBuilder ReadTextFile() throws IOException;
+	
 	
 	
 }

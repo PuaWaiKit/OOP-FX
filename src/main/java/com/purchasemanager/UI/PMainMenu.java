@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import com.PM.Sources.PMGenPO;
 import com.groupfx.JavaFXApp.Purchase_Order;
 
 import javafx.animation.KeyFrame;
@@ -84,7 +85,7 @@ public class PMainMenu {
     
     public void SettingPieChart() throws IOException 
     {
-    	Purchase_Order Data= new Purchase_Order();
+    	PMGenPO Data= new PMGenPO();
     	String[]PrData= Data.PieCData().toString().split("\n");
     	int PendingNum=0,ApproveNum=0;
     	for(String Loop: PrData) 
@@ -112,7 +113,7 @@ public class PMainMenu {
     
     public String SetText() throws IOException 
     {
-    	Purchase_Order Data= new Purchase_Order();
+    	PMGenPO Data= new PMGenPO();
     	BufferedReader reader= new BufferedReader(new FileReader("Data/Log.txt"));
     	String line;
     	int Approve=0,Rejected=0,Pending=0;

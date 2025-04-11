@@ -171,13 +171,19 @@ public class financeCtrl implements Initializable {
     }
 
     @FXML
-    void handleChangePR(ActionEvent event) {
-
+    public void handleChangePR(ActionEvent event) throws IOException {
+     	if(SwitchAlert()) 
+    	{
+    		loadNewContent("/fxml/fmViewPR.fxml");
+    	}
     }
 
     @FXML
-    void handleChangePayment(ActionEvent event) {
-
+    public void handleChangePayment(ActionEvent event) throws IOException {
+    	if(SwitchAlert()) 
+    	{
+    		loadNewContent("/fxml/fmPayment.fxml");
+    	}
     }
 
     private boolean drawerOpen = false;

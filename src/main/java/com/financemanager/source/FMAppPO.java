@@ -93,7 +93,31 @@ public class FMAppPO extends Purchase_Order{
 	@Override
 	public StringBuilder ReadTextFile() throws IOException
 	{
-		return super.ReadTextFile();
+		StringBuilder builder= new StringBuilder();
+		
+		BufferedReader reader= new BufferedReader(new FileReader(Filepath));
+		
+		String line;
+		while ((line=reader.readLine())!=null) 
+		{
+			if(line.trim().isEmpty()) continue; //Skip Empty Space/Data
+			
+			String[] data=line.split(",");
+			builder.append(data[0]).append(",");
+			builder.append(data[1]).append(",");
+			builder.append(data[2]).append(",");
+			builder.append(data[3]).append(",");
+			builder.append(data[4]).append(",");
+			builder.append(data[5]).append(",");
+			builder.append(data[6]).append("\n");
+		}
+		
+		
+		try (BufferedWriter ReadCache = new BufferedWriter(new FileWriter("Data/Cache.txt"))) {
+			ReadCache.write(builder.toString());
+		}
+		reader.close();
+		return builder;
 	}
 	
 	
@@ -213,7 +237,7 @@ public class FMAppPO extends Purchase_Order{
 					
 				}else 
 				{check=false;
-				 System.out.println("HHH");
+				
 				}
 				
 				

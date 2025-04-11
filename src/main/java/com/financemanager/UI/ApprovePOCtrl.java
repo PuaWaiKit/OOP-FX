@@ -73,6 +73,7 @@ public class ApprovePOCtrl {
     	AppPM.setCellValueFactory(new PropertyValueFactory<>("pm"));
     	AppStat.setCellValueFactory(new PropertyValueFactory<>("status"));
     	AppIdBx.setEditable(false);
+    	ViewPO.setSortPolicy(null);
     	load();
     }
 
