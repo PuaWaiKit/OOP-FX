@@ -1,16 +1,23 @@
 package com.financemanager.UI;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.financemanager.source.FMPayment;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
@@ -64,6 +71,7 @@ public class FMPaymentCtrl {
     @FXML
     private TableView<FMPayment> ViewPO;
     
+    private List<String> Combo=new ArrayList<>();
     
     public void initialize() throws IOException
     {
@@ -82,36 +90,114 @@ public class FMPaymentCtrl {
     	FMPayment Source= new FMPayment();
     	ObservableList<FMPayment> obList= FXCollections.observableArrayList();
     	String[] firstData= Source.LoadData().toString().split("\n");
-    	for(String rows: firstData) 
+    
+    	
+    	if(!Source.isArrayBlank(firstData)) 
     	{
-    		String[] realData= rows.split(",");
-    		obList.add(new FMPayment(
-    					realData[0],
-    					realData[1],
-    					Integer.parseInt(realData[2]),
-    					Double.parseDouble(realData[3]),
-    					realData[4],
-    					realData[5]
-    				));
-    	}
-    	ViewPO.setItems(obList);
+	    	for(String rows: firstData) 
+	    	{
+	    		String[] realData= rows.split(",");
+	    		
+	    		obList.add(new FMPayment(
+	    					realData[0],
+	    					realData[1],
+	    					Integer.parseInt(realData[2]),
+	    					Double.parseDouble(realData[3]),
+	    					realData[4],
+	    					realData[5]
+	    				));
+	    	}
+	    
+	    	ViewPO.setItems(obList);
+	    }else 
+	    {
+	    	ViewPO.setPlaceholder(new Label("All Payments have been made !"));
+	    }
     }
     
     
 
     @FXML
-    void ApproveClick(MouseEvent event) {
-
+   public void ApproveClick(MouseEvent event) throws IOException {
+    	FMPayment Source= new FMPayment();
+    	this.Combo=Source.SetData();
+    	Source.Approve(PayId.getText());
+    	if(Source.checkingFunc()) 
+    	{
+    		
+    		
+    		Alert alert= new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Edit");
+    		alert.setContentText("Edit Sucess, Please Save Before Leaving!");
+    		alert.showAndWait();
+    		ViewPO.getSelectionModel().clearSelection();
+    	
+    		
+    	}
+    	else 
+    	{
+    		Alert alert= new Alert(AlertType.WARNING);
+    		alert.setTitle("Edit");
+    		alert.setContentText("Error Occur or No Changes Made! Please Make Sure the PO Status is not Approve");
+    		alert.showAndWait();
+    	}
     }
 
     @FXML
     void RefreshClick(MouseEvent event) {
-
+    	ViewPO.getSelectionModel().clearSelection();
     }
 
     @FXML
-    void SaveClick(MouseEvent event) {
-
+    public void SaveClick(MouseEvent event) throws IOException {
+//    	FMPayment DataSource= new FMPayment();
+//    	List<String> Combo=new ArrayList<>();
+//    	Combo=DataSource.SetData();
+    	FMPayment Source= new FMPayment(PayTot.getText(),Combo);
+    	Source.SaveFunc();
+    	if(Source.checkingFunc()) 
+    	{
+    		
+    		
+    		Alert alert= new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Saving");
+    		alert.setContentText("Save!");
+    		alert.showAndWait();
+    		ViewPO.getSelectionModel().clearSelection();
+    	
+    		
+    	}
+    	else 
+    	{
+    		Alert alert= new Alert(AlertType.WARNING);
+    		alert.setTitle("Saving");
+    		alert.setContentText("Error Occur or No Changes Made! Please Make Sure the PO Status is not Approve");
+    		alert.showAndWait();
+    	}
+    }
+    
+    @FXML
+   public void RowClick(MouseEvent event) 
+    {
+    	FMPayment RowSelection= ViewPO.getSelectionModel().getSelectedItem();
+    	if(RowSelection!=null) 
+    	{
+    		PayId.setText(RowSelection.getId());
+    		PayItem.setText(RowSelection.getName());
+    		PayQty.setText(Integer.toString(RowSelection.getQuantity()));
+    		PaySupp.setText(RowSelection.getPm());
+    		PayUp.setText(Double.toString(RowSelection.getPrice()));
+    		
+    		double total = RowSelection.getPrice() * RowSelection.getQuantity();
+    		BigDecimal bd = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP); //round to two decimal point
+    		PayTot.setText(bd.toPlainString()); //avoided scientific calculations
+    		PayId.setEditable(false);
+    		PayItem.setEditable(false);
+    		PayQty.setEditable(false);
+    		PaySupp.setEditable(false);
+    		PayUp.setEditable(false);
+    		PayTot.setFocusTraversable(false);
+    	}
     }
 
 }

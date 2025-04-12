@@ -58,7 +58,8 @@ public class PMGenPO extends Purchase_Order{
 			builder.append(data[3]).append(",");
 			builder.append(data[4]).append(",");
 			builder.append(data[5]).append(",");
-			builder.append(data[6]).append("\n");
+			builder.append(data[6]).append(",");
+			builder.append(data[7]).append("\n");
 		}
 		
 		
