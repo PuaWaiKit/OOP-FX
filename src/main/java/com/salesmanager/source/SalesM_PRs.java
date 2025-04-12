@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import com.groupfx.JavaFXApp.*;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class SalesM_PRs  extends SalesM implements viewData, modifyData {
 	
@@ -93,6 +95,45 @@ public class SalesM_PRs  extends SalesM implements viewData, modifyData {
 		
 	}
 	
+    private boolean containsID(ObservableList<SalesM_PRs> List, String id) {
+        for (SalesM_PRs pr : List) {
+            if (pr.getId().equals(id)) {
+            	
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void insertCheck(SalesM_PRs selectedSupp) {
+    	
+    	try {
+	    	if(containsID(cacheList, Id) && selectedSupp != null) {
+
+		    	EditFunc();
+		    	
+	    	} else if (!(containsID(cacheList, Id)) && selectedSupp == null){	
+	    		
+			    AddFunc();
+			    
+	    	} else {
+	    		
+	    		Alert alert = new Alert(AlertType.INFORMATION);
+	    		alert.setTitle("Information");
+	    		alert.setHeaderText(null);
+	    		alert.setContentText("Please select the supplier if you want to edit\n OR \n If you want to add a supplier please dont repeat the ID");
+	    		alert.showAndWait();
+	    	}
+    	} catch (Exception e) {
+    		
+    		Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(String.format("Error: %s", e.toString()));
+            alert.showAndWait();
+    	}
+    }
+    
 	@Override
 	public void AddFunc() {
 		

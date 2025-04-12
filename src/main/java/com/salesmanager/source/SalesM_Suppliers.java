@@ -12,6 +12,8 @@ import com.groupfx.JavaFXApp.modifyData;
 import com.groupfx.JavaFXApp.viewData;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class SalesM_Suppliers implements viewData, modifyData{
 	
@@ -24,7 +26,7 @@ public class SalesM_Suppliers implements viewData, modifyData{
 	//Variable for the modification
 	private int selectedIndex;
 	private String resultString;
-	private ObservableList<SalesM_Suppliers> cachelist;
+	private ObservableList<SalesM_Suppliers> cacheList;
 	
 	public SalesM_Suppliers() {
 		
@@ -38,26 +40,42 @@ public class SalesM_Suppliers implements viewData, modifyData{
 	public SalesM_Suppliers(int selectedIndex, ObservableList<SalesM_Suppliers> cacheList) {
 		
 		this.selectedIndex = selectedIndex;
-		this.cachelist = cacheList;
+		this.cacheList = cacheList;
 	}
 	
-	public SalesM_Suppliers(String id, String name, String contactNum, String address, String item) {
+	public SalesM_Suppliers(String id, String name, String contactNum, String address) {
         this.Id = id;
         this.Name = name;
         this.ContactNum = contactNum;
         this.Address = address;
-        this.Item = item;
     }
 	
-	public SalesM_Suppliers(String id, String name, String contactNum, String address, String item, ObservableList<SalesM_Suppliers> cacheList, int Index) {
+	public SalesM_Suppliers(String id, String name, String contactNum, String address, String Item) {
         this.Id = id;
         this.Name = name;
         this.ContactNum = contactNum;
         this.Address = address;
-        this.Item = item;
-        this.cachelist = cacheList;
+        this.Item = Item;
+    }
+	
+	public SalesM_Suppliers(String id, String name, String contactNum, String address, ObservableList<SalesM_Suppliers> cacheList, int Index) {
+        this.Id = id;
+        this.Name = name;
+        this.ContactNum = contactNum;
+        this.Address = address;
+        this.cacheList = cacheList;
         this.selectedIndex = Index;
     }
+	
+//	public SalesM_Suppliers(String id, String name, String contactNum, String address, String item, ObservableList<SalesM_Suppliers> cacheList, int Index) {
+//        this.Id = id;
+//        this.Name = name;
+//        this.ContactNum = contactNum;
+//        this.Address = address;
+//        this.Item = item;
+//        this.cacheList = cacheList;
+//        this.selectedIndex = Index;
+//    }
 	
 	public String getId() { return Id; }
     public String getName() { return Name; }
@@ -86,17 +104,46 @@ public class SalesM_Suppliers implements viewData, modifyData{
 		return builder;
 		
 	}
+    
+    private boolean containsID(ObservableList<SalesM_Suppliers> List, String id, String itemId) {
+        for (SalesM_Suppliers supplier : List) {
+            if (supplier.getId().equals(id) || supplier.getItem().equals(itemId)) {
+            	
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void insertCheck(SalesM_Suppliers selectedSupp) {
+    	
+	    	if(containsID(cacheList, Id, Item) && selectedSupp != null) {
+	
+		    	EditFunc();
+		    	
+	    	} else if (!(containsID(cacheList, Id, Item)) && selectedSupp == null){	
+	    	
+			    AddFunc();
+			    
+	    	} else {
+	    		
+	    		Alert alert = new Alert(AlertType.INFORMATION);
+	    		alert.setTitle("Information");
+	    		alert.setHeaderText(null);
+	    		alert.setContentText("Please select the supplier if you want to edit\n OR \n If you want to add a supplier please dont repeat the ID");
+	    		alert.showAndWait();
+	    	}
+    }
 	
 	@Override
 	public void AddFunc() {
 		
-		cachelist.add(new SalesM_Suppliers(		
+		cacheList.add(new SalesM_Suppliers(		
 				
 				Id,
 				Name,
 				ContactNum,
-				Address,
-				Item
+				Address
 				
 				));
 		
@@ -105,13 +152,12 @@ public class SalesM_Suppliers implements viewData, modifyData{
 	@Override
 	public void EditFunc() {
 		
-		cachelist.set(selectedIndex, new SalesM_Suppliers(		
+		cacheList.set(selectedIndex, new SalesM_Suppliers(		
 				
 				Id,
 				Name,
 				ContactNum,
-				Address,
-				Item
+				Address
 				
 				));
 		
@@ -120,7 +166,7 @@ public class SalesM_Suppliers implements viewData, modifyData{
 	@Override
 	public void DeleteFunc() {
 		
-		cachelist.remove(selectedIndex);
+		cacheList.remove(selectedIndex);
 	}
 	
 	@Override
@@ -141,6 +187,8 @@ public class SalesM_Suppliers implements viewData, modifyData{
 	
 	public ObservableList<SalesM_Suppliers>  getCacheList() {
 		
-		return cachelist;
+		return cacheList;
 	}
+	
+	
 }

@@ -54,7 +54,9 @@ public class smItemsCtrl {
     @FXML
     private BarChart<?,?> viewStockChart;
     
-    ObservableList<SalesM_Items> cacheList = FXCollections.observableArrayList(); 
+    private ObservableList<SalesM_Items> cacheList = FXCollections.observableArrayList(); 
+    
+    private ObservableList<SalesM_Suppliers> suppItemList = FXCollections.observableArrayList();
     
     private HashMap<String, Integer> chartStore = new HashMap<>();
     
@@ -91,6 +93,12 @@ public class smItemsCtrl {
     			chartStore.put(spl[1], Integer.parseInt(spl[3]));
     		}
     	}
+    	
+//    	smSuppsCtrl obj = new smSuppsCtrl();
+//    	obj.load();
+//    	suppItemList = obj.getSuppItemList();
+//    	System.out.println(suppItemList);
+    	
     	
     	cacheList = itemList;
     	viewItemTable.setItems(cacheList);
@@ -162,19 +170,18 @@ public class smItemsCtrl {
     	SalesM_Items selectedSupp = viewItemTable.getSelectionModel().getSelectedItem();	
     	int selectedSuppIndex = viewItemTable.getSelectionModel().getSelectedIndex();
     	
+    	try {
+    		
     	SalesM_Items dataModify = new SalesM_Items(txtItemsID.getText().trim(),
 				txtItemsName.getText().trim(),
 				txtItemSupp.getText().trim(),
-				Integer.parseInt(txtItemsStock.getText()),
-				Double.parseDouble(txtItemsUP.getText()),
+				Integer.parseInt(txtItemsStock.getText().trim()),
+				Double.parseDouble(txtItemsUP.getText().trim()),	
 				cacheList, selectedSuppIndex
 				);
     	
     	dataModify.insertCheck(
-    			
-    			txtItemsID.getText().trim(),
-				txtItemsName.getText().trim(),
-				txtItemSupp.getText().trim(),
+    		
 				selectedSupp
 				
 				);
@@ -184,13 +191,21 @@ public class smItemsCtrl {
     	viewItemTable.setItems(cacheList);
     	clearTextField();
     	
+    	} catch (Exception e) {
+    		
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setContentText("Okay this guy tried to remove something that doesnt exist");
+    		alert.showAndWait();
+    	}
+    	
     }
     
     @FXML
     public void deleteClick() {
-    	int selectedSuppIndex = viewItemTable.getSelectionModel().getSelectedIndex();
     	
+    	int selectedSuppIndex = viewItemTable.getSelectionModel().getSelectedIndex();
     	SalesM_Items delIndex = new SalesM_Items(selectedSuppIndex, cacheList);
+    	
     	try {
     		
     		delIndex.DeleteFunc();

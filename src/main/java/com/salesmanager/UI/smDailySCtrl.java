@@ -239,65 +239,94 @@ public class smDailySCtrl {
     @FXML
     public void addeditClick() {
     	
-    	SalesM_DailyS selectedSupp = viewSalesTable.getSelectionModel().getSelectedItem();	
+    	SalesM_DailyS selectedDS = viewSalesTable.getSelectionModel().getSelectedItem();	
     	int selectedSuppIndex = viewSalesTable.getSelectionModel().getSelectedIndex();
     	
     	try {
-	    	if(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtDate.getText().trim()) && selectedSupp != null) {
-	
-	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
-	    				
-	    				txtDSID.getText().trim(),
-	    				txtitemID.getText().trim(),
-	    				txtDate.getText().trim(),
-	    				Integer.parseInt(txttotalSales.getText()),
-	    				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
-	    				cacheList, 
-	    				selectedSuppIndex,
-	    				oriSales
-	    				);
-	    		
-		    	dataEntry.EditFunc();
-		    	ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
-		    	cacheList = tempList;
-		    	viewSalesTable.setItems(cacheList);
-		    	clearTextField();
-		    	
-	    	} else if (!(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtDate.getText().trim())) && selectedSupp == null){	
-	    		
-	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
-	    				
-	    				txtDSID.getText().trim(),
-	    				txtitemID.getText().trim(),
-	    				txtDate.getText().trim(),
-	    				Integer.parseInt(txttotalSales.getText()),
-	    				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
-	    				cacheList, 
-	    				selectedSuppIndex
-	    				);
-	    		
-			    dataEntry.AddFunc();
-			    ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
-			    cacheList = tempList;
-			    viewSalesTable.setItems(cacheList);
-			    clearTextField();
-	    	} else {
-	    		
-	    		Alert alert = new Alert(AlertType.INFORMATION);
-	    		alert.setTitle("Information");
-	    		alert.setHeaderText(null);
-	    		alert.setContentText("Please select the supplier if you want to edit\n OR \n If you want to add a supplier please dont repeat the ID");
-	    		alert.showAndWait();
-	    	}
+		SalesM_DailyS dataEntry = new SalesM_DailyS(
+				
+				txtDSID.getText().trim(),
+				txtitemID.getText().trim(),
+				txtDate.getText().trim(),
+				Integer.parseInt(txttotalSales.getText().trim()),
+				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
+				cacheList, 
+				selectedSuppIndex,
+				oriSales
+				);
+		
+		dataEntry.insertCheck(selectedDS);
+		ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
+	    cacheList = tempList;
+	    viewSalesTable.setItems(cacheList);
+	    clearTextField();
+		
+		
     	} catch (Exception e) {
     		
-    		Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(String.format("Error: %s", e.toString()));
-            alert.showAndWait();
+	    		Alert alert = new Alert(AlertType.ERROR);
+	    		alert.setTitle("Error");
+	    		alert.setHeaderText(null);
+	    		alert.setContentText(String.format("Error: %s", e.toString()));
+	    		alert.showAndWait();
     	}
+    	
     }
+//    	try {
+//	    	if(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtDate.getText().trim()) && selectedSupp != null) {
+//	
+//	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
+//	    				
+//	    				txtDSID.getText().trim(),
+//	    				txtitemID.getText().trim(),
+//	    				txtDate.getText().trim(),
+//	    				Integer.parseInt(txttotalSales.getText()),
+//	    				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
+//	    				cacheList, 
+//	    				selectedSuppIndex,
+//	    				oriSales
+//	    				);
+//	    		
+//		    	dataEntry.EditFunc();
+//		    	ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
+//		    	cacheList = tempList;
+//		    	viewSalesTable.setItems(cacheList);
+//		    	clearTextField();
+//		    	
+//	    	} else if (!(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtDate.getText().trim())) && selectedSupp == null){	
+//	    		
+//	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
+//	    				
+//	    				txtDSID.getText().trim(),
+//	    				txtitemID.getText().trim(),
+//	    				txtDate.getText().trim(),
+//	    				Integer.parseInt(txttotalSales.getText()),
+//	    				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
+//	    				cacheList, 
+//	    				selectedSuppIndex
+//	    				);
+//	    		
+//			    dataEntry.AddFunc();
+//			    ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
+//			    cacheList = tempList;
+//			    viewSalesTable.setItems(cacheList);
+//			    clearTextField();
+//	    	} else {
+//	    		
+//	    		Alert alert = new Alert(AlertType.INFORMATION);
+//	    		alert.setTitle("Information");
+//	    		alert.setHeaderText(null);
+//	    		alert.setContentText("Please select the supplier if you want to edit\n OR \n If you want to add a supplier please dont repeat the ID");
+//	    		alert.showAndWait();
+//	    	}
+//    	} catch (Exception e) {
+//    		
+//    		Alert alert = new Alert(AlertType.ERROR);
+//            alert.setTitle("Error");
+//            alert.setHeaderText(null);
+//            alert.setContentText(String.format("Error: %s", e.toString()));
+//            alert.showAndWait();
+//    	}
     
     @FXML
     public void deleteClick() {

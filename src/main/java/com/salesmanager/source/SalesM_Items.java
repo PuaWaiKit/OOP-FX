@@ -21,7 +21,8 @@ public class SalesM_Items implements viewData, modifyData{
 	private String Supplier;
 	private int Stock;
 	protected StringBuilder builder;
-	private ObservableList<SalesM_Items> cacheList = FXCollections.observableArrayList(); 
+	private ObservableList<SalesM_Items> cacheList = FXCollections.observableArrayList();
+	private ObservableList<SalesM_Items> suppItemList = FXCollections.observableArrayList(); 
 	private int index;
 	private String resultString;
 	
@@ -117,6 +118,8 @@ public class SalesM_Items implements viewData, modifyData{
 				UnitPrice
 				
 				));
+		
+		
 	}
 	
 	@Override
@@ -155,14 +158,14 @@ public class SalesM_Items implements viewData, modifyData{
         }
 	}
 	
-	public void insertCheck(String txtItemsID, String txtItemsName, String txtItemSupp, SalesM_Items selectedSupp) {
+	public void insertCheck(SalesM_Items selectedSupp) {
 		
-		if(containsID(cacheList, txtItemsID, txtItemsName, txtItemSupp) && selectedSupp != null) {
+		if(containsID(cacheList, ID, Name, Supplier) && selectedSupp != null) {
     		
 	    	EditFunc();
-	     
 	    	
-    	} else if (!(containsID(cacheList, txtItemsID.trim(), txtItemsName.trim(), txtItemSupp.trim())) && selectedSupp == null){	
+	    	
+    	} else if (!(containsID(cacheList, ID, Name, Supplier)) && selectedSupp == null){	
     		
 		    AddFunc();
 		    
