@@ -98,6 +98,8 @@ public class FMPayment extends Purchase_Order {
 		return Status;
 	}
 	
+	
+	
 	public List<String> SetData() throws IOException 
 	{	
 		List<String> Data=new ArrayList<>();
@@ -109,6 +111,8 @@ public class FMPayment extends Purchase_Order {
 		}
 		return Data;
 	}
+	
+	
 	
 	public StringBuffer LoadData() throws IOException
 	{	
@@ -139,10 +143,6 @@ public class FMPayment extends Purchase_Order {
 	
 	public void Approve(String Id) throws IOException 
 	{	
-		
-		
-		
-		
 		PStatus="Approve";
 		LineNum=super.LineCount(Id);
 		String[] NewDatas= super.POStatus(LineNum).toString().split(",");
@@ -184,7 +184,13 @@ public class FMPayment extends Purchase_Order {
 			BufferedWriter writePayment= new BufferedWriter(new FileWriter("Data/Payment.txt",true));
 					
 					String[] CacheData= oldCache.toArray(new String[0]);
-				
+				    List<String> getId= Files.readAllLines(Paths.get("Data/Payment.txt"));
+				    int LastId=super.getLastIdNum(getId,"PY");
+				    
+					LastId++;
+					String NewId= String.format("PY%03d", LastId); //Start with %, Use 0 to fill length is 3 and decimal based
+				    
+					buffer.append(NewId).append(",");
 					buffer.append(CacheData[0]).append(",");
 					buffer.append(CacheData[1]).append(",");
 					buffer.append(CacheData[2]).append(",");
@@ -210,6 +216,26 @@ public class FMPayment extends Purchase_Order {
 		}
 	}
 	
-	
-	
+//	@Deprecated
+//	public int getLastIdNum(List<String> lines) 
+//	{
+//		if(lines.isEmpty()) return 0;
+//		
+//		String lastLine=lines.get(lines.size()-1);//get last line (Total-1) cuz start in 0
+//		String[] parts=lastLine.split(",");
+//		try 
+//		{
+//			if(parts[0].startsWith("PY")) 
+//			{
+//				return Integer.parseInt(parts[0].substring(2));
+//			}
+//		} catch (NumberFormatException e) 
+//		{
+//			e.printStackTrace();
+//			return 0;
+//		}
+//		
+//		return 0;
+//	}
+//	
 }

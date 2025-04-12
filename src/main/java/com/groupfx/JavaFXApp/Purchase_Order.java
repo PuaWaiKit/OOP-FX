@@ -200,6 +200,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 	 * <li>6 Supplier</li>
 	 * <li>7 Payment Status</li>
 	 * </ul>
+	 * Overloading from POStatus() 
 	 * */
 	
 	
@@ -234,6 +235,10 @@ public abstract class Purchase_Order implements viewData, modifyData {
 		return buffer ;
 	}
 	
+	/**
+	 * Get Purchase Requisition ID from prList.txt
+	 * @return StringBuilder--PRID
+	 * */
 	public StringBuilder RetrivePR() throws IOException
 	{	String line;
 	
@@ -251,7 +256,10 @@ public abstract class Purchase_Order implements viewData, modifyData {
 	
 	
 	/**
-	 * Get Items Code/PrID/Qty/Status/Date from PRList TXT *
+	 * Get Items Code/PrID/Qty/Status/Date from PRList TXT 
+	 * 
+	 * @return 4 data in String Builder---0 PRID  1 ItemsCode 2 Quantity 3 Sales Manager 4 Status(Approve/Pending)
+	 * 
 	 */
 	public StringBuffer RetriveItemsID(int SelectionNum) throws IOException
 	{	String line;
@@ -280,7 +288,8 @@ public abstract class Purchase_Order implements viewData, modifyData {
 	}
 	
 	/**
-	 * Get Items ID from TXT *
+	 * Get Items ID from TXT <br>
+	 * <strong>Return Items ID Only</strong>
 	 */
 	public StringBuilder RetriveItems(String PRCode, String ItemsCode) throws IOException
 	{	String line;
@@ -355,7 +364,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 			//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
 			//writer.write(Data);
 			String[] Status= RetriveItemsID(LineNum).toString().split(",");
-			if(!CacheChecking() && Status[4].equals("Pending")) 
+			if( Status[4].equals("Pending")) //!CacheChecking() &&
 			{
 				builder.append(Id).append(",");
 				builder.append(name).append(",");
@@ -485,12 +494,17 @@ public abstract class Purchase_Order implements viewData, modifyData {
 							//String Data= MessageFormat.format("{0},{1}.{2},{3},{4}",Id,name,Quantity,Price,Pm);
 							//writer.write(Data);
 							String line;
+							List<String> AutoId=Files.readAllLines(Paths.get(Filepath));
+							int IncrementId= getLastIdNum(AutoId,"PO");
 							
 							while ((line=reader.readLine())!=null) 
 							{	
 								if(line.trim().isBlank()) {continue;}
 								String[] dataSet= line.split(",");
-								NewData.append(dataSet[0]).append(",");
+								++IncrementId;
+								String NewId=String.format("PO%03d", IncrementId);
+								
+								NewData.append(NewId).append(",");
 								NewData.append(dataSet[1]).append(",");
 								NewData.append(dataSet[2]).append(",");
 								NewData.append(dataSet[3]).append(",");
@@ -551,6 +565,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 							}
 							Checking=true;
 							BufferedWriter Delete= new BufferedWriter(new FileWriter("Data/Cache.txt"));
+							Delete.close();
 							
 					}else {Checking=false;}
 						
@@ -662,6 +677,30 @@ public abstract class Purchase_Order implements viewData, modifyData {
 			}
 		}
 		
+	/**
+	 * Get the last id from the Txt File and Return back
+	 * @exception NumberFormatException
+	 * */
+	public int getLastIdNum(List<String> lines, String Prefix) 
+	{
+		if(lines.isEmpty()) return 0;
+		
+		String lastLine=lines.get(lines.size()-1);//get last line (Total-1) cuz start in 0
+		String[] parts=lastLine.split(",");
+		try 
+		{
+			if(parts[0].startsWith(Prefix)) 
+			{
+				return Integer.parseInt(parts[0].substring(2));
+			}
+		} catch (NumberFormatException e) 
+		{
+			e.printStackTrace();
+			return 0;
+		}
+		
+		return 0;
+	}
 	
 	
 	/**

@@ -170,6 +170,7 @@ public class GenPOCtrl {
     		
     	}
     	
+    	
 	    	
     	reader.close();
     	return Name;
@@ -223,7 +224,7 @@ public class GenPOCtrl {
 		    		alert.setContentText("Adding Sucessfull, Please Save Before Leaving !");
 		    		alert.showAndWait();
 		    		ViewPO.getSelectionModel().clearSelection(); //clear selection
-		    		CleanTextbox(IdTxtbx,ItemsNameTxt,Pricetxt,QtyTxt);
+		    		CleanTextbox(ItemsNameTxt,Pricetxt,QtyTxt);
 		    	
 		    	}
 		    	else 
@@ -306,7 +307,7 @@ public class GenPOCtrl {
     	int selectedIndex=ViewPO.getSelectionModel().getSelectedIndex();
     	if(selectedIndex>=0 && CbSelection()==-1) 
     	{
-    		String format= MessageFormat.format("{0},{1},{2},{3},{4},Pending,Supplier\n",IdTxtbx.getText(),ItemsNameTxt.getText(),QtyTxt.getText(),Pricetxt.getText(),PMtxt.getText());
+    		String format= MessageFormat.format("{0},{1},{2},{3},{4},Pending,Supplier,Checking\n",IdTxtbx.getText(),ItemsNameTxt.getText(),QtyTxt.getText(),Pricetxt.getText(),PMtxt.getText());
     		
     		
     		PMGenPO edt= new PMGenPO(selectedIndex,format);
@@ -336,6 +337,7 @@ public class GenPOCtrl {
     public void RefClick(MouseEvent event) throws IOException {
     	PRidCb.getSelectionModel().select(-1);
     	PRidCb.getItems().clear();
+    	CleanTextbox(IdTxtbx,ItemsNameTxt,Pricetxt,QtyTxt);
     	load();
     	
     }
@@ -385,6 +387,8 @@ public class GenPOCtrl {
     			QtyTxt.setText(ItemsId[2]);
     			ItemsNameTxt.setText(itemsChecking[0]);
     			ItemsNameTxt.setEditable(false);
+    			IdTxtbx.setText("AUTO");
+    	    	IdTxtbx.setEditable(false);
     	}
     	else 
     	{
