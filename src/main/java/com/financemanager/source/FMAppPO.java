@@ -139,7 +139,7 @@ public class FMAppPO extends Purchase_Order{
 	 * *
 	 * @param selectedIndex
 	 * @return StringBuffer
-	 * GET PO ID and Staus and Supplier from PurchaseOrder.txt (FM Function)
+	 * GET PO ID and Status and Supplier from PurchaseOrder.txt (FM Function)
 	 */
 	
 	public StringBuffer GetPoId(int selectedIndex) throws IOException
