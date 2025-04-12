@@ -83,6 +83,7 @@ public class SalesM_Suppliers implements viewData, modifyData{
     public String getAddress() { return Address; }
     public String getItem() { return Item; }
 	
+    public void setItem(String Item) { this.Item = Item; }
     @Override
 	public StringBuilder ReadTextFile() throws IOException
 	{	
