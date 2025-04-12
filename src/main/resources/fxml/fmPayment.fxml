@@ -17,7 +17,7 @@
    <children>
       <AnchorPane layoutX="15.0" layoutY="15.0" prefHeight="670.0" prefWidth="950.0" style="-fx-background-color: #ffffff;" styleClass="loginbounded" stylesheets="@../css/styles.css">
          <children>
-            <TableView fx:id="ViewPO" layoutX="19.0" layoutY="90.0" prefHeight="470.0" prefWidth="538.0" stylesheets="@../css/tableStyle.css">
+            <TableView fx:id="ViewPO" layoutX="19.0" layoutY="90.0" onMouseClicked="#RowClick" prefHeight="470.0" prefWidth="538.0" stylesheets="@../css/tableStyle.css">
               <columns>
                 <TableColumn fx:id="POId" prefWidth="75.0" text="ID" />
                 <TableColumn fx:id="PoItem" prefWidth="75.0" text="Item ID" />

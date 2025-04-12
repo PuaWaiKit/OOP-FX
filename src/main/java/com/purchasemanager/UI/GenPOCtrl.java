@@ -184,7 +184,7 @@ public class GenPOCtrl {
     	
     	for(String row:rows) 
     	{	String[] split=row.split(",");
-    		if(split.length==7) 
+    		if(split.length==8) 
     		{
     			obList.add(new PMGenPO(
     					split[0],

@@ -25,13 +25,15 @@ public abstract class Purchase_Order implements viewData, modifyData {
 	private InputStream stream;
 	protected String Filepath="Data/PurchaseOrder.txt";
 	protected boolean Checking=false;
-	private int LineNum;
-	private String newData;
+	protected int LineNum;
+	protected String newData;
 	private StringBuilder builder= new StringBuilder();
 	private int lineCount;
 	private int ClickCount;
 	private String Status;
 	private String Supplier;
+	protected String PaymentStatus="Checking";
+	protected String PStatus="Pending";
 	
 	public Purchase_Order() 
 	{
@@ -120,12 +122,35 @@ public abstract class Purchase_Order implements viewData, modifyData {
 		return Supplier;
 	}
 	
+	public void setClickCount(int ClickCount) 
+	{
+		this.ClickCount=ClickCount;
+	}
 	
 //	public String IDGenerator(String PurchaseId, String prefex) 
 //	{
 //		
 //	}
 //	
+	
+	
+	public int LineCount(String Id) throws IOException
+	{	String line;
+		int LineCount=0;
+		BufferedReader reader= new BufferedReader(new FileReader(Filepath));
+		while((line=reader.readLine())!=null) 
+		{
+			String[] data= line.split(",");
+			if(data[0].equals(Id)) 
+			{	
+				reader.close();
+				return LineCount;
+			}
+			LineCount++;
+		}
+		reader.close();
+		return LineCount;
+	}
 	
 	
 	
@@ -162,6 +187,22 @@ public abstract class Purchase_Order implements viewData, modifyData {
 		
 	}
 	
+	/**
+	 * Read All Data From PurchaseOrder.txt based on the Selected Numbers/Line Numbers
+	 * @return StringBuffer
+	 * <ul>
+	 * <li>0 ID</li>
+	 * <li>1 Items</li>
+	 * <li>2 Qty</li>
+	 * <li>3 Price</li>
+	 * <li>4 Purchase Manager</li>
+	 * <li>5 Status</li>
+	 * <li>6 Supplier</li>
+	 * <li>7 Payment Status</li>
+	 * </ul>
+	 * */
+	
+	
 	//Overloading method
 	public StringBuffer POStatus(int SelectedNum ) throws IOException 
 	{
@@ -172,10 +213,18 @@ public abstract class Purchase_Order implements viewData, modifyData {
 		{
 			while((line=reader.readLine())!=null) 
 			{
-				String[] PoStatus= line.split(",");
+				String[] PoStatus= line.split(",");System.out.println(PoStatus[0]);
+				System.out.println(PoStatus[5]);
 				if(LineCount==SelectedNum) 
-				{
-					buffer.append(PoStatus[5]).append("\n"); //POStatus
+				{	
+					buffer.append(PoStatus[0]).append(",");
+					buffer.append(PoStatus[1]).append(",");
+					buffer.append(PoStatus[2]).append(",");
+					buffer.append(PoStatus[3]).append(",");
+					buffer.append(PoStatus[4]).append(",");
+					buffer.append(PoStatus[5]).append(","); //Status
+					buffer.append(PoStatus[6]).append(",");
+					buffer.append(PoStatus[7]).append("\n");
 					break;
 				}
 				LineCount++;
@@ -294,7 +343,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 	 * <ul>
 	 * <li>Status Pending</li>
 	 * <li>Supplier Supplier</li>
-	 * <li>Payment Unpaid</li>
+	 * <li>Payment Checking</li>
 	 * </ul>
 	 * */
 	
@@ -315,6 +364,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 				builder.append(Pm).append(",");
 				builder.append("Pending").append(",");
 				builder.append("Supplier").append(",");
+				builder.append(PaymentStatus).append("\n");
 				
 				writer.write(builder.toString());
 				//writer.newLine();
@@ -351,7 +401,8 @@ public abstract class Purchase_Order implements viewData, modifyData {
 						builder.append(dataNew[3]).append(",");
 						builder.append(dataNew[4]).append(",");
 						builder.append(dataNew[5]).append(",");
-						builder.append(dataNew[6]).append("\n");
+						builder.append(dataNew[6]).append(",");
+						builder.append(dataNew[7]).append("\n");
 						
 					}
 				} 
@@ -386,8 +437,8 @@ public abstract class Purchase_Order implements viewData, modifyData {
 			}
 			
 			try {
-				String[] Status= POStatus(LineNum).toString().split("\n");
-				if(!CacheChecking() && Status[0].equals("Pending")) 
+				String[] Status= POStatus(LineNum).toString().split(",");
+				if(!CacheChecking() && Status[5].equals("Pending")) 
 				{
 					List<String> lineR= new ArrayList<>(Files.readAllLines(Paths.get("Data/Cache.txt"))); //get file into Array
 					if(LineNum>=0 &&LineNum<lineR.size()) //size one based start from 1 
@@ -445,7 +496,8 @@ public abstract class Purchase_Order implements viewData, modifyData {
 								NewData.append(dataSet[3]).append(",");
 								NewData.append(dataSet[4]).append(",");
 								NewData.append(dataSet[5]).append(",");
-								NewData.append(dataSet[6]).append("\n");
+								NewData.append(dataSet[6]).append(",");
+								NewData.append(dataSet[7]).append("\n");
 								
 								lineCount++;
 							}
@@ -453,7 +505,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 							
 							//writer.newLine();
 							String[] PRID= RetriveItemsID(LineNum).toString().split(","); //get the target PRID
-							if(LineNum!=-1 && PRID[4].equals("Pending")) //for Change Status on PR
+							if(LineNum!=-1 && PRID[4].equals(PStatus)) //for Change Status on PR
 							{	
 								
 								
@@ -538,6 +590,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 					builder.append(oldData[4]).append(",");
 					builder.append(oldData[5]).append(",");
 					builder.append(oldData[6]).append(",");
+					builder.append(oldData[7]).append("\n");
 				}
 			 }
 			catch(IOException e) 
@@ -562,7 +615,8 @@ public abstract class Purchase_Order implements viewData, modifyData {
 						builder.append(data[3]).append(",");
 						builder.append(data[4]).append(",");
 						builder.append(data[5]).append(",");
-						builder.append(data[6]).append("\n");
+						builder.append(data[6]).append(",");
+						builder.append(data[7]).append("\n");
 					}
 					
 					try(FileWriter writer= new FileWriter("Data/Cache.txt"))
@@ -578,8 +632,11 @@ public abstract class Purchase_Order implements viewData, modifyData {
 			
 			try
 			{ 	
-				String[] Status= POStatus(LineNum).toString().split("\n");
-				if(!CacheChecking() && Status[0].equals("Pending")) 
+				String[] Status= POStatus(LineNum).toString().split(",");
+				System.out.println(Status.length);
+				System.out.println(Status[5]+" LineNum "+LineNum);
+				System.out.println(PStatus);
+				if(!CacheChecking() && Status[5].equals(PStatus)) 
 				{
 					List<String> EditList= new ArrayList<>(Files.readAllLines(Paths.get("Data/Cache.txt")));
 					if(LineNum>=0 && LineNum<=EditList.size()) 
