@@ -131,15 +131,15 @@ public class smPRsCtrl {
     }
     
     
-    private boolean containsID(ObservableList<SalesM_PRs> List, String id) {
-        for (SalesM_PRs pr : List) {
-            if (pr.getId().equals(id)) {
-            	
-                return true;
-            }
-        }
-        return false;
-    }
+//    private boolean containsID(ObservableList<SalesM_PRs> List, String id) {
+//        for (SalesM_PRs pr : List) {
+//            if (pr.getId().equals(id)) {
+//            	
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
     
     @FXML
     public void addeditClick() {
@@ -148,38 +148,67 @@ public class smPRsCtrl {
     	int selectedSuppIndex = viewPRsTable.getSelectionModel().getSelectedIndex();
     	
     	try {
-	    	if(containsID(cacheList, txtPRsID.getText()) && selectedSupp != null) {
-	
-	    		SalesM_PRs dataEntry = new SalesM_PRs(txtPRsID.getText(), txtItem_ID.getText(),Integer.parseInt(txtQuantity.getText()),txtDate.getText(),txtSalesM.getText(),txtStatus.getText(), cacheList, selectedSuppIndex);
-		    	dataEntry.EditFunc();
-		    	ObservableList<SalesM_PRs>  tempList = dataEntry.getCacheList();
-		    	cacheList = tempList;
-		    	viewPRsTable.setItems(cacheList);
-		    	clearTextField();
-		    	
-	    	} else if (!(containsID(cacheList, txtPRsID.getText())) && selectedSupp == null){	
-	    		
-	    		SalesM_PRs dataEntry = new SalesM_PRs(txtPRsID.getText(), txtItem_ID.getText(),Integer.parseInt(txtQuantity.getText()),txtDate.getText(),txtSalesM.getText(),txtStatus.getText(), cacheList, selectedSuppIndex);
-			    dataEntry.AddFunc();
-			    ObservableList<SalesM_PRs>  tempList = dataEntry.getCacheList();
-			    cacheList = tempList;
-			    viewPRsTable.setItems(cacheList);
-			    clearTextField();
-	    	} else {
-	    		
-	    		Alert alert = new Alert(AlertType.INFORMATION);
-	    		alert.setTitle("Information");
-	    		alert.setHeaderText(null);
-	    		alert.setContentText("Please select the supplier if you want to edit\n OR \n If you want to add a supplier please dont repeat the ID");
-	    		alert.showAndWait();
-	    	}
+    		
+    	SalesM_PRs dataEntry = new SalesM_PRs(
+    			
+    			txtPRsID.getText().trim(),
+    			txtItem_ID.getText().trim(),
+    			Integer.parseInt(txtQuantity.getText().trim()),
+    			txtDate.getText().trim(),
+    			txtSalesM.getText().trim(),
+    			txtStatus.getText().trim(),
+    			cacheList, selectedSuppIndex
+    			
+    			);
+    	
+    	dataEntry.insertCheck(selectedSupp);
+    	
+    	ObservableList<SalesM_PRs>  tempList = dataEntry.getCacheList();
+    	cacheList = tempList;
+    	viewPRsTable.setItems(cacheList);
+    	clearTextField();
+    	
     	} catch (Exception e) {
+    		
     		Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(String.format("Error: %s", e.toString()));
-            alert.showAndWait();
+    		alert.setTitle("Error");
+    		alert.setHeaderText(null);
+    		alert.setContentText(String.format("Error: %s", e.toString()));
+    		alert.showAndWait();
     	}
+//    	try {
+//	    	if(containsID(cacheList, txtPRsID.getText()) && selectedSupp != null) {
+//	
+//	    		SalesM_PRs dataEntry = new SalesM_PRs(txtPRsID.getText(), txtItem_ID.getText(),Integer.parseInt(txtQuantity.getText()),txtDate.getText(),txtSalesM.getText(),txtStatus.getText(), cacheList, selectedSuppIndex);
+//		    	dataEntry.EditFunc();
+//		    	ObservableList<SalesM_PRs>  tempList = dataEntry.getCacheList();
+//		    	cacheList = tempList;
+//		    	viewPRsTable.setItems(cacheList);
+//		    	clearTextField();
+//		    	
+//	    	} else if (!(containsID(cacheList, txtPRsID.getText())) && selectedSupp == null){	
+//	    		
+//	    		SalesM_PRs dataEntry = new SalesM_PRs(txtPRsID.getText(), txtItem_ID.getText(),Integer.parseInt(txtQuantity.getText()),txtDate.getText(),txtSalesM.getText(),txtStatus.getText(), cacheList, selectedSuppIndex);
+//			    dataEntry.AddFunc();
+//			    ObservableList<SalesM_PRs>  tempList = dataEntry.getCacheList();
+//			    cacheList = tempList;
+//			    viewPRsTable.setItems(cacheList);
+//			    clearTextField();
+//	    	} else {
+//	    		
+//	    		Alert alert = new Alert(AlertType.INFORMATION);
+//	    		alert.setTitle("Information");
+//	    		alert.setHeaderText(null);
+//	    		alert.setContentText("Please select the supplier if you want to edit\n OR \n If you want to add a supplier please dont repeat the ID");
+//	    		alert.showAndWait();
+//	    	}
+//    	} catch (Exception e) {
+//    		Alert alert = new Alert(AlertType.ERROR);
+//            alert.setTitle("Error");
+//            alert.setHeaderText(null);
+//            alert.setContentText(String.format("Error: %s", e.toString()));
+//            alert.showAndWait();
+//    	}
     }
     
     public void deleteClick() {

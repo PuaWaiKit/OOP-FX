@@ -12,6 +12,8 @@ import com.groupfx.JavaFXApp.modifyData;
 import com.groupfx.JavaFXApp.viewData;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	
@@ -113,6 +115,49 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 		
 	}
 	
+	private boolean containsID(ObservableList<SalesM_DailyS> List, String id, String itemId, String date) {
+		
+	    for (SalesM_DailyS item : List) {
+	        if (item.getId().equals(id)) {
+	        	
+	            return true;
+	        } else if (item.getDate().equals(date) && item.getItemId().equals(itemId)) {
+	        	
+	        	return true;
+	        }
+	    }
+	    return false;
+	}
+	
+    public void insertCheck(SalesM_DailyS selectedDS) {
+    	
+    	try {
+	    	if(containsID(cachelist, Id, itemId, date) && selectedDS != null) {
+	
+		    	EditFunc();
+		    	
+		    	
+	    	} else if (!(containsID(cachelist,  Id, itemId, date)) && selectedDS == null){	
+	    		
+			    AddFunc();
+			    
+	    	} else {
+	    		
+	    		Alert alert = new Alert(AlertType.INFORMATION);
+	    		alert.setTitle("Information");
+	    		alert.setHeaderText(null);
+	    		alert.setContentText("Please select the supplier if you want to edit\n OR \n If you want to add a supplier please dont repeat the ID");
+	    		alert.showAndWait();
+	    	}
+    	} catch (Exception e) {
+    		
+    		Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(String.format("Error: %s", e.toString()));
+            alert.showAndWait();
+    	}
+    }
 	@Override
 	public void AddFunc() {
 		
