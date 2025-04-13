@@ -109,7 +109,8 @@ public class FMAppPO extends Purchase_Order{
 			builder.append(data[3]).append(",");
 			builder.append(data[4]).append(",");
 			builder.append(data[5]).append(",");
-			builder.append(data[6]).append("\n");
+			builder.append(data[6]).append(",");
+			builder.append(data[7]).append("\n");
 		}
 		
 		
@@ -121,7 +122,14 @@ public class FMAppPO extends Purchase_Order{
 	}
 	
 	
-	public ArrayList<String> GetSupplier() throws IOException
+	/**
+	 * Get Supplier Code from Supplier Text File Based on Items Id 
+	 * @param ItemsId
+	 * @return ArrayList(String)-Return Only Supplier ID
+	 * */
+	
+	
+	public ArrayList<String> GetSupplier(String ItemsId) throws IOException
 	{
 		String line;
 		ArrayList<String> RSupplier=new ArrayList<>();
@@ -129,7 +137,16 @@ public class FMAppPO extends Purchase_Order{
 		while((line=reader.readLine())!=null) 
 		{
 			String[] data= line.split(",");
-			RSupplier.add(data[0]);
+			String[] ItemsDetails= data[4].split("-");
+			for(int index=0; index<ItemsDetails.length; index++) 
+			{
+				if(ItemsId.equals(ItemsDetails[index])&& data[4].contains(ItemsId)) 
+				{
+					RSupplier.add(data[0]);
+				}
+			}
+			
+			
 		}
 		reader.close();
 		return RSupplier;
@@ -137,9 +154,10 @@ public class FMAppPO extends Purchase_Order{
 	
 	/**
 	 * *
+	 * GET PO ID and Status and Supplier from PurchaseOrder.txt (FM Function)
 	 * @param selectedIndex
 	 * @return StringBuffer
-	 * GET PO ID and Status and Supplier from PurchaseOrder.txt (FM Function)
+	 * 
 	 */
 	
 	public StringBuffer GetPoId(int selectedIndex) throws IOException
@@ -188,7 +206,8 @@ public class FMAppPO extends Purchase_Order{
 					buffer.append(data[3]).append(",");
 					buffer.append(data[4]).append(",");
 					buffer.append(data[5]).append(",");
-					buffer.append(data[6]).append("\n");
+					buffer.append(data[6]).append(",");
+					buffer.append(data[7]).append("\n");
 					
 				}
 				
@@ -214,8 +233,7 @@ public class FMAppPO extends Purchase_Order{
 					
 					for(String P: CacheData) 
 					{	String[] parts= P.toString().split(",");
-						System.out.println(index[1]+"P"+parts[5]);
-						System.out.println(SelectedLine);System.out.println(newStatus);
+					
 						if(index[1].equals(parts[5])&& parts[5].equals("Pending") && index[0].equals(parts[0])) 
 						{	
 							parts[2]=newdata;
@@ -271,7 +289,8 @@ public class FMAppPO extends Purchase_Order{
 							buffer.append(dataParts[3]).append(",");
 							buffer.append(dataParts[4]).append(",");
 							buffer.append(dataParts[5]).append(",");
-							buffer.append(dataParts[6]).append("\n");
+							buffer.append(dataParts[6]).append(",");
+							buffer.append(dataParts[7]).append("\n");
 						}
 						
 						BufferedWriter writer = new BufferedWriter(new FileWriter("Data/PurchaseOrder.txt"));

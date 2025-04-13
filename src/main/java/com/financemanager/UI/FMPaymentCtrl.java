@@ -73,6 +73,9 @@ public class FMPaymentCtrl {
     
     private List<String> Combo=new ArrayList<>();
     
+    private String TotalPrice;
+    private boolean ApproveClick=false;
+    
     public void initialize() throws IOException
     {
     	POId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -103,8 +106,8 @@ public class FMPaymentCtrl {
 	    					realData[1],
 	    					Integer.parseInt(realData[2]),
 	    					Double.parseDouble(realData[3]),
-	    					realData[4],
-	    					realData[5]
+	    					realData[5],
+	    					realData[6]
 	    				));
 	    	}
 	    
@@ -115,37 +118,75 @@ public class FMPaymentCtrl {
 	    }
     }
     
-    
+    public void ClearTextBox(TextField...fields) 
+    {
+    	for(TextField field:fields) 
+    	{
+    		field.clear();
+    	}
+    }
 
+    public boolean CheckTextFieldisEmpty(TextField...fields) 
+    {
+    	for(TextField field: fields) 
+    	{
+    		String Content= field.getText();
+    		if(Content.trim().isEmpty()) 
+    		{
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     @FXML
    public void ApproveClick(MouseEvent event) throws IOException {
     	FMPayment Source= new FMPayment();
-    	this.Combo=Source.SetData();
-    	Source.Approve(PayId.getText());
-    	if(Source.checkingFunc()) 
-    	{
-    		
-    		
-    		Alert alert= new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Edit");
-    		alert.setContentText("Edit Sucess, Please Save Before Leaving!");
-    		alert.showAndWait();
-    		ViewPO.getSelectionModel().clearSelection();
     	
-    		
+    	
+    	if (ViewPO.getSelectionModel().getSelectedIndex()>=0 && !CheckTextFieldisEmpty(PayId,PayItem,PayQty,PaySupp,PayTot,PayUp))
+    	{	this.Combo=Source.SetData();
+    		Source.Approve(PayId.getText());
+	    	if(Source.checkingFunc()) 
+	    	{
+	    		
+	    		
+	    		Alert alert= new Alert(AlertType.INFORMATION);
+	    		alert.setTitle("Edit");
+	    		alert.setContentText("Edit Sucess, Please Save Before Leaving!");
+	    		alert.showAndWait();
+	    		ViewPO.getItems().remove(ViewPO.getSelectionModel().getSelectedIndex());
+	    		ViewPO.getSelectionModel().clearSelection();
+	    		TotalPrice=PayTot.getText();
+	    		ClearTextBox(PayId,PayItem,PayQty,PaySupp,PayTot,PayUp);
+	    		ApproveClick=true;
+	    	
+	    		
+	    	}
+	    	else 
+	    	{	ApproveClick=false;
+	    		Alert alert= new Alert(AlertType.WARNING);
+	    		alert.setTitle("Approve");
+	    		alert.setContentText("Error Occur or No Changes Made! Please Make Sure the PO Payment Status is not Paid");
+	    		alert.showAndWait();
+	    		
+	    	}
     	}
     	else 
-    	{
+    	{	ApproveClick=false;
     		Alert alert= new Alert(AlertType.WARNING);
-    		alert.setTitle("Edit");
-    		alert.setContentText("Error Occur or No Changes Made! Please Make Sure the PO Status is not Approve");
+    		alert.setTitle("Approve");
+    		alert.setContentText("Please Fill All The Blanks, if not Please Refresh it (By Clicking the Refresh Button or Payment Button)");
     		alert.showAndWait();
+    		
     	}
     }
 
     @FXML
-    void RefreshClick(MouseEvent event) {
+    public void RefreshClick(MouseEvent event) throws IOException {
     	ViewPO.getSelectionModel().clearSelection();
+    	ApproveClick=false;
+    	load();
     }
 
     @FXML
@@ -153,25 +194,37 @@ public class FMPaymentCtrl {
 //    	FMPayment DataSource= new FMPayment();
 //    	List<String> Combo=new ArrayList<>();
 //    	Combo=DataSource.SetData();
-    	FMPayment Source= new FMPayment(PayTot.getText(),Combo);
-    	Source.SaveFunc();
-    	if(Source.checkingFunc()) 
+    	if(ApproveClick==true) 
     	{
-    		
-    		
-    		Alert alert= new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Saving");
-    		alert.setContentText("Save!");
-    		alert.showAndWait();
-    		ViewPO.getSelectionModel().clearSelection();
-    	
-    		
+	    	FMPayment Source= new FMPayment(TotalPrice,Combo);
+	    	Source.SaveFunc();
+	    	if(Source.checkingFunc()) 
+	    	{
+	    		
+	    		
+	    		Alert alert= new Alert(AlertType.INFORMATION);
+	    		alert.setTitle("Saving");
+	    		alert.setContentText("Save!");
+	    		alert.showAndWait();
+	    		ViewPO.getSelectionModel().clearSelection();
+	    		ApproveClick=false;
+	    		
+	    	}
+	    	else 
+	    	{	
+	    		ApproveClick=false;
+	    		Alert alert= new Alert(AlertType.WARNING);
+	    		alert.setTitle("Saving");
+	    		alert.setContentText("Error Occur or No Changes Made! Please Make Sure the PO Status is not Approve");
+	    		alert.showAndWait();
+	    	}
     	}
     	else 
-    	{
+    	{	
+    		ApproveClick=false;
     		Alert alert= new Alert(AlertType.WARNING);
     		alert.setTitle("Saving");
-    		alert.setContentText("Error Occur or No Changes Made! Please Make Sure the PO Status is not Approve");
+    		alert.setContentText("Please Click Approve Before Saving or No Changes Made !");
     		alert.showAndWait();
     	}
     }
