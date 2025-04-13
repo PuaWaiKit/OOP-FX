@@ -94,11 +94,9 @@ public class smItemsCtrl {
     		}
     	}
     	
-//    	smSuppsCtrl obj = new smSuppsCtrl();
-//    	obj.load();
-//    	suppItemList = obj.getSuppItemList();
-//    	System.out.println(suppItemList);
-    	
+    	smSuppsCtrl obj = new smSuppsCtrl();
+    	obj.load();
+    	suppItemList = obj.getSuppItemList();
     	
     	cacheList = itemList;
     	viewItemTable.setItems(cacheList);
@@ -176,7 +174,8 @@ public class smItemsCtrl {
 				txtItemsName.getText().trim(),
 				txtItemSupp.getText().trim(),
 				Integer.parseInt(txtItemsStock.getText().trim()),
-				Double.parseDouble(txtItemsUP.getText().trim()),	
+				Double.parseDouble(txtItemsUP.getText().trim()),
+				suppItemList,
 				cacheList, selectedSuppIndex
 				);
     	
@@ -187,6 +186,8 @@ public class smItemsCtrl {
 				);
     	
     	ObservableList<SalesM_Items>  tempList = dataModify.getCacheList();
+    	suppItemList = dataModify.getSuppItemList();
+    	
     	cacheList = tempList;
     	viewItemTable.setItems(cacheList);
     	clearTextField();
@@ -204,12 +205,20 @@ public class smItemsCtrl {
     public void deleteClick() {
     	
     	int selectedSuppIndex = viewItemTable.getSelectionModel().getSelectedIndex();
-    	SalesM_Items delIndex = new SalesM_Items(selectedSuppIndex, cacheList);
+    	SalesM_Items dataModify = new SalesM_Items(
+    			txtItemsID.getText().trim(),
+				txtItemSupp.getText().trim(),
+				suppItemList,
+				cacheList, 
+				selectedSuppIndex
+				);
     	
     	try {
     		
-    		delIndex.DeleteFunc();
-    		ObservableList<SalesM_Items>  tempList = delIndex.getCacheList();
+    		dataModify.DeleteFunc();
+    		ObservableList<SalesM_Items>  tempList = dataModify.getCacheList();
+    		suppItemList = dataModify.getSuppItemList();
+    		
     		cacheList = tempList;
     		viewItemTable.setItems(cacheList);
     		clearTextField();
@@ -235,8 +244,20 @@ public class smItemsCtrl {
                   .append(supplier.getUnitPrice()).append("\n");  
         }
     	
+    	StringBuilder suppItemResult = new StringBuilder();
+    	for (SalesM_Suppliers supplier : suppItemList) {
+            
+            suppItemResult.append(supplier.getId()).append(",")
+                  		  .append(supplier.getName()).append(",")
+                  		  .append(supplier.getContactNum()).append(",")
+                          .append(supplier.getAddress()).append(",")
+                          .append(supplier.getItem()).append("\n");  
+        }
+    	
     	String netString = result.toString();
-    	SalesM_Items note = new SalesM_Items(netString);
+    	String netSuppItem = suppItemResult.toString();
+    	
+    	SalesM_Items note = new SalesM_Items(netString, netSuppItem);
     	note.SaveFunc();
     	
     	clearTextField();

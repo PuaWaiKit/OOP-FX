@@ -59,7 +59,7 @@ public class smSuppsCtrl {
     private HashMap<String, String[]> suppItemList = new HashMap<>();
     
     public ObservableList<SalesM_Suppliers> getSuppItemList() {return cacheList;}
-    
+  
     public void initialize() throws IOException 
     {
     	SuppsID.setCellValueFactory(new PropertyValueFactory<>("id")); // Use the SalesM_PRs.getID method
@@ -69,8 +69,12 @@ public class smSuppsCtrl {
 //        Item_ID.setCellValueFactory(new PropertyValueFactory<>("item"));
         
         load();
+        viewSuppsTable.setItems(cacheList);
     }
     
+    public smSuppsCtrl() {
+    	
+    }
     public void load() throws IOException 
     {
     	SalesM_Suppliers listed= new SalesM_Suppliers();
@@ -101,7 +105,6 @@ public class smSuppsCtrl {
     	}
     	
     	cacheList = itemList;
-    	viewSuppsTable.setItems(cacheList);
     }
     
     @FXML
