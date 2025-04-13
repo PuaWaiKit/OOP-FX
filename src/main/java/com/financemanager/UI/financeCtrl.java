@@ -125,8 +125,11 @@ public class financeCtrl implements Initializable {
 	}
     
     @FXML
-    public void FinanceClick(MouseEvent event) {
-
+    public void FinanceClick(MouseEvent event) throws IOException {
+    	if(SwitchAlert()) 
+    	{
+    		loadNewContent("/fxml/FMGenReport.fxml");
+    	}
     }
 
     @FXML
