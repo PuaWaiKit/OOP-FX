@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -195,7 +197,9 @@ public class FMPayment extends Purchase_Order {
 					    
 						LastId++;
 						String NewId= String.format("PY%03d", LastId); //Start with %, Use 0 to fill length is 3 and decimal based
-					    
+					    DateTimeFormatter Dformat= DateTimeFormatter.ofPattern("dd-MM-yyyy");
+						LocalDate Date= LocalDate.now(); 
+						
 						buffer.append(NewId).append(",");
 						buffer.append(CacheData[0]).append(",");
 						buffer.append(CacheData[1]).append(",");
@@ -204,7 +208,8 @@ public class FMPayment extends Purchase_Order {
 						buffer.append(CacheData[4]).append(",");// Status
 						buffer.append(CacheData[5]).append(",");
 						buffer.append(Total).append(",");
-						buffer.append("Paid").append("\n");
+						buffer.append("Paid").append(",");
+						buffer.append(Date.format(Dformat)).append("\n");
 					
 				writePayment.write(buffer.toString());
 				oldCache.clear();
