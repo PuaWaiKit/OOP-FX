@@ -3,6 +3,7 @@ package com.financemanager.UI;
 import java.io.IOException;
 
 import com.financemanager.source.FMAppPO;
+import com.financemanager.source.FMPayment;
 import com.groupfx.JavaFXApp.Purchase_Order;
 
 import javafx.collections.FXCollections;
@@ -79,12 +80,16 @@ public class ApprovePOCtrl {
 
 
     @FXML
-    public void RowClick(MouseEvent event) {
+    public void RowClick(MouseEvent event) throws IOException {
     	FMAppPO selectedItems=ViewPO.getSelectionModel().getSelectedItem();
+    	FMAppPO data= new FMAppPO();
     	if(selectedItems!=null) 
     	{
     		AppIdBx.setText(selectedItems.getId());
     		AppQtyBx.setText(Integer.toString(selectedItems.getQty()));
+    		String[] CbData= data.GetSupplier(selectedItems.getItemsId()).toArray(new String[0]);
+    		SupplierCbx.getItems().clear();
+        	SupplierCbx.getItems().addAll(CbData);
     		
     	}
     }
@@ -108,9 +113,6 @@ public class ApprovePOCtrl {
     				));
     	}
     	ViewPO.setItems(obList);
-    	
-    	String[] CbData= data.GetSupplier().toArray(new String[0]);
-    	SupplierCbx.getItems().addAll(CbData);
     	StatusSelection.getItems().addAll("Approve","Rejected");
     	
     }

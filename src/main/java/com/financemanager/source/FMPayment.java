@@ -33,7 +33,7 @@ public class FMPayment extends Purchase_Order {
 		this.oldCache=PayDetails;
 	}
 	
-	public FMPayment(String Id, String name, int Quantity, double Price,String Status,String Supplier) 
+	public FMPayment(String Id, String name, int Quantity, double Price,String Supplier,String Status) 
 	{
 		super(Id, name,Quantity,Price,Supplier,Status);
 		this.Status=Status;
@@ -130,8 +130,8 @@ public class FMPayment extends Purchase_Order {
 				buffer.append(data[2]).append(",");
 				buffer.append(data[3]).append(",");
 				buffer.append(data[4]).append(",");// Status
-				buffer.append(data[5]).append(",");
-				buffer.append(data[6]).append("\n");
+				buffer.append(data[5]).append(","); //Supplier
+				buffer.append(data[6]).append("\n"); //Payment Status
 				
 				
 			}
@@ -162,51 +162,59 @@ public class FMPayment extends Purchase_Order {
 		
 		StringBuffer buffer= new StringBuffer();
 		try {
-			BufferedReader readCache= new BufferedReader(new FileReader("Data/Cache.txt"));
-			while((CacheLine=readCache.readLine())!=null) 
-			{	String[] Data=CacheLine.split(",");
-				buffer.append(Data[0]).append(",");
-				buffer.append(Data[1]).append(",");
-				buffer.append(Data[2]).append(",");
-				buffer.append(Data[3]).append(",");
-				buffer.append(Data[4]).append(",");
-				buffer.append(Data[5]).append(",");
-				buffer.append(Data[6]).append(",");
-				buffer.append(Data[7]).append("\n");
-			}
-			Files.write(Paths.get("Data/PurchaseOrder.txt"), buffer.toString().getBytes(), StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
-			readCache.close();
-			BufferedWriter ClearCache= new BufferedWriter(new FileWriter("Data/Cache.txt"));
-			ClearCache.close();
-			buffer.setLength(0);
-			
-			
-			BufferedWriter writePayment= new BufferedWriter(new FileWriter("Data/Payment.txt",true));
-					
-					String[] CacheData= oldCache.toArray(new String[0]);
-				    List<String> getId= Files.readAllLines(Paths.get("Data/Payment.txt"));
-				    int LastId=super.getLastIdNum(getId,"PY");
-				    
-					LastId++;
-					String NewId= String.format("PY%03d", LastId); //Start with %, Use 0 to fill length is 3 and decimal based
-				    
-					buffer.append(NewId).append(",");
-					buffer.append(CacheData[0]).append(",");
-					buffer.append(CacheData[1]).append(",");
-					buffer.append(CacheData[2]).append(",");
-					buffer.append(CacheData[3]).append(",");
-					buffer.append(CacheData[4]).append(",");// Status
-					buffer.append(CacheData[5]).append(",");
-					buffer.append(Total).append(",");
-					buffer.append("Paid").append("\n");
+			if(!super.CacheChecking()) 
+			{
+				BufferedReader readCache= new BufferedReader(new FileReader("Data/Cache.txt"));
+				while((CacheLine=readCache.readLine())!=null) 
+				{	String[] Data=CacheLine.split(",");
+					if(Data.length==8) 
+					{
 				
-			writePayment.write(buffer.toString());
-			oldCache.clear();
-			
-			
-			writePayment.close();
-			Checking=true;
+						buffer.append(Data[0]).append(",");
+						buffer.append(Data[1]).append(",");
+						buffer.append(Data[2]).append(",");
+						buffer.append(Data[3]).append(",");
+						buffer.append(Data[4]).append(",");
+						buffer.append(Data[5]).append(",");
+						buffer.append(Data[6]).append(",");
+						buffer.append(Data[7]).append("\n");
+					}else continue;
+				}
+				Files.write(Paths.get("Data/PurchaseOrder.txt"), buffer.toString().getBytes(), StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
+				readCache.close();
+				BufferedWriter ClearCache= new BufferedWriter(new FileWriter("Data/Cache.txt"));
+				ClearCache.close();
+				buffer.setLength(0);
+				
+				
+				BufferedWriter writePayment= new BufferedWriter(new FileWriter("Data/Payment.txt",true));
+						
+						String[] CacheData= oldCache.toArray(new String[0]);
+					    List<String> getId= Files.readAllLines(Paths.get("Data/Payment.txt"));
+					    int LastId=super.getLastIdNum(getId,"PY");
+					    
+						LastId++;
+						String NewId= String.format("PY%03d", LastId); //Start with %, Use 0 to fill length is 3 and decimal based
+					    
+						buffer.append(NewId).append(",");
+						buffer.append(CacheData[0]).append(",");
+						buffer.append(CacheData[1]).append(",");
+						buffer.append(CacheData[2]).append(",");
+						buffer.append(CacheData[3]).append(",");
+						buffer.append(CacheData[4]).append(",");// Status
+						buffer.append(CacheData[5]).append(",");
+						buffer.append(Total).append(",");
+						buffer.append("Paid").append("\n");
+					
+				writePayment.write(buffer.toString());
+				oldCache.clear();
+				
+				BufferedWriter ClearCache2= new BufferedWriter(new FileWriter("Data/Cache.txt"));
+				ClearCache2.close();
+				writePayment.close();
+				Checking=true;
 	
+			}else Checking=false;
 		}
 		
 		catch(IOException e) 
