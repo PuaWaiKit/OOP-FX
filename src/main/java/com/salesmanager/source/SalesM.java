@@ -23,7 +23,6 @@ public class SalesM {
 	
 	public String getUserId() { 
 		
-		System.out.println("lol"+userID);
 		return userID;
 		}
 	
