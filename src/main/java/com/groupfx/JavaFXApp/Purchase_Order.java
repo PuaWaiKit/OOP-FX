@@ -34,6 +34,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 	private String Supplier;
 	protected String PaymentStatus="Checking";
 	protected String PStatus="Pending";
+	private double unitprice;
 	
 	public Purchase_Order() 
 	{
@@ -59,6 +60,16 @@ public abstract class Purchase_Order implements viewData, modifyData {
 		this.Price=Price;
 		this.Pm=Pm;
 		this.LineNum=LineNum;
+	}
+	
+	public Purchase_Order(String Id, String name, double unitprice, int Qty, String Pm,String Status ) //click
+	{
+		this.Id=Id;
+		this.name=name;
+		this.unitprice=unitprice;
+		this.Quantity=Qty;
+		this.Pm=Pm;
+		this.Status=Status;
 	}
 	
 	public Purchase_Order(String Id, String name, int Quantity, double Price, String Pm,String Status ) //click
@@ -125,6 +136,11 @@ public abstract class Purchase_Order implements viewData, modifyData {
 	public void setClickCount(int ClickCount) 
 	{
 		this.ClickCount=ClickCount;
+	}
+	
+	public double getUnitPrice() 
+	{
+		return unitprice;
 	}
 	
 //	public String IDGenerator(String PurchaseId, String prefex) 

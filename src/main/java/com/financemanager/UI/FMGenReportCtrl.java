@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -78,13 +79,17 @@ public class FMGenReportCtrl {
     	FMGenReport source=new FMGenReport();
     	ObservableList<FMGenReport> obList= FXCollections.observableArrayList();
     	String[] data=source.ReadTextFile().toString().split("\n");
+    	
     	for(String Line:data) 
     	{	//String PayId,String ID,String ItemId,String ItemName,String Supplier,int Qty,double Total,String date)
     		String[] parts=Line.split(",");
+    		 if(parts.length==10) 
+    		 {
+    		
     		String[] ItemName=source.RetriveItemName().toArray(new String[0]);
     		//PY001,PO001,I0003,1501,111.0,Approve,S003,166611.00,Paid,13-04-2025
     		
-    	
+    		
     		obList.add(new FMGenReport(
     				
     					parts[0],
@@ -98,9 +103,16 @@ public class FMGenReportCtrl {
     			
     				));
     		index++;
+    		 }else 
+    	    	{
+    	    		ViewPayment.setPlaceholder(new Label("No Contents Here"));
+    	    	}
     	}
     	ViewPayment.setItems(obList);
-    }
+    	Yearbox.getItems().clear();
+    	Yearbox.getItems().addAll(source.RetriveYear());
+    	}
+    
     
     
     @FXML

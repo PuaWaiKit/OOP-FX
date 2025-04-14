@@ -1,6 +1,7 @@
 package com.financemanager.source;
 
 import java.util.List;
+import java.util.Map;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import com.groupfx.JavaFXApp.Purchase_Order;
 
@@ -35,9 +37,9 @@ public class FMPayment extends Purchase_Order {
 		this.oldCache=PayDetails;
 	}
 	
-	public FMPayment(String Id, String name, int Quantity, double Price,String Supplier,String Status) 
+	public FMPayment(String Id, String name,int Qty, double unitprice,String Supplier,String Status) 
 	{
-		super(Id, name,Quantity,Price,Supplier,Status);
+		super(Id, name,unitprice,Qty,Supplier,Status);
 		this.Status=Status;
 	}
 	
@@ -57,7 +59,7 @@ public class FMPayment extends Purchase_Order {
 			String[] data=line.split(",");
 			builder.append(data[0]).append(",");
 			builder.append(data[1]).append(",");
-			builder.append(data[2]).append(",");
+			builder.append(data[2]).append(",");//qty
 			builder.append(data[3]).append(",");
 			builder.append(data[5]).append(",");// Status
 			builder.append(data[6]).append(","); //Supplier
@@ -227,6 +229,39 @@ public class FMPayment extends Purchase_Order {
 			e.printStackTrace();
 			Checking=false;
 		}
+	}
+	
+	
+	public List<String> RetriveItemUnitPrice() throws IOException
+	{	
+		List<String> ItemName= new ArrayList<>();
+		String line;
+		Map<String,String> ItemsList=new HashMap<>(); //ID, Name
+		
+		try(BufferedReader reader= new BufferedReader(new FileReader("Data/ItemsList.txt")))
+		{	
+			// Store the Items Details (Name and Id) into hash map
+			
+			while((line=reader.readLine())!=null) 
+			{
+				String[] data= line.split(",");
+				ItemsList.put(data[0], data[4]);
+				
+			}
+		}
+		
+		//Verify Items Id match with Payment text file
+		String[] paymentData=ReadTextFile().toString().split(",");
+		for(String parts:paymentData) 
+		{
+			if(parts.startsWith("I") && ItemsList.containsKey(parts)) 
+			{
+				ItemName.add(ItemsList.get(parts));
+				
+			}
+		}
+		
+		return ItemName;
 	}
 	
 //	@Deprecated
