@@ -81,7 +81,7 @@ public class FMPaymentCtrl {
     	POId.setCellValueFactory(new PropertyValueFactory<>("id"));
     	PoItem.setCellValueFactory(new PropertyValueFactory<>("name"));
     	PoQty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-    	PoUp.setCellValueFactory(new PropertyValueFactory<>("price"));
+    	PoUp.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
     	PoSupp.setCellValueFactory(new PropertyValueFactory<>("pm"));
     	PoStat.setCellValueFactory(new PropertyValueFactory<>("status"));
     	
@@ -96,7 +96,8 @@ public class FMPaymentCtrl {
     
     	
     	if(!Source.isArrayBlank(firstData)) 
-    	{
+    	{	int index=0;
+    		String[] UnitPrice= Source.RetriveItemUnitPrice().toArray(new String[0]);
 	    	for(String rows: firstData) 
 	    	{
 	    		String[] realData= rows.split(",");
@@ -105,10 +106,11 @@ public class FMPaymentCtrl {
 	    					realData[0],
 	    					realData[1],
 	    					Integer.parseInt(realData[2]),
-	    					Double.parseDouble(realData[3]),
+	    					Double.parseDouble(UnitPrice[index]),
 	    					realData[5],
 	    					realData[6]
 	    				));
+	    		index++;
 	    	}
 	    
 	    	ViewPO.setItems(obList);
@@ -239,9 +241,9 @@ public class FMPaymentCtrl {
     		PayItem.setText(RowSelection.getName());
     		PayQty.setText(Integer.toString(RowSelection.getQuantity()));
     		PaySupp.setText(RowSelection.getPm());
-    		PayUp.setText(Double.toString(RowSelection.getPrice()));
+    		PayUp.setText(Double.toString(RowSelection.getUnitPrice()));
     		
-    		double total = RowSelection.getPrice() * RowSelection.getQuantity();
+    		double total = RowSelection.getUnitPrice() * RowSelection.getQuantity();
     		BigDecimal bd = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP); //round to two decimal point
     		PayTot.setText(bd.toPlainString()); //avoided scientific calculations
     		PayId.setEditable(false);

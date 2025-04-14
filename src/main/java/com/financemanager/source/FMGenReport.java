@@ -1,6 +1,8 @@
 package com.financemanager.source;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,6 +30,7 @@ public class FMGenReport  implements viewData{
 		this.date=date;
 		this.Qty=Qty;
 		this.Total=Total;
+	
 	}
 	
 	public String getPayId() {
@@ -62,6 +65,7 @@ public class FMGenReport  implements viewData{
 	    return Total;
 	}
 
+
 	
 	@Override
 	public StringBuilder ReadTextFile() throws IOException
@@ -81,14 +85,15 @@ public class FMGenReport  implements viewData{
 			builder.append(data[6]).append(",");
 			builder.append(data[7]).append(",");
 			builder.append(data[8]).append(",");
-			builder.append(data[9]).append("\n");
+			builder.append(data[9]).append("\n"); //date
 		}
+		reader.close();
 		return builder;
 		
 	}
 	
 	/**
-	 * Get Item Name By Using ArrayList
+	 * Get Item Name and UnitPrice By Using ArrayList
 	 * Read from ItemsList and ReadTextFile()
 	 * 
 	 * */
@@ -99,6 +104,7 @@ public class FMGenReport  implements viewData{
 		List<String> ItemName= new ArrayList<>();
 		String line;
 		Map<String,String> ItemsList=new HashMap<>(); //ID, Name
+		
 		try(BufferedReader reader= new BufferedReader(new FileReader("Data/ItemsList.txt")))
 		{	
 			// Store the Items Details (Name and Id) into hash map
@@ -107,6 +113,7 @@ public class FMGenReport  implements viewData{
 			{
 				String[] data= line.split(",");
 				ItemsList.put(data[0], data[1]);
+				
 			}
 		}
 		
@@ -117,10 +124,36 @@ public class FMGenReport  implements viewData{
 			if(parts.startsWith("I") && ItemsList.containsKey(parts)) 
 			{
 				ItemName.add(ItemsList.get(parts));
+				
 			}
 		}
 		
 		return ItemName;
+	}
+	
+	public List<String> RetriveYear() throws IOException
+	{
+		String line;
+		List<String> YearList= new ArrayList<>();
+		DateTimeFormatter date= DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		BufferedReader reader= new BufferedReader(new FileReader("Data/Payment.txt"));
+		while((line=reader.readLine())!=null) 
+		{
+			String[] data= line.split(",");
+			try 
+			{
+				LocalDate D= LocalDate.parse(data[9],date);
+				int Year= D.getYear();
+				YearList.add(Integer.toString(Year));
+				
+			} catch(Exception e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		reader.close();
+		return YearList;
+		
 	}
 	
 }
