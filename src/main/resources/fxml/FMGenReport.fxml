@@ -60,7 +60,7 @@
             <VBox layoutX="729.0" layoutY="103.0" prefHeight="217.0" prefWidth="218.0" style="-fx-spacing: 10px; -fx-padding: 10px;">
                <children>
                   <Label text="Select Year" />
-                  <ComboBox fx:id="Yearbox" prefHeight="26.0" prefWidth="210.0" />
+                  <ComboBox fx:id="Yearbox" onAction="#YearCb" prefHeight="26.0" prefWidth="210.0" />
                   <Label text="Finance ID" />
                   <TextField fx:id="ReportId" />
                </children>
@@ -74,6 +74,11 @@
                   <Font name="Arial Bold" size="14.0" />
                </font>
             </Label>
+            <Button fx:id="refreshButton" layoutX="748.0" layoutY="556.0" mnemonicParsing="false" onMouseClicked="#refclick" prefHeight="43.0" prefWidth="158.0" text="Refresh">
+               <graphic>
+                  <FontIcon iconColor="WHITE" iconLiteral="anto-reload" />
+               </graphic>
+            </Button>
          </children></AnchorPane>
    </children>
 </AnchorPane>
