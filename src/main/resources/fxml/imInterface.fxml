@@ -37,23 +37,15 @@
                               <Font name="Comic Sans MS" size="16.0" />
                            </font>
                         </Button>
-                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangeSuppliers" prefHeight="60.0" prefWidth="206.0" style="-fx-background-color: #1C2321;" stylesheets="@../css/styles.css" text="   STOCKS" textFill="WHITE">
+                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangeStocks" prefHeight="60.0" prefWidth="206.0" style="-fx-background-color: #1C2321;" stylesheets="@../css/styles.css" text="   STOCKS" textFill="WHITE">
                            <graphic>
-                              <FontIcon iconColor="WHITE" iconLiteral="anto-contacts" iconSize="25" wrappingWidth="22.963074445724487" />
+                              <FontIcon iconColor="WHITE" iconLiteral="anto-stock" iconSize="25" wrappingWidth="22.963074445724487" />
                            </graphic>
                            <font>
                               <Font name="Comic Sans MS" size="16.0" />
                            </font>
                         </Button>
-                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangeDailyS" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #1C2321;" stylesheets="@../css/styles.css" text="   DAILY SALES" textFill="WHITE">
-                           <graphic>
-                              <FontIcon iconColor="WHITE" iconLiteral="anto-bar-chart" iconSize="25" wrappingWidth="22.963074445724487" />
-                           </graphic>
-                           <font>
-                              <Font name="Comic Sans MS" size="16.0" />
-                           </font>
-                        </Button>
-                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangePR" prefHeight="60.0" prefWidth="201.0" style="-fx-background-color: #1C2321;" stylesheets="@../css/styles.css" text="   STOCK REPORT" textFill="WHITE">
+                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangeSR" prefHeight="60.0" prefWidth="201.0" style="-fx-background-color: #1C2321;" stylesheets="@../css/styles.css" text="   STOCK REPORT" textFill="WHITE">
                            <graphic>
                               <FontIcon iconColor="WHITE" iconLiteral="anto-file-text" iconSize="25" wrappingWidth="22.963074445724487" />
                            </graphic>
