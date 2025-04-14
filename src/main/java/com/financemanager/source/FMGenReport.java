@@ -144,7 +144,9 @@ public class FMGenReport  implements viewData{
 			{
 				LocalDate D= LocalDate.parse(data[9],date);
 				int Year= D.getYear();
-				YearList.add(Integer.toString(Year));
+				String ListYear=Integer.toString(Year);
+				if(YearList.contains(ListYear)) continue;
+				YearList.add(ListYear);
 				
 			} catch(Exception e) 
 			{
@@ -154,6 +156,31 @@ public class FMGenReport  implements viewData{
 		reader.close();
 		return YearList;
 		
+	}
+	
+	public StringBuffer YearBasedData(String year) throws IOException
+	{	
+		StringBuffer buffer= new StringBuffer();
+		String[] data= ReadTextFile().toString().split("\n");
+		for(String line:data) 
+		{
+			String[] splitData= line.split(",");
+			String[] yeardate=splitData[9].split("-");
+			if(year.equals(yeardate[2])) 
+			{
+				buffer.append(splitData[0]).append(",");
+				buffer.append(splitData[1]).append(",");
+				buffer.append(splitData[2]).append(",");//Items ID
+				buffer.append(splitData[3]).append(",");
+				buffer.append(splitData[4]).append(",");
+				buffer.append(splitData[5]).append(",");
+				buffer.append(splitData[6]).append(",");
+				buffer.append(splitData[7]).append(",");
+				buffer.append(splitData[8]).append(",");
+				buffer.append(splitData[9]).append("\n"); //date
+			}
+		}
+		return buffer;
 	}
 	
 }
