@@ -19,7 +19,7 @@
                   <Image url="@../img/wallhaven-d57orj.png" />
                </image>
             </ImageView>
-            <AnchorPane layoutX="142.0" layoutY="75.0" prefHeight="549.0" prefWidth="316.0" style="-fx-background-color: white;" styleClass="loginbounded" stylesheets="@/css/styles.css">
+            <AnchorPane layoutX="140.0" layoutY="75.0" prefHeight="550.0" prefWidth="320.0" style="-fx-background-color: white;" styleClass="loginbounded" stylesheets="@/css/styles.css">
                <children>
                   <Button fx:id="LoginBtn" layoutX="112.0" layoutY="472.0" mnemonicParsing="false" onMouseClicked="#loginAct" prefHeight="27.0" prefWidth="101.0" text="Login">
                      <graphic>
@@ -57,6 +57,11 @@
                         <Image url="@../img/view.png" />
                      </image>
                   </ImageView>
+                  <Button layoutX="266.0" layoutY="499.0" mnemonicParsing="false" onAction="#githubClick" prefHeight="34.0" prefWidth="47.0" style="-fx-background-color: white;">
+                     <graphic>
+                        <FontIcon iconLiteral="anto-github" iconSize="25" />
+                     </graphic>
+                  </Button>
                </children>
             </AnchorPane>
          </children>

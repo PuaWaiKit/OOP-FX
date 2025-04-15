@@ -44,6 +44,7 @@ public class App extends Application {
         		try (FileWriter writerLog = new FileWriter("Data/Log.txt"))
         		{
         			
+        			
         		}
 			} 
         	catch (IOException e) 
