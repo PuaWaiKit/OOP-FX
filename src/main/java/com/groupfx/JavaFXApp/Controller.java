@@ -1,6 +1,8 @@
 package com.groupfx.JavaFXApp;
 
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -39,7 +41,10 @@ public class Controller {
     
     @FXML
     private PasswordField passwordbox;
-
+    
+    @FXML
+    private Button Github;
+    
     @FXML
     private ImageView pwChangePic;
 
@@ -128,5 +133,15 @@ public class Controller {
     	
     }
     
+    @FXML
+    public void githubClick() {
+    	new Thread(() -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/OvUvO/OOP-FX"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
 }

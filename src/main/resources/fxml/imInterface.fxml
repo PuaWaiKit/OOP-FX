@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.salesmanager.UI.smUICtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.inventorymanager.UI.imUICtrl">
    <children>
       <HBox prefHeight="700.0" prefWidth="1200.0">
          <children>
@@ -22,7 +22,7 @@
                         <FontIcon iconColor="WHITE" iconLiteral="anto-info-circle" iconSize="20" />
                      </graphic>
                   </Button>
-                  <Button layoutX="10.0" layoutY="658.0" mnemonicParsing="false" style="-fx-background-color: #1C2321;">
+                  <Button layoutX="10.0" layoutY="658.0" mnemonicParsing="false" onMouseClicked="#LogoutB" style="-fx-background-color: #1C2321;">
                      <graphic>
                         <FontIcon iconColor="WHITE" iconLiteral="anto-logout" iconSize="20" text="" />
                      </graphic>
@@ -47,7 +47,7 @@
                         </Button>
                         <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangeSR" prefHeight="60.0" prefWidth="201.0" style="-fx-background-color: #1C2321;" stylesheets="@../css/styles.css" text="   STOCK REPORT" textFill="WHITE">
                            <graphic>
-                              <FontIcon iconColor="WHITE" iconLiteral="anto-file-text" iconSize="25" wrappingWidth="22.963074445724487" />
+                              <FontIcon iconColor="WHITE" iconLiteral="anto-solution" iconSize="25" wrappingWidth="22.963074445724487" />
                            </graphic>
                            <font>
                               <Font name="Comic Sans MS" size="16.0" />
