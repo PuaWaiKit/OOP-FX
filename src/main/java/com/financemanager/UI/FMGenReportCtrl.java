@@ -1,8 +1,11 @@
 package com.financemanager.UI;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import com.financemanager.source.FMGenReport;
+import com.groupfx.JavaFXApp.PdfGenerator;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -117,8 +120,13 @@ public class FMGenReportCtrl {
     
     
     @FXML
-    void PrintClick(MouseEvent event) {
+    public void PrintClick(MouseEvent event) throws IOException {
+    	PdfGenerator PDF=new PdfGenerator();
+    	List<FMGenReport> data= ViewPayment.getItems();
+    	PDF.GenerateFinanceReport(data, "Reports/FinancialReport.pdf");
+    	java.awt.Desktop.getDesktop().open(new File("Reports/FinancialReport.pdf"));
 
+    		
     }
     
 

@@ -5,5 +5,5 @@ open module JavaFXApp {
     requires javafx.graphics;
     requires java.desktop;
     requires javafx.base;
-    
-}
+    requires org.apache.pdfbox;
+}  
