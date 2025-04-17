@@ -123,7 +123,8 @@ public class FMGenReportCtrl {
     public void PrintClick(MouseEvent event) throws IOException {
     	PdfGenerator PDF=new PdfGenerator();
     	List<FMGenReport> data= ViewPayment.getItems();
-    	PDF.GenerateFinanceReport(data, "Reports/FinancialReport.pdf");
+    	String Year= Yearbox.getSelectionModel().getSelectedItem();
+    	PDF.GenerateFinancialReport(data, "Reports/FinancialReport.pdf",Year);
     	java.awt.Desktop.getDesktop().open(new File("Reports/FinancialReport.pdf"));
 
     		
