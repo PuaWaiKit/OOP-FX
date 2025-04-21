@@ -2,16 +2,22 @@ package com.financemanager.UI;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.financemanager.source.FMGenReport;
 import com.groupfx.JavaFXApp.PdfGenerator;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -50,13 +56,11 @@ public class FMGenReportCtrl {
     private Button PrintBtn;
 
     @FXML
-    private LineChart<?, ?> ReportChart;
+    private LineChart<String, Double> ReportChart;
 
-    @FXML
-    private TextField ReportId;
 
-    @FXML
-    private TextField TotPay;
+
+
 
     @FXML
     private TableView<FMGenReport> ViewPayment;
@@ -118,6 +122,31 @@ public class FMGenReportCtrl {
     	}
     
     
+    public void LineChart(ObservableList<FMGenReport> List) 
+    {
+    	ReportChart.getData().clear();
+    	XYChart.Series<String, Double> series= new XYChart.Series<>();
+    	series.setName("Month");
+    	double[] month= new double[12];
+    	DateTimeFormatter date= DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    	for(FMGenReport Report: List) 
+    	{
+    		LocalDate d= LocalDate.parse(Report.getDate(),date);
+    		int mth= d.getMonthValue();
+    		month[mth-1]+= Report.getTotal();
+    		
+    		
+    	}
+    	
+    	for(int i=0; i<12;i++) 
+    	{
+    		String monthLabel= String.format("%02d",i+1);
+    		series.getData().add(new XYChart.Data<String, Double>(monthLabel,month[i]));
+    	}
+    	
+    	ReportChart.getData().add(series);
+    }
+    
     
     @FXML
     public void PrintClick(MouseEvent event) throws IOException {
@@ -140,40 +169,50 @@ public class FMGenReportCtrl {
 
     @FXML
    public void refclick(MouseEvent event) throws IOException {
-    	int index=0;
-    	FMGenReport source= new FMGenReport();
-    	ObservableList<FMGenReport> obList= FXCollections.observableArrayList();
-    	String year= Yearbox.getSelectionModel().getSelectedItem();
-    	String[] data=source.YearBasedData(year).toString().split("\n");
-    	for(String Line:data) 
-    	{	//String PayId,String ID,String ItemId,String ItemName,String Supplier,int Qty,double Total,String date)
-    		String[] parts=Line.split(",");
-    		 if(parts.length==10) 
-    		 {
-    		
-    		String[] ItemName=source.RetriveItemName().toArray(new String[0]);
-    		//PY001,PO001,I0003,1501,111.0,Approve,S003,166611.00,Paid,13-04-2025
-    		
-    		
-    		obList.add(new FMGenReport(
-    				
-    					parts[0],
-    					parts[1],
-    					parts[2],
-    					ItemName[index],
-    					parts[6],
-    					Integer.parseInt(parts[3]),
-    					Double.parseDouble(parts[7]),
-    					parts[9]
-    			
-    				));
-    		index++;
-    		 }else 
-    	    	{
-    	    		ViewPayment.setPlaceholder(new Label("No Contents Here"));
-    	    	}
+    	String dim= Yearbox.getSelectionModel().getSelectedItem();
+    	if(dim!=null) {
+	    	int index=0;
+	    	FMGenReport source= new FMGenReport();
+	    	ObservableList<FMGenReport> obList= FXCollections.observableArrayList();
+	    	String year= Yearbox.getSelectionModel().getSelectedItem();
+	    	String[] data=source.YearBasedData(year).toString().split("\n");
+	    	for(String Line:data) 
+	    	{	//String PayId,String ID,String ItemId,String ItemName,String Supplier,int Qty,double Total,String date)
+	    		String[] parts=Line.split(",");
+	    		 if(parts.length==10) 
+	    		 {
+	    		
+	    		String[] ItemName=source.RetriveItemName().toArray(new String[0]);
+	    		//PY001,PO001,I0003,1501,111.0,Approve,S003,166611.00,Paid,13-04-2025
+	    		
+	    		
+	    		obList.add(new FMGenReport(
+	    				
+	    					parts[0],
+	    					parts[1],
+	    					parts[2],
+	    					ItemName[index],
+	    					parts[6],
+	    					Integer.parseInt(parts[3]),
+	    					Double.parseDouble(parts[7]),
+	    					parts[9]
+	    			
+	    				));
+	    		index++;
+	    		 }else 
+	    	    	{
+	    	    		ViewPayment.setPlaceholder(new Label("No Contents Here"));
+	    	    	}
+	    	}
+	    	ViewPayment.setItems(obList);
+	    	LineChart(obList);
+	    }
+    	else 
+    	{
+    		Alert alert= new Alert(AlertType.ERROR);
+    		alert.setContentText("Please Select a Year from combo box");
+    		alert.showAndWait();
     	}
-    	ViewPayment.setItems(obList);
     }
     
 
