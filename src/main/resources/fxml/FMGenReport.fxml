@@ -10,7 +10,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -61,19 +60,11 @@
                <children>
                   <Label text="Select Year" />
                   <ComboBox fx:id="Yearbox" onAction="#YearCb" prefHeight="26.0" prefWidth="210.0" />
-                  <Label text="Finance ID" />
-                  <TextField fx:id="ReportId" />
                </children>
                <opaqueInsets>
                   <Insets top="10.0" />
                </opaqueInsets>
             </VBox>
-            <TextField fx:id="TotPay" layoutX="732.0" layoutY="477.0" prefHeight="26.0" prefWidth="198.0" />
-            <Label layoutX="732.0" layoutY="447.0" text="Total Payment: ">
-               <font>
-                  <Font name="Arial Bold" size="14.0" />
-               </font>
-            </Label>
             <Button fx:id="refreshButton" layoutX="748.0" layoutY="556.0" mnemonicParsing="false" onMouseClicked="#refclick" prefHeight="43.0" prefWidth="158.0" text="Refresh">
                <graphic>
                   <FontIcon iconColor="WHITE" iconLiteral="anto-reload" />
