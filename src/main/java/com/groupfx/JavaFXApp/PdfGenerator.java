@@ -18,6 +18,7 @@ public class PdfGenerator {
 	public PdfGenerator() {}
 	
 	public void GenerateFinancialReport(List<FMGenReport> reportData, String filepath, String year) throws IOException {
+		
 	    PDDocument doc = new PDDocument();
 	    PDPage page = new PDPage(PDRectangle.A4);
 	    doc.addPage(page);

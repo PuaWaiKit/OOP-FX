@@ -9,9 +9,11 @@ import java.util.List;
 import com.financemanager.source.FMGenReport;
 import com.groupfx.JavaFXApp.PdfGenerator;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
@@ -150,13 +152,37 @@ public class FMGenReportCtrl {
     
     @FXML
     public void PrintClick(MouseEvent event) throws IOException {
-    	PdfGenerator PDF=new PdfGenerator();
-    	List<FMGenReport> data= ViewPayment.getItems();
-    	String Year= Yearbox.getSelectionModel().getSelectedItem();
-    	PDF.GenerateFinancialReport(data, "Reports/FinancialReport.pdf",Year);
-    	java.awt.Desktop.getDesktop().open(new File("Reports/FinancialReport.pdf"));
-
+    	
+    	Task<Void> task = new Task<>() {
     		
+    	    @Override
+    	    protected Void call() throws Exception {
+	    	PdfGenerator PDF=new PdfGenerator();
+	    	List<FMGenReport> data= ViewPayment.getItems();
+	    	String Year= Yearbox.getSelectionModel().getSelectedItem();
+	    	PDF.GenerateFinancialReport(data, "Reports/FinancialReport.pdf",Year);
+	    	java.awt.Desktop.getDesktop().open(new File("Reports/FinancialReport.pdf"));
+	    	
+	    	return null;
+    	    }
+    	    
+    	
+	    	@Override
+	        protected void failed() {
+	            // 可选：错误提示
+	            Platform.runLater(() -> {
+	                Alert alert = new Alert(Alert.AlertType.ERROR);
+	                alert.setTitle("错误");
+	                alert.setHeaderText("生成或打开 PDF 失败");
+	                alert.setContentText(getException().getMessage());
+	                alert.showAndWait();
+	            });
+	        }
+    	};
+	    	
+    	Thread thread = new Thread(task);
+	    thread.setDaemon(true);
+	    thread.start();
     }
     
 
