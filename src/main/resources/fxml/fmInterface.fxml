@@ -27,7 +27,7 @@
                         <FontIcon fx:id="exitBtn" iconColor="WHITE" iconLiteral="anto-logout" iconSize="20" onMouseClicked="#LogoutB" text="" />
                      </graphic>
                   </Button>
-                  <VBox layoutX="10.0" layoutY="186.0" prefHeight="395.0" prefWidth="200.0">
+                  <VBox layoutX="10.0" layoutY="186.0" prefHeight="418.0" prefWidth="200.0">
                      <children>
                         <Button fx:id="invBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangeInventory" prefHeight="60.0" prefWidth="201.0" style="-fx-background-color: #1C2321;" text="   INVENTORY" textFill="WHITE">
                            <graphic>
@@ -75,6 +75,14 @@
                            </font>
                            <graphic>
                               <FontIcon iconColor="WHITE" iconLiteral="anto-home" iconSize="25" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="returnBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#ReturnClick" prefHeight="57.0" prefWidth="196.0" style="-fx-background-color: #1C2321;" text="  RETURN" textFill="WHITE">
+                           <font>
+                              <Font name="Comic Sans MS" size="16.0" />
+                           </font>
+                           <graphic>
+                              <FontIcon iconColor="WHITE" iconLiteral="anto-rollback" iconSize="25" />
                            </graphic>
                         </Button>
                      </children>
