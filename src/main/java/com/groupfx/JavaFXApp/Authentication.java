@@ -114,26 +114,6 @@ public class Authentication {
 			writer.newLine();
 			writer.close();
 			
-			switch(CurrRole) {
-			
-				case "admin":
-					break;
-					
-				case "salesManager":
-					System.out.println(trimmedUserName);
-					SalesM entryID = new SalesM(trimmedUserName);
-					break;
-					
-				case "purchaseManager":
-					break;
-					
-				case "inventoryManager":
-					break;
-					
-				case "financeManager":
-					break;
-				
-			}
 			return true;
 		}
 		return false;
