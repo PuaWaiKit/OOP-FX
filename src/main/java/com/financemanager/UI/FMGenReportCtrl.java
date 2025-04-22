@@ -28,6 +28,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 public class FMGenReportCtrl {
 
@@ -153,15 +154,28 @@ public class FMGenReportCtrl {
     @FXML
     public void PrintClick(MouseEvent event) throws IOException {
     	
+    	Stage stage= (Stage) PrintBtn.getScene().getWindow();
+    	
     	Task<Void> task = new Task<>() {
     		
     	    @Override
     	    protected Void call() throws Exception {
-	    	PdfGenerator PDF=new PdfGenerator();
-	    	List<FMGenReport> data= ViewPayment.getItems();
-	    	String Year= Yearbox.getSelectionModel().getSelectedItem();
-	    	PDF.GenerateFinancialReport(data, "Reports/FinancialReport.pdf",Year);
-	    	java.awt.Desktop.getDesktop().open(new File("Reports/FinancialReport.pdf"));
+    	    Platform.runLater(()->{	
+	    	    PdfGenerator PDF=new PdfGenerator();
+		    	List<FMGenReport> data= ViewPayment.getItems();
+		    	String Year= Yearbox.getSelectionModel().getSelectedItem();
+		    	try {
+					PDF.GenerateFinancialReport(data,Year,stage);
+				} 
+		    	catch (IOException e) 
+		    	{
+					
+					e.printStackTrace();
+				}
+	    	
+    	    });
+	    	
+	    	
 	    	
 	    	return null;
     	    }
