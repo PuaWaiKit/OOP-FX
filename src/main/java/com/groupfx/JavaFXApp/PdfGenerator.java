@@ -4,6 +4,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import com.financemanager.source.FMGenReport;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
@@ -24,140 +25,110 @@ public class PdfGenerator {
 	
 	public PdfGenerator() {}
 	
-	public void GenerateFinancialReport(List<FMGenReport> reportData, String year, Stage stage) throws IOException {
-		
+	public PDDocument PrepareReport(List<FMGenReport> reportData, String year) {
 	    PDDocument doc = new PDDocument();
 	    PDPage page = new PDPage(PDRectangle.A4);
 	    doc.addPage(page);
 
-	    PDPageContentStream cs = new PDPageContentStream(doc, page);
-	    float margin = 50;
-	    float y = 750;
-	    float lineHeight = 20;
+	    try (PDPageContentStream cs = new PDPageContentStream(doc, page)) {
+	        float margin = 50;
+	        float y = 750;
+	        float lineHeight = 20;
 
-	    // Title
-	    cs.beginText();
-	    cs.setFont(PDType1Font.HELVETICA_BOLD, 16);
-	    cs.newLineAtOffset(200, y);
-	    cs.showText("OMEGA WHOLESALE SDN BHD");
-	    cs.endText();
+	        // Title
+	        cs.beginText();
+	        cs.setFont(PDType1Font.HELVETICA_BOLD, 16);
+	        cs.newLineAtOffset(200, y);
+	        cs.showText("OMEGA WHOLESALE SDN BHD");
+	        cs.endText();
 
-	    y -= lineHeight;
-
-	    cs.beginText();
-	    cs.setFont(PDType1Font.HELVETICA_BOLD, 14);
-	    cs.newLineAtOffset(225, y);
-	    cs.showText("FINANCIAL STATEMENT");
-	    cs.endText();
-
-	    y -= lineHeight;
-
-	    cs.beginText();
-	    cs.setFont(PDType1Font.HELVETICA, 12);
-	    cs.newLineAtOffset(230, y);
-	    cs.showText("For Year " + year);
-	    cs.endText();
-	    
-	    cs.beginText();
-	    cs.setFont(PDType1Font.HELVETICA, 10);
-	    cs.newLineAtOffset(450, y);
-	    DateTimeFormatter format= DateTimeFormatter.ofPattern("dd-MM-yyyy");
-	    LocalDate date=LocalDate.now();
-	    
-	    cs.showText("Date Created: "+ date.format(format));
-	    cs.endText();
-	    
-	    y-=lineHeight;
-	    
-	    y -= (lineHeight * 2);
-
-	    // Header
-	    drawLine(cs, margin, y, 500);
-	    drawText(cs,"Item ID",margin,y-15,true);
-	    drawText(cs, "Item", margin+150, y - 15, true);
-	    drawText(cs, "Qty", margin + 300, y - 15, true);
-	    drawText(cs, "Total (RM)", margin + 400, y - 15, true);
-	    y -= lineHeight;
-	    drawLine(cs, margin, y, 500);
-
-	    // content
-	    double totalIncome = 0.0;
-	    for (FMGenReport report : reportData) {
-	    	drawText(cs,report.getItemId(),margin,y-15,false);
-	        drawText(cs, report.getItemName(), margin+150, y - 15, false);
-	        drawText(cs, String.valueOf(report.getQty()), margin + 300, y - 15, false);
-	        drawText(cs, String.format("%.2f", report.getTotal()), margin + 400, y - 15, false);
-	        totalIncome += report.getTotal();
 	        y -= lineHeight;
+
+	        cs.beginText();
+	        cs.setFont(PDType1Font.HELVETICA_BOLD, 14);
+	        cs.newLineAtOffset(225, y);
+	        cs.showText("FINANCIAL STATEMENT");
+	        cs.endText();
+
+	        y -= lineHeight;
+
+	        cs.beginText();
+	        cs.setFont(PDType1Font.HELVETICA, 12);
+	        cs.newLineAtOffset(230, y);
+	        cs.showText("For Year " + year);
+	        cs.endText();
+
+	        cs.beginText();
+	        cs.setFont(PDType1Font.HELVETICA, 10);
+	        cs.newLineAtOffset(450, y);
+	        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	        LocalDate date = LocalDate.now();
+	        cs.showText("Date Created: " + date.format(format));
+	        cs.endText();
+
+	        y -= (lineHeight * 3);
+
+	        // Header
+	        drawLine(cs, margin, y, 500);
+	        drawText(cs, "Item ID", margin, y - 15, true);
+	        drawText(cs, "Item", margin + 150, y - 15, true);
+	        drawText(cs, "Qty", margin + 300, y - 15, true);
+	        drawText(cs, "Total (RM)", margin + 400, y - 15, true);
+	        y -= lineHeight;
+	        drawLine(cs, margin, y, 500);
+
+	        // Content
+	        double totalIncome = 0.0;
+	        for (FMGenReport report : reportData) {
+	            drawText(cs, report.getItemId(), margin, y - 15, false);
+	            drawText(cs, report.getItemName(), margin + 150, y - 15, false);
+	            drawText(cs, String.valueOf(report.getQty()), margin + 300, y - 15, false);
+	            drawText(cs, String.format("%.2f", report.getTotal()), margin + 400, y - 15, false);
+	            totalIncome += report.getTotal();
+	            y -= lineHeight;
+	        }
+
+	        drawLine(cs, margin, y, 500);
+	        y -= lineHeight;
+
+	        drawText(cs, "Total Income:", margin + 300, y - 15, true);
+	        drawText(cs, "RM " + String.format("%.2f", totalIncome), margin + 400, y - 15, true);
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return doc;
+	    // Save
+	}
+
+	public void savePdfWithChooser(PDDocument doc, Stage stage) throws IOException {
+	    FileChooser chooser = new FileChooser();
+	    chooser.setTitle("Save Financial Report");
+	    chooser.setInitialFileName("Financial_Report.pdf");
+	    chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF File (*.pdf)", "*.pdf"));
+	    File file = chooser.showSaveDialog(stage);
+
+	    if (file != null) {
+	        doc.save(file);
+	        showAlert("Saved!", "File saved at:\n" + file.getAbsolutePath());
+	        if (Desktop.isDesktopSupported()) {
+	            Desktop.getDesktop().open(file);
+	        }
+	    } else {
+	        showAlert("Cancelled", "User cancelled the save operation.");
 	    }
 
-	    drawLine(cs, margin, y, 500);
-	    y -= lineHeight;
-
-	    // Tincome
-	    drawText(cs, "Total Income:", margin + 300, y - 15, true);
-	    drawText(cs, "RM " + String.format("%.2f", totalIncome), margin + 400, y - 15, true);
-
-	    cs.close();
-	    SavePdf(doc,stage);
 	    doc.close();
 	}
 
-	private void SavePdf(PDDocument pdf,Stage stage) 
-	{
-		FileChooser chooser= new FileChooser();
-		chooser.setTitle("Financial_Report");
-		chooser.setInitialFileName("Financial_Report.pdf");
-		
-		FileChooser.ExtensionFilter filter= new FileChooser.ExtensionFilter("PDF File (*.pdf)", "*.pdf");
-		chooser.getExtensionFilters().add(filter);
-		
-		File file= chooser.showSaveDialog(stage);
-		
-		if (file != null) {
-	        try 
-	        {
-	        	pdf.save(file); // Save PDF
-	        	Alert alert= new Alert(AlertType.INFORMATION);
-	 	        alert.setHeaderText("Save");
-	 	        alert.setContentText("File Save into "+ file.getAbsolutePath());
-	 	        alert.showAndWait();
-	 	        pdf.close();
-	 	        
-	 	        if(Desktop.isDesktopSupported()) 
-	 	        {
-	 	        	Desktop.getDesktop().open(file);
-	 	        }
-	 	        
-	 	        
-	        	
-	        } 
-	        catch (IOException e) 
-	        {
-	            e.printStackTrace();
-	            Alert alert= new Alert(AlertType.ERROR);
-		        alert.setHeaderText("ERROR");
-		        alert.setContentText("Process Cancelled,Please open yourself!");
-		        alert.showAndWait();
-	        } finally 
-	        {
-	            try 
-	            {
-	                pdf.close();
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    } else 
-	    {
-	        Alert alert= new Alert(AlertType.INFORMATION);
-	        alert.setHeaderText("Cancel");
-	        alert.setContentText("Process Cancelled");
-	        alert.showAndWait();
-	    }
-		
-		
+	private void showAlert(String header, String content) {
+	    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+	    alert.setHeaderText(header);
+	    alert.setContentText(content);
+	    alert.showAndWait();
 	}
+
 	
 	
 	

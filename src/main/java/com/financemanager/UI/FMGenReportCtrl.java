@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+
 import com.financemanager.source.FMGenReport;
 import com.groupfx.JavaFXApp.PdfGenerator;
 
@@ -151,54 +153,50 @@ public class FMGenReportCtrl {
     }
     
     
-    @FXML
-    public void PrintClick(MouseEvent event) throws IOException {
-    	
-    	Stage stage= (Stage) PrintBtn.getScene().getWindow();
-    	
-    	Task<Void> task = new Task<>() {
-    		
-    	    @Override
-    	    protected Void call() throws Exception {
-    	    Platform.runLater(()->{	
-	    	    PdfGenerator PDF=new PdfGenerator();
-		    	List<FMGenReport> data= ViewPayment.getItems();
-		    	String Year= Yearbox.getSelectionModel().getSelectedItem();
-		    	try {
-					PDF.GenerateFinancialReport(data,Year,stage);
-				} 
-		    	catch (IOException e) 
-		    	{
-					
-					e.printStackTrace();
-				}
-	    	
-    	    });
-	    	
-	    	
-	    	
-	    	return null;
-    	    }
-    	    
-    	
-	    	@Override
-	        protected void failed() {
+    public void PrintClick(MouseEvent event) {
+        Stage stage = (Stage) PrintBtn.getScene().getWindow();
+        List<FMGenReport> data = ViewPayment.getItems();
+        String year = Yearbox.getSelectionModel().getSelectedItem();
 
-	            Platform.runLater(() -> {
-	                Alert alert = new Alert(Alert.AlertType.ERROR);
-	                alert.setTitle("Error");
-	                alert.setHeaderText("Cant open error");
-	                alert.setContentText(getException().getMessage());
-	                alert.showAndWait();
-	            });
-	        }
-    	};
-	    	
-    	Thread thread = new Thread(task);
-	    thread.setDaemon(true);
-	    thread.start();
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    PdfGenerator generator = new PdfGenerator();
+
+                    // Generate Report PDF can put on background, not involve in UI Threads
+                    PDDocument doc = generator.PrepareReport(data, year);
+
+                    // Need Run on the UI Thread FileChooser Save + Alert + open
+                    Platform.runLater(() -> {
+                        try {
+                            generator.savePdfWithChooser(doc, stage);  //  FileChooser and Alert
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            showError("Error while saving PDF: " + e.getMessage());
+                        }
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Platform.runLater(() -> showError("Failed to generate PDF: " + e.getMessage()));
+                }
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
-    
+
+    private void showError(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("PDF Generation Failed");
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
 
     @FXML
     public void YearCb(ActionEvent event) throws IOException 
