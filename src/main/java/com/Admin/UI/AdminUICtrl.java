@@ -125,8 +125,11 @@ public class AdminUICtrl implements Initializable {
     }
 
     @FXML
-    void handleChangeHome(ActionEvent event) {
-
+    public void handleChangeHome(ActionEvent event) throws IOException {
+    	if(SwitchAlert()) 
+    	{
+    		loadNewContent("/fxml/adDashboard.fxml");
+    	}
     }
 
     @FXML
