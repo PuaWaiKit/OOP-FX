@@ -2,3 +2,4 @@ John,john123,salesManager
 Ming,ming1111,purchaseManager
 Gin,gin1,financeManager
 weiL,wei2,inventoryManager
+hi,hi111,admin

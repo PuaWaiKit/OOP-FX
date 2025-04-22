@@ -1,7 +1,5 @@
-package com.financemanager.UI;
+package com.Admin.UI;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -21,29 +19,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
-public class financeCtrl implements Initializable {
-
-    @FXML
-    private Button FinanceBtn;
+public class AdminUICtrl implements Initializable {
 
     @FXML
-    private ImageView HomePng;
-
-    @FXML
-    private Button POBtn;
-
-    @FXML
-    private Button PayBtn;
-
-    @FXML
-    private Button ReqBtn;
+    private Button AddUser;
 
     @FXML
     private AnchorPane contentPane;
@@ -51,66 +35,21 @@ public class financeCtrl implements Initializable {
     @FXML
     private AnchorPane drawerPane;
 
-
     @FXML
-    private Button exitIco;
-
-    @FXML
-    private Button infoBtn;
-
-    @FXML
-    private Button invBtn;
-
-    @FXML
-    private Button menuBtn;
+    private Button homeBtn;
 
     @FXML
     private AnchorPane nvgPane;
-
+    
     private Stage stage;
     private Scene scene;
-    @FXML
-    private Button returnBtn;
     
-    
-	@Override
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadNewContent("/fxml/FMAppPO.fxml");
-        try {
-			EnableButton();
-		} 
-        catch (IOException e) {
-	
-			e.printStackTrace();
-		}
+        loadNewContent("/fxml/adDashboard.fxml");
+        
     }
 	
-	
-	
-	public void EnableButton() throws IOException
-	{
-		String line;
-		String name=null;
-		BufferedReader reader= new BufferedReader(new FileReader("Data/Log.txt"));
-		
-		while((line=reader.readLine())!=null) 
-		{
-			String[] data= line.split(",");
-			name=data[1];
-			
-		}
-		reader.close();
-		
-		if(name.equals("admin")) 
-		{
-			returnBtn.setVisible(true);
-		}
-		else 
-		{
-			returnBtn.setVisible(false);
-		}
-		
-	}
 	
 	public void loadNewContent(String fxmlFile) {
 		
@@ -161,13 +100,6 @@ public class financeCtrl implements Initializable {
     	return false;
 	}
     
-    @FXML
-    public void FinanceClick(MouseEvent event) throws IOException {
-    	if(SwitchAlert()) 
-    	{
-    		loadNewContent("/fxml/FMGenReport.fxml");
-    	}
-    }
 
     @FXML
     public void LogoutB(MouseEvent event) throws IOException {
@@ -193,44 +125,20 @@ public class financeCtrl implements Initializable {
     }
 
     @FXML
-    void MenuClick(MouseEvent event) {
+    void handleChangeHome(ActionEvent event) {
 
     }
 
     @FXML
-    void handleChangeInventory(ActionEvent event) {
+    void handleChangeUser(ActionEvent event) {
 
     }
 
+    private boolean drawerOpen=false;
+    
     @FXML
-    public void handleChangePO(ActionEvent event) throws IOException {
-    	if(SwitchAlert()) 
-    	{
-    		loadNewContent("/fxml/FMAppPO.fxml");
-    	}
-    }
-
-    @FXML
-    public void handleChangePR(ActionEvent event) throws IOException {
-     	if(SwitchAlert()) 
-    	{
-    		loadNewContent("/fxml/fmViewPR.fxml");
-    	}
-    }
-
-    @FXML
-    public void handleChangePayment(ActionEvent event) throws IOException {
-    	if(SwitchAlert()) 
-    	{
-    		loadNewContent("/fxml/fmPayment.fxml");
-    	}
-    }
-
-    private boolean drawerOpen = false;
-    @FXML
-    private void toggleDrawer(ActionEvent event) 
-    {
-    	TranslateTransition transition = new TranslateTransition(Duration.millis(300), drawerPane);
+   public void toggleDrawer(ActionEvent event) {
+       	TranslateTransition transition = new TranslateTransition(Duration.millis(300), drawerPane);
 
         if (drawerOpen) {
             transition.setToY(+300);
@@ -240,19 +148,6 @@ public class financeCtrl implements Initializable {
 
         transition.play();
         drawerOpen = !drawerOpen;
-    }
-    
-    @FXML
-    public void ReturnClick(MouseEvent event) throws IOException
-    {
-    	if(SwitchAlert()) 
-    	{
-	    	Parent root= FXMLLoader.load(getClass().getResource("/fxml/adInterface.fxml"));
-			stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-			scene= new Scene(root);
-			stage.setScene(scene);
-			stage.show();
-		}
     }
 
 }

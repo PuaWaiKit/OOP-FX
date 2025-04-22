@@ -69,6 +69,14 @@
                               <Font name="Comic Sans MS" size="16.0" />
                            </font>
                         </Button>
+                        <Button fx:id="returnBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#ReturnClick" prefHeight="57.0" prefWidth="196.0" style="-fx-background-color: #1C2321;" text="  RETURN" textFill="WHITE">
+                           <font>
+                              <Font name="Comic Sans MS" size="16.0" />
+                           </font>
+                           <graphic>
+                              <FontIcon iconColor="WHITE" iconLiteral="anto-rollback" iconSize="25" />
+                           </graphic>
+                        </Button>
                      </children>
                   </VBox>
                   <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="35.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">

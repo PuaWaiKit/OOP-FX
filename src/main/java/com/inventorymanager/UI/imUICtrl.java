@@ -1,5 +1,7 @@
 package com.inventorymanager.UI;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -26,11 +29,82 @@ public class imUICtrl implements Initializable {
 	
 	@FXML
 	private AnchorPane contentPane;
+    @FXML
+    private Button returnBtn;
+    
+    private Scene scene;
+    private Stage stage;
+    
 	
 	@Override
     public void initialize(URL location, ResourceBundle resources) {
         loadNewContent("/fxml/imItems.fxml");
+        try {
+			EnableButton();
+		}
+        catch (IOException e) 
+        {
+			
+			e.printStackTrace();
+		}
     }
+	
+	  
+	public boolean SwitchAlert() throws IOException
+	{
+		Alert alert= new Alert(AlertType.CONFIRMATION);
+    	alert.setTitle("Switch Pages?");
+    	alert.setContentText("All data haven't save will lost");
+    	alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO); //add button yes and no
+    	Optional<ButtonType> result= alert.showAndWait(); // wait until user select
+    	alert.setHeaderText("Do You Want To Switch Pages?");
+    	
+    	if(result.isPresent() && result.get()==ButtonType.YES) 
+    	{
+    		 FileWriter writer = new FileWriter("Data/Cache.txt");
+    		 writer.close();
+    		 return true;
+    	}
+    	return false;
+	}
+	
+	@FXML
+	    public void ReturnClick(MouseEvent event) throws IOException
+	    {
+	    	if(SwitchAlert()) 
+	    	{
+		    	Parent root= FXMLLoader.load(getClass().getResource("/fxml/adInterface.fxml"));
+				stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+				scene= new Scene(root);
+				stage.setScene(scene);
+				stage.show();
+			}
+	    }
+	
+	public void EnableButton() throws IOException
+	{
+		String line;
+		String name=null;
+		BufferedReader reader= new BufferedReader(new FileReader("Data/Log.txt"));
+		
+		while((line=reader.readLine())!=null) 
+		{
+			String[] data= line.split(",");
+			name=data[1];
+			
+		}
+		reader.close();
+		
+		if(name.equals("admin")) 
+		{
+			returnBtn.setVisible(true);
+		}
+		else 
+		{
+			returnBtn.setVisible(false);
+		}
+		
+	}
 	
 	@FXML
     private void handleChangeItems() {

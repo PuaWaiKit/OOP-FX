@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -68,10 +70,48 @@ public class purchaseCtrl implements Initializable{
     @FXML
     private ImageView HomePng;
     
+    @FXML
+    private Button returnBtn;
+    
 	@Override
     public void initialize(URL location, ResourceBundle resources) {
         loadNewContent("/fxml/PMmenu.fxml");
+        try 
+        {
+			EnableButton();
+		} 
+        catch (IOException e) 
+        {
+			e.printStackTrace();
+		}
     }
+	
+	
+	public void EnableButton() throws IOException
+	{
+		String line;
+		String name=null;
+		BufferedReader reader= new BufferedReader(new FileReader("Data/Log.txt"));
+		
+		while((line=reader.readLine())!=null) 
+		{
+			String[] data= line.split(",");
+			name=data[1];
+			
+		}
+		reader.close();
+		
+		if(name.equals("admin")) 
+		{
+			returnBtn.setVisible(true);
+		}
+		else 
+		{
+			returnBtn.setVisible(false);
+		}
+		
+	}
+	
 	
 	
 	public void loadNewContent(String fxmlFile) {
@@ -116,7 +156,8 @@ public class purchaseCtrl implements Initializable{
     	
     	if(result.isPresent() && result.get()==ButtonType.YES) 
     	{
-    		 FileWriter writer = new FileWriter("Data/Cache.txt");
+    		FileWriter writer = new FileWriter("Data/Cache.txt");
+    		writer.close();
     		return true;
     	}
     	return false;
@@ -184,9 +225,9 @@ public class purchaseCtrl implements Initializable{
     	if(result.isPresent() && result.get()== ButtonType.YES) {
     		
     		FileWriter writer= new FileWriter("Data/Cache.txt");
-    		
+    		writer.close();
     		FileWriter writerLog = new FileWriter("Data/Log.txt");
-    		
+    		writerLog.close();
 			Parent root= FXMLLoader.load(getClass().getResource("/fxml/Sample.fxml"));
 			stage=(Stage)((Node)event.getSource()).getScene().getWindow();
 			scene= new Scene(root);
@@ -204,6 +245,19 @@ public class purchaseCtrl implements Initializable{
     		loadNewContent("/fxml/PMmenu.fxml");
     	}
     	
+    }
+    
+    @FXML
+    public void ReturnClick(MouseEvent event) throws IOException
+    {
+    	if(SwitchAlert()) 
+    	{
+	    	Parent root= FXMLLoader.load(getClass().getResource("/fxml/adInterface.fxml"));
+			stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+			scene= new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		}
     }
   }
 
