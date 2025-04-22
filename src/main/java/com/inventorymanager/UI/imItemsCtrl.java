@@ -1,4 +1,4 @@
-package com.inventorymanager.UI;
+	package com.inventorymanager.UI;
 
 import java.io.IOException;
 
