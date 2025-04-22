@@ -169,11 +169,11 @@ public class FMGenReportCtrl {
     	
 	    	@Override
 	        protected void failed() {
-	            // 可选：错误提示
+
 	            Platform.runLater(() -> {
 	                Alert alert = new Alert(Alert.AlertType.ERROR);
-	                alert.setTitle("错误");
-	                alert.setHeaderText("生成或打开 PDF 失败");
+	                alert.setTitle("Error");
+	                alert.setHeaderText("Cant open error");
 	                alert.setContentText(getException().getMessage());
 	                alert.showAndWait();
 	            });
