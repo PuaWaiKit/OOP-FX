@@ -133,8 +133,11 @@ public class AdminUICtrl implements Initializable {
     }
 
     @FXML
-    void handleChangeUser(ActionEvent event) {
-
+    public void handleChangeUser(ActionEvent event) throws IOException {
+     	if(SwitchAlert()) 
+    	{
+    		loadNewContent("/fxml/adNewUser.fxml");
+    	}
     }
 
     private boolean drawerOpen=false;
