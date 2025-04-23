@@ -113,7 +113,13 @@ public class PdfGenerator {
 	        doc.save(file);
 	        showAlert("Saved!", "File saved at:\n" + file.getAbsolutePath());
 	        if (Desktop.isDesktopSupported()) {
-	            Desktop.getDesktop().open(file);
+	        	new Thread(() -> {
+	        		try {
+	        			Desktop.getDesktop().open(file);
+	        		} catch (Exception e) {
+	        			System.out.println(e);
+	        		}
+	        	}).start();
 	        }
 	    } else {
 	        showAlert("Cancelled", "User cancelled the save operation.");
@@ -126,7 +132,7 @@ public class PdfGenerator {
 	    Alert alert = new Alert(Alert.AlertType.INFORMATION);
 	    alert.setHeaderText(header);
 	    alert.setContentText(content);
-	    alert.showAndWait();
+	    alert.show();
 	}
 
 	
