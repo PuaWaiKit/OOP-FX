@@ -92,40 +92,97 @@ public class AdAddUserCtrl {
     
     
     @FXML
-    public void DelClick(MouseEvent event) {
+    public void DelClick(MouseEvent event) throws IOException {
     	int SelectedRow= UserView.getSelectionModel().getSelectedIndex();
-    	
+    	AdminSources SelectedItem= UserView.getSelectionModel().getSelectedItem();
+    	String name= SelectedItem.getUser();
+    	AdminSources source= new AdminSources(SelectedRow,name);
+    
+    	if(SelectedRow>=0 && !source.ReadLog()) 
+    	{
+    	  	
+    		source.DeleteFunc();
+    		if(source.Checking()) 
+    		{
+    			AlertInfo("Delete Sucessful","Delete User",AlertType.INFORMATION);
+    			UserView.getItems().remove(SelectedRow);
+    		}
+    		else 
+    		{
+    			AlertInfo("Delete Unsucess","Delete User",AlertType.ERROR);
+    		}
+    	}else 
+    	{
+    		AlertInfo("Please Select an Row to Delete/n Or Cannot Delete Current User !","Delete User",AlertType.WARNING);
+    	}
     }
 
     @FXML
-    public void RefClick(MouseEvent event) {
-
+    public void RefClick(MouseEvent event) throws IOException {
+    	ClearTextAndRb(username,password);
+    	loadTable();
     }
 
     @FXML
     public void SelectedRows(MouseEvent event) {
 
     }
+    
+ 
 
     @FXML
     public void saveClick(MouseEvent event) {
     	RadioButton selectedRadio= (RadioButton) SelectedRoles.getSelectedToggle();
-    	String role= selectedRadio.getText();
-    	AdminSources source= new AdminSources(username.getText(),password.getText(),role);
-    	source.AddFunc();
-    	if(source.Checking()) 
+    	
+    
+    	if(SelectedRoles.getSelectedToggle()!=null && !CheckEmptyOrNull(username,password)) 
+    	{	
+    		String role= selectedRadio.getText();
+    		AdminSources source= new AdminSources(username.getText(),password.getText(),role);
+    		source.AddFunc();
+	    	if(source.Checking()) 
+	    	{
+	    		AlertInfo("Add User Sucessful","Add User",AlertType.INFORMATION);
+	    		ClearTextAndRb(username,password);
+	    	
+	    	}
+	    	else 
+	    	{
+	    		AlertInfo("Add User Unsucessful","Add User",AlertType.ERROR);
+	    		ClearTextAndRb(username,password);
+	    	}
+    	}else 
     	{
-    		Alert alert= new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Add User");
-    		alert.setContentText("Add User Sucessful");
-    		alert.showAndWait();
+    		AlertInfo("Please Select an Role and Fill All the Blanks !","Add User",AlertType.WARNING);
+    		ClearTextAndRb(username,password);
     	}
-    	else 
+    }
+    
+    public void AlertInfo(String content, String header, AlertType type) 
+    {
+    	Alert alert= new Alert(type);
+		alert.setTitle(header);
+		alert.setContentText(content);
+		alert.showAndWait();
+    }
+    
+    public boolean CheckEmptyOrNull(TextField...fields) 
+    {
+    	
+    	for(TextField f:fields) 
     	{
-    		Alert alert= new Alert(AlertType.ERROR);
-    		alert.setTitle("Add User");
-    		alert.setContentText("Add User Unsucessful");
-    		alert.showAndWait();
+    		String content=f.getText();
+    		if(content.trim().isEmpty()) {return true;}
+    	}
+    	return false;
+    }
+    
+    public void ClearTextAndRb(TextField...fields) 
+    {
+    	for(TextField f: fields) 
+    	{
+    		f.clear();
+    		SelectedRoles.selectToggle(null);
     	}
     }
 

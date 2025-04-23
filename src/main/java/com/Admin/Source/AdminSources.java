@@ -5,6 +5,12 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.groupfx.JavaFXApp.modifyData;
 import com.groupfx.JavaFXApp.viewData;
@@ -25,9 +31,10 @@ public class AdminSources implements viewData,modifyData {
 		this.role=role;
 	}
 	
-	public AdminSources(int SelectedIndex) 
+	public AdminSources(int SelectedIndex,String User) 
 	{
 		this.SelectedIndex=SelectedIndex;
+		this.User=User;
 	}
 	
 	public String getUser() { return User;}
@@ -101,24 +108,73 @@ public class AdminSources implements viewData,modifyData {
 	@Override
 	public void DeleteFunc() 
 	{
-		String line;
-		int index=0;
-		try(BufferedReader reader= new BufferedReader(new FileReader("Data/UserData.txt")))
-		{
-			while((line=reader.readLine())!=null) 
-			{
-				if(index==SelectedIndex) 
+		
+		try {
+			
+			List<String> allData= new ArrayList<>(Files.readAllLines(Paths.get("Data/UserData.txt")));
+			
+			for(int i=0;i<=allData.size()-1;i++) 
+			{	
+				
+				if(i==SelectedIndex) 
 				{
-					
+					allData.remove(SelectedIndex);
+					break;
 				}
-				index++;
+				
+				
 			}
 			
-			
-		}catch (IOException e) 
-		{
+			Files.write(Paths.get("Data/UserData.txt"),allData,StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING );		
+			checking=true;
+		} 
+		
+		catch (IOException e) {
+			checking=false;
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Return false while username repeated
+	 * */
+	public boolean CheckSameUsername() throws IOException
+	{
+		String line;
+		BufferedReader reader = new BufferedReader(new FileReader("Data/UserData.txt"));
+		while((line=reader.readLine())!=null) 
+		{
+			String[] data= line.split(",");
+			if(data[0].equals(User)) 
+			{	
+				reader.close();
+				return true;
+			}
+		}
+		reader.close();
+		return false;
+	}
+	
+	
+	
+	/**
+	 * Return false while username same as current user
+	 * */
+	public boolean ReadLog() throws IOException
+	{
+		String line;
+		BufferedReader reader = new BufferedReader(new FileReader("Data/Log.txt"));
+		while((line=reader.readLine())!=null) 
+		{
+			String[] data= line.split(",");
+			if(data[0].equals(User)) 
+			{	
+				reader.close();
+				return true;
+			}
+		}
+		reader.close();
+		return false;
 	}
 	
 	
