@@ -170,7 +170,7 @@ public class FMGenReportCtrl {
                     // Need Run on the UI Thread FileChooser Save + Alert + open
                     Platform.runLater(() -> {
                         try {
-                            generator.savePdfWithChooser(doc, stage);  //  FileChooser and Alert
+                            generator.savePdfWithChooser(doc, stage,"Financial_Report.pdf","Save Financial Report");  //  FileChooser and Alert
                         } catch (IOException e) {
                             e.printStackTrace();
                             showError("Error while saving PDF: " + e.getMessage());
