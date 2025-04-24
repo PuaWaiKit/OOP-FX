@@ -69,12 +69,13 @@ public class smSuppsCtrl {
 //        Item_ID.setCellValueFactory(new PropertyValueFactory<>("item"));
         
         load();
-        viewSuppsTable.setItems(cacheList);
+    	viewSuppsTable.setItems(cacheList);
     }
     
     public smSuppsCtrl() {
     	
     }
+    
     public void load() throws IOException 
     {
     	SalesM_Suppliers listed= new SalesM_Suppliers();
@@ -256,6 +257,8 @@ public class smSuppsCtrl {
     	cacheList.clear();
     	clearTextField();
     	load();
+    	viewSuppsTable.setItems(cacheList);
+    	
     }
     
     public void clearTextField() {
