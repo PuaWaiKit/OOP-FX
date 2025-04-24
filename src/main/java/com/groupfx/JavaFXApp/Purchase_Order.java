@@ -305,7 +305,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 	
 	/**
 	 * Get Items ID from TXT <br>
-	 * <strong>Return Items ID Only</strong>
+	 * <strong>Return Items ID AND Items Name Only</strong>
 	 */
 	public StringBuilder RetriveItems(String PRCode, String ItemsCode) throws IOException
 	{	String line;
@@ -318,8 +318,8 @@ public abstract class Purchase_Order implements viewData, modifyData {
 				if(ItemsCode.equals(ItemsName[0])) 
 				{
 //					
-					Newbuild.append(ItemsName[0]); //name
-//					
+					Newbuild.append(ItemsName[0]).append(","); //name
+					Newbuild.append(ItemsName[1]).append("\n");
 					break;
 				}
 				else 
