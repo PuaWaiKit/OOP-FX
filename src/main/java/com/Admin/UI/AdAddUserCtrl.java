@@ -131,26 +131,32 @@ public class AdAddUserCtrl {
  
 
     @FXML
-    public void saveClick(MouseEvent event) {
+    public void saveClick(MouseEvent event) throws IOException {
     	RadioButton selectedRadio= (RadioButton) SelectedRoles.getSelectedToggle();
-    	
-    
     	if(SelectedRoles.getSelectedToggle()!=null && !CheckEmptyOrNull(username,password)) 
     	{	
     		String role= selectedRadio.getText();
     		AdminSources source= new AdminSources(username.getText(),password.getText(),role);
-    		source.AddFunc();
-	    	if(source.Checking()) 
-	    	{
-	    		AlertInfo("Add User Sucessful","Add User",AlertType.INFORMATION);
+    		
+    		if(!source.CheckSameUsername(username.getText()))	
+    		{
+	    		source.AddFunc();
+		    	if(source.Checking()) 
+		    	{
+		    		AlertInfo("Add User Sucessful","Add User",AlertType.INFORMATION);
+		    		ClearTextAndRb(username,password);
+		    	
+		    	}
+		    	else 
+		    	{
+		    		AlertInfo("Add User Unsucessful","Add User",AlertType.ERROR);
+		    		ClearTextAndRb(username,password);
+		    	}
+		    }else 
+		    {
+		    	AlertInfo("Username Repeated, Please try again !","Add User",AlertType.WARNING);
 	    		ClearTextAndRb(username,password);
-	    	
-	    	}
-	    	else 
-	    	{
-	    		AlertInfo("Add User Unsucessful","Add User",AlertType.ERROR);
-	    		ClearTextAndRb(username,password);
-	    	}
+		    }
     	}else 
     	{
     		AlertInfo("Please Select an Role and Fill All the Blanks !","Add User",AlertType.WARNING);
