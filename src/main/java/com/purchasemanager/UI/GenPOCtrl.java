@@ -7,12 +7,18 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+
 import com.PM.Sources.*;
+import com.financemanager.source.FMGenReport;
 import com.groupfx.JavaFXApp.Authentication;
+import com.groupfx.JavaFXApp.PdfGenerator;
 import com.groupfx.JavaFXApp.Purchase_Order;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -25,6 +31,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.css.*;
 
 public class GenPOCtrl {
@@ -32,6 +39,9 @@ public class GenPOCtrl {
     @FXML
     private Button Addbtn;
 
+    @FXML
+    private Button PrintBtn;
+    
     @FXML
     private Button DelBtn;
 
@@ -395,6 +405,48 @@ public class GenPOCtrl {
     		ItemsNameTxt.setEditable(true);
     	}
     }
+    
+    public void PrintClick(MouseEvent event) {
+        Stage stage = (Stage) PrintBtn.getScene().getWindow();
+        List<PMGenPO> data = ViewPO.getItems();
 
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    PdfGenerator generator = new PdfGenerator();
+
+                    // Generate Report PDF can put on background, not involve in UI Threads
+                    PDDocument doc = generator.GeneratePurchaseOrder(data,"S001");
+
+                    // Need Run on the UI Thread FileChooser Save + Alert + open
+                    Platform.runLater(() -> {
+                        try {
+                            generator.savePdfWithChooser(doc, stage,"Purchase_Order.pdf","Save Purchase Order");  //  FileChooser and Alert
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            showError("Error while saving PDF: " + e.getMessage());
+                        }
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Platform.runLater(() -> showError("Failed to generate PDF: " + e.getMessage()));
+                }
+                return null;
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+        private void showError(String msg) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("PDF Generation Failed");
+            alert.setContentText(msg);
+            alert.showAndWait();
+        }
 
 }
