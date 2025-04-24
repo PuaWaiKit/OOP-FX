@@ -136,18 +136,17 @@ public class AdminSources implements viewData,modifyData {
 	}
 	
 	/**
-	 * Return false while username repeated
+	 * Return true while username repeated
 	 * */
-	public boolean CheckSameUsername() throws IOException
+	public boolean CheckSameUsername(String username) throws IOException
 	{
 		String line;
 		BufferedReader reader = new BufferedReader(new FileReader("Data/UserData.txt"));
 		while((line=reader.readLine())!=null) 
 		{
 			String[] data= line.split(",");
-			if(data[0].equals(User)) 
-			{	
-				reader.close();
+			if(data[0].equals(username)) 
+			{
 				return true;
 			}
 		}
