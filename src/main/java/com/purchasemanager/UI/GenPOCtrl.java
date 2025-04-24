@@ -408,7 +408,7 @@ public class GenPOCtrl {
     
     public void PrintClick(MouseEvent event) {
         Stage stage = (Stage) PrintBtn.getScene().getWindow();
-        List<PMGenPO> data = ViewPO.getItems();
+        PMGenPO data= ViewPO.getSelectionModel().getSelectedItem();
 
         Task<Void> task = new Task<>() {
             @Override
@@ -417,7 +417,7 @@ public class GenPOCtrl {
                     PdfGenerator generator = new PdfGenerator();
 
                     // Generate Report PDF can put on background, not involve in UI Threads
-                    PDDocument doc = generator.GeneratePurchaseOrder(data,"S001");
+                    PDDocument doc = generator.GeneratePurchaseOrder(List.of(data),"S001");
 
                     // Need Run on the UI Thread FileChooser Save + Alert + open
                     Platform.runLater(() -> {

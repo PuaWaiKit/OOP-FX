@@ -1,6 +1,8 @@
 package com.groupfx.JavaFXApp;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import com.PM.Sources.PMGenPO;
 import com.financemanager.source.FMGenReport;
@@ -15,11 +17,15 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
 import java.awt.Desktop;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 public class PdfGenerator {
 	
@@ -98,7 +104,7 @@ public class PdfGenerator {
 	        drawLine(cs, margin, y, 500);
 	        y -= lineHeight;
 
-	        drawText(cs, "Total Income:", margin + 300, y - 15, true);
+	        drawText(cs, "Total Paid/Expenses:", margin + 300, y - 15, true);
 	        drawText(cs, "RM " + String.format("%.2f", totalIncome), margin + 400, y - 15, true);
 
 	    } catch (IOException e) {
@@ -120,10 +126,23 @@ public class PdfGenerator {
 	    float yStart = 750;
 	    float y = yStart;
 	    float lineHeight = 20;
+	    String itemName="Undefined";
+	    String PId="Undefined";
+	   
 
 	    try (PDPageContentStream cs = new PDPageContentStream(doc, page)) {
 
-	        // Title 
+	    	InputStream img= getClass().getResourceAsStream("/img/OMEGA.png");
+	    	if(img==null) 
+	    	{
+	    		throw new IOException("Image Not Found !");
+	    	}
+	    	BufferedImage image= ImageIO.read(img);
+	    	PDImageXObject CreateImg= LosslessFactory.createFromImage(doc, image);
+	    	cs.drawImage(CreateImg, 10,y,100,100);
+	    	
+	    	
+	    	// Title 
 	        cs.beginText();
 	        cs.setFont(PDType1Font.HELVETICA_BOLD, 18);
 	        cs.newLineAtOffset(220, y);
@@ -144,10 +163,21 @@ public class PdfGenerator {
 
 	        y -= 60;
 
+	        for(PMGenPO items: reportData) 
+	        { 	
+	        	
+	     	    itemName=items.getName();
+	     	    PId= items.getId();
+	        }
 	        //  Supplier Info 
-	        drawText(cs, "To:", margin, y, true);
-	        drawText(cs, supplier, margin, y - 15, true);
-	        drawText(cs, "18, Jalan App. 1300Sd", margin, y - 30, false);
+	        PMGenPO source= new PMGenPO();
+	        String[] SuppData= source.ReadSupplierAdd(itemName);
+        	drawText(cs, "To:", margin, y, true);
+        	drawText(cs, SuppData[0], margin, y - 15, true);
+        	drawText(cs, SuppData[1], margin, y - 30, false);
+        	
+        	drawText(cs, "Purchase Order ID: " + PId, 400, y-15, true);
+	        
 
 	        y -= 60;
 
@@ -193,8 +223,13 @@ public class PdfGenerator {
 	}
 
 	private void drawTableRow(PDPageContentStream cs, PMGenPO item, float x, float y) throws IOException {
-	    drawText(cs, item.getId(), x, y, false);
-	    drawText(cs, item.getName(), x + 120, y, false);
+	    PMGenPO source= new PMGenPO();
+		String[] data= source.RetriveItems(item.getId(), item.getName()).toString().split(",");
+		
+		String upData= data[1].replace("\n", " ");
+		
+		drawText(cs, item.getName(), x, y, false);
+	    drawText(cs, upData, x + 120, y, false);
 	    drawText(cs, String.valueOf(item.getQuantity()), x + 300, y, false);
 	    drawText(cs, String.format("%.2f", item.getPrice()), x + 400, y, false);
 	}

@@ -70,4 +70,31 @@ public class PMGenPO extends Purchase_Order{
 		return builder;
 		
 	}
+	
+	public String[] ReadSupplierAdd(String ItemsId) throws IOException
+	{
+		BufferedReader reader= new BufferedReader(new FileReader("Data/Suppliers.txt"));
+		String line;
+		String[] d= {};
+		while((line=reader.readLine())!=null) 
+		{
+			String[] data= line.split(",");
+			String[] ItemsData= data[4].split("-");
+			for(String id:ItemsData) 
+			{
+				if(ItemsId.equals(id)) 
+				{
+					String Address= data[3].replace("-", ",");
+					String[] retData= {data[1],Address};
+					reader.close();
+					return retData;
+				}
+			}
+				
+			
+		}
+		reader.close();
+		return d;
+		
+	}
 }
