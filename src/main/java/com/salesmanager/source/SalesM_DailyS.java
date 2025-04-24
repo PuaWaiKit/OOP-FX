@@ -21,7 +21,7 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	private String itemId;
 	private String date;
 	private int totalSales;
-	private final String author = getUserId();
+	private final String author = this.getUserId();
 	private String tempAuthor;
 	
 	//Variable for the modification
