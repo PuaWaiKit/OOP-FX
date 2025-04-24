@@ -32,7 +32,7 @@ public class PdfGenerator {
 	
 	public PdfGenerator() {}
 	
-	public PDDocument PrepareReport(List<FMGenReport> reportData, String year) {
+	public PDDocument PrepareReport(List<?> reportData, String year) {
 	    PDDocument doc = new PDDocument();
 	    PDPage page = new PDPage(PDRectangle.A4);
 	    doc.addPage(page);
@@ -86,13 +86,19 @@ public class PdfGenerator {
 
 	        // Content
 	        double totalIncome = 0.0;
-	        for (FMGenReport report : reportData) {
-	            drawText(cs, report.getItemId(), margin, y - 15, false);
-	            drawText(cs, report.getItemName(), margin + 150, y - 15, false);
-	            drawText(cs, String.valueOf(report.getQty()), margin + 300, y - 15, false);
-	            drawText(cs, String.format("%.2f", report.getTotal()), margin + 400, y - 15, false);
-	            totalIncome += report.getTotal();
-	            y -= lineHeight;
+	        for (Object item : reportData) {
+	        	if(item instanceof FMGenReport) {
+	        		
+	        		FMGenReport report = (FMGenReport) item;
+	        		
+	    	        drawText(cs, report.getItemId(), margin, y - 15, false);
+	    	        drawText(cs, report.getItemName(), margin + 150, y - 15, false);
+	    	        drawText(cs, String.valueOf(report.getQty()), margin + 300, y - 15, false);
+	    	        drawText(cs, String.format("%.2f", report.getTotal()), margin + 400, y - 15, false);
+	    	        totalIncome += report.getTotal();
+	    	        y -= lineHeight;
+	        	}
+	        	
 	        }
 
 	        drawLine(cs, margin, y, 500);

@@ -87,7 +87,7 @@ public class smItemsCtrl {
     					spl[1],
     					spl[2],
     					Integer.parseInt(spl[3]),
-    					Double.parseDouble(spl[4])
+    					Double.parseDouble(spl[4])*1.1 // 10% profit for every item
     					));
     			
     			chartStore.put(spl[1], Integer.parseInt(spl[3]));
