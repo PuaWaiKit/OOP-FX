@@ -76,6 +76,7 @@ public class FMPaymentCtrl {
     private String TotalPrice;
     private boolean ApproveClick=false;
     
+    
     public void initialize() throws IOException
     {
     	POId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -84,7 +85,7 @@ public class FMPaymentCtrl {
     	PoUp.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
     	PoSupp.setCellValueFactory(new PropertyValueFactory<>("pm"));
     	PoStat.setCellValueFactory(new PropertyValueFactory<>("status"));
-    	
+    	ViewPO.setSortPolicy(t->false);
     	load();
     }
     
@@ -146,7 +147,7 @@ public class FMPaymentCtrl {
     	FMPayment Source= new FMPayment();
     	
     	
-    	if (ViewPO.getSelectionModel().getSelectedIndex()>=0 && !CheckTextFieldisEmpty(PayId,PayItem,PayQty,PaySupp,PayTot,PayUp))
+    	if (ViewPO.getSelectionModel().getSelectedIndex()>=0 && !CheckTextFieldisEmpty(PayId,PayItem,PayQty,PaySupp,PayTot,PayUp) && ApproveClick==false)
     	{	this.Combo=Source.SetData();
     		Source.Approve(PayId.getText());
 	    	if(Source.checkingFunc()) 
@@ -178,7 +179,7 @@ public class FMPaymentCtrl {
     	{	ApproveClick=false;
     		Alert alert= new Alert(AlertType.WARNING);
     		alert.setTitle("Approve");
-    		alert.setContentText("Please Fill All The Blanks, if not Please Refresh it (By Clicking the Refresh Button or Payment Button)");
+    		alert.setContentText("Please Fill All The Blanks \n PLEASE CLICK SAVE BEFORE PAY ANOTHER BILL !");
     		alert.showAndWait();
     		
     	}
