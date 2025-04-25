@@ -41,14 +41,14 @@
                         <Font name="DejaVu Serif Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtItemsID" />
+                  <TextField fx:id="txtItemsID" editable="false" />
                   <Separator prefHeight="90.0" prefWidth="191.0" />
                   <Label text="NAME">
                      <font>
                         <Font name="DejaVu Serif Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtItemsName" />
+                  <TextField fx:id="txtItemsName" editable="false" />
                   <Separator prefHeight="90.0" prefWidth="191.0" />
                   <Label text="STOCK">
                      <font>
@@ -59,12 +59,7 @@
                   <Separator prefHeight="90.0" prefWidth="191.0" />
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#reloadClick" style="-fx-background-color: #1098F7;">
-                           <graphic>
-                              <FontIcon iconLiteral="anto-reload" />
-                           </graphic>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#saveClick" style="-fx-background-color: #FDE74C;">
+                        <Button mnemonicParsing="false" onAction="#saveClick" prefHeight="34.0" prefWidth="215.0" style="-fx-background-color: #FDE74C;">
                            <graphic>
                               <FontIcon iconLiteral="anto-upload" />
                            </graphic>
@@ -90,23 +85,18 @@
                         <Font name="DejaVu Serif Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtPOID" />
+                  <TextField fx:id="txtPOID" editable="false" />
                   <Separator prefHeight="90.0" prefWidth="191.0" />
                   <Label text="UPDATE STOCK">
                      <font>
                         <Font name="DejaVu Serif Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtUpdateStock" />
+                  <TextField fx:id="txtUpdateStock" editable="false" />
                   <Separator prefHeight="90.0" prefWidth="191.0" />
                   <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="191.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#reloadClick" style="-fx-background-color: #1098F7;">
-                           <graphic>
-                              <FontIcon iconLiteral="anto-reload" />
-                           </graphic>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#updateStockClick" style="-fx-background-color: #FDE74C;">
+                        <Button mnemonicParsing="false" onAction="#updateStockClick" prefHeight="34.0" prefWidth="206.0" style="-fx-background-color: #FDE74C;">
                            <graphic>
                               <FontIcon iconLiteral="anto-upload" />
                            </graphic>
@@ -115,6 +105,11 @@
                   </HBox>
                </children>
             </VBox>
+            <Button layoutX="897.0" layoutY="16.0" mnemonicParsing="false" onAction="#reloadClick" style="-fx-background-color: #1098F7;">
+               <graphic>
+                  <FontIcon iconLiteral="anto-reload" />
+               </graphic>
+            </Button>
          </children>
       </AnchorPane>
    </children>

@@ -9,9 +9,11 @@ import com.salesmanager.source.SalesM_Suppliers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 
@@ -73,6 +75,10 @@ public class imStockCtrl {
     @FXML
     private ObservableList<InventoryM_Stocks> cacheStockList = FXCollections.observableArrayList();
     
+    private String[] stockRow;
+    
+    private String[] poRow;
+    
     public void initialize() throws IOException 
     {
     	posID.setCellValueFactory(new PropertyValueFactory<>("posID")); // Use the ViewItemList.getID method
@@ -94,7 +100,7 @@ public class imStockCtrl {
     	ObservableList<InventoryM_Stocks> POList = FXCollections.observableArrayList();
     	
     	//Use String Builder to form a string that contain data we need
-    	String[] poRow = listed.ReadTextFile().toString().split("\n");
+    	poRow = listed.ReadTextFile().toString().split("\n");
     	
     	for(String rows: poRow) {
     		
@@ -121,8 +127,8 @@ public class imStockCtrl {
     	
     	ObservableList<InventoryM_Stocks> stockList = FXCollections.observableArrayList();
     	
-    	//For Stock Table
-    	String[] stockRow = listed.ReadStockTextFile().toString().split("\n");
+    	//For Stock Table, becus we need to use this stockRow as a parameter to save data so just declare a private stockRow
+    	stockRow = listed.ReadStockTextFile().toString().split("\n");
     	
     	for(String rows: stockRow) {
     		
@@ -142,17 +148,29 @@ public class imStockCtrl {
     	stocktable.setItems(cacheStockList);
     }
     
+    @FXML
     public void reloadClick() throws IOException {
     	
     	cachePOList.clear();
     	cacheStockList.clear();
+    	clearTextField();
     	
     	load();
     }
     
+    
+    public void clearTextField() {
+    	
+    	TextField[] textFields = {txtItemsID, txtItemsName, txtItemsStock, txtUpdateStock, txtPOID};
+    	for (TextField field : textFields) {
+    	    field.clear();      	
+    	}
+    }
+
     public void poRowClick() {
     	
     	try {
+    		
 	    	InventoryM_Stocks selectedItem = POtable.getSelectionModel().getSelectedItem();
 	        
 	        if (selectedItem != null) {
@@ -194,6 +212,39 @@ public class imStockCtrl {
 
     public void saveClick() {
     	
+    	InventoryM_Stocks selectedItem = stocktable.getSelectionModel().getSelectedItem();	
+    	
+    	try {
+    		
+    		if(selectedItem != null) {
+
+	    		InventoryM_Stocks dataModify = new InventoryM_Stocks(
+	    				stockRow,
+	    				txtItemsID.getText().trim(),
+	    				Integer.parseInt(txtItemsStock.getText().trim())
+	    				);
+	    		
+	    		boolean result = dataModify.manageStockIdentifier();
+	    		if (result == true) {
+	    			
+	    			reloadClick();
+	    			
+	    		} else {
+	    			
+	    			Alert alert = new Alert(AlertType.INFORMATION);
+	        		alert.setContentText("Some error occurs.");
+	        		alert.showAndWait();
+	    		}
+    		} else {
+    			
+    			Alert alert = new Alert(AlertType.INFORMATION);
+        		alert.setContentText("Please select a Purchase Order.");
+        		alert.showAndWait();
+    		}
+    	} catch (Exception e) {
+    		
+    		
+    	}
     }
     
     public void updateStockClick() {
@@ -202,7 +253,33 @@ public class imStockCtrl {
     	
     	try {
     		
-    		
+    		if(selectedPO != null) {
+
+	    		InventoryM_Stocks dataModify = new InventoryM_Stocks(
+	    				stockRow,
+	    				poRow,
+	    				selectedPO.getItemsID(),
+	    				Integer.parseInt(txtUpdateStock.getText().trim()),
+	    				selectedPO.getPosID()
+	    				);
+	    		
+	    		boolean result = dataModify.updateStockIdentifier();
+	    		if (result == true) {
+	    			
+	    			reloadClick();
+	    			
+	    		} else {
+	    			
+	    			Alert alert = new Alert(AlertType.INFORMATION);
+	        		alert.setContentText("Some error occurs.");
+	        		alert.showAndWait();
+	    		}
+    		} else {
+    			
+    			Alert alert = new Alert(AlertType.INFORMATION);
+        		alert.setContentText("Please select a Purchase Order.");
+        		alert.showAndWait();
+    		}
     	} catch (Exception e) {
     		
     		

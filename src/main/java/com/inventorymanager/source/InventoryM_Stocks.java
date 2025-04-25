@@ -1,8 +1,11 @@
 package com.inventorymanager.source;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 
 import com.groupfx.JavaFXApp.*;
 
@@ -20,10 +23,29 @@ public class InventoryM_Stocks extends InventoryM implements viewData{
 	private String itemStockName;
 	private int itemStock;
 	
+	private String[] updateStockList;
+	private String[] poStatusList;
+	
 	public InventoryM_Stocks() {
 		
 	}
 	
+	public InventoryM_Stocks(String[] updateStockList, String[] poStatusList, String itemsID, int posQuantity, String posID) {
+		
+		this.itemsID = itemsID;
+		this.posQuantity = posQuantity;
+		this.poStatusList= poStatusList;
+		this.updateStockList = updateStockList;
+		this.posID = posID;
+	}
+	
+	public InventoryM_Stocks(String[] updateStockList, String itemsID, int itemStock) {
+		
+		this.itemsID = itemsID;
+		this.updateStockList = updateStockList;
+		this.itemStock = itemStock;
+	}
+
 	public InventoryM_Stocks(String posID, String itemsID, int posQuantity, double posPrice,String posStatus) {
 		
 		this.posID = posID;
@@ -104,5 +126,105 @@ public class InventoryM_Stocks extends InventoryM implements viewData{
 		}
 		return builder;
 		
+	}
+	
+	
+	public boolean updateStockIdentifier() {
+		
+	    boolean updated = false;
+	    
+	    for (int i = 0; i < updateStockList.length; i++) {
+	    	
+	        String row = updateStockList[i];
+	        String[] spl = row.split(",");
+	        
+	        if (spl.length == 5) {
+	        	
+	            if (spl[0].equals(itemsID)) {
+	            	
+	                spl[3] = String.valueOf(Integer.parseInt(spl[3]) + posQuantity);
+	                
+	                updateStockList[i] = String.join(",", spl);
+	                updated = true;
+	            }
+	        }
+	    }
+
+	    for (int i = 0; i < poStatusList.length; i++) {
+	    	
+	        String row = poStatusList[i];
+	        String[] spl = row.split(",");
+	        
+	        if (spl.length == 8 && updated == true) {
+	        	
+	            if (spl[0].equals(posID)) {
+	            	
+	                spl[7] = "Unpaid";
+	                
+	                poStatusList[i] = String.join(",", spl);
+	            }
+	        }
+	    }
+	    
+	    POTxtFile(poStatusList);
+	    updateStockTxtFile(updateStockList);
+	    return updated;
+	}
+	
+	public boolean manageStockIdentifier() {
+		
+		boolean updated = false;
+	    
+	    for (int i = 0; i < updateStockList.length; i++) {
+	    	
+	        String row = updateStockList[i];
+	        String[] spl = row.split(",");
+	        
+	        if (spl.length == 5) {
+	        	
+	            if (spl[0].equals(itemsID)) {
+	            	
+	                spl[3] = String.valueOf(itemStock);
+	                
+	                updateStockList[i] = String.join(",", spl);
+	                updated = true;
+	            }
+	        }
+	    }
+	    
+	    updateStockTxtFile(updateStockList);
+	    return updated;
+	}
+	
+	private void updateStockTxtFile(String[] updateStockList) {
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("Data/ItemsList.txt", false))) {
+			
+			for (String row : updateStockList) {
+				
+	        writer.write(row);
+	        writer.newLine(); 
+        
+		}
+	    } catch (IOException e) {
+	    	
+	        e.printStackTrace();
+	    }
+	}
+	
+	private void POTxtFile(String[] poStatusList) {
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("Data/PurchaseOrder.txt", false))) {
+			
+			for (String row : poStatusList) {
+				
+	        writer.write(row);
+	        writer.newLine(); 
+        
+		}
+	    } catch (IOException e) {
+	    	
+	        e.printStackTrace();
+	    }
 	}
 }
