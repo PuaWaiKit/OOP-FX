@@ -104,8 +104,12 @@ public class PdfGenerator {
 	        drawLine(cs, margin, y, 500);
 	        y -= lineHeight;
 
-	        drawText(cs, "Total Paid/Expenses:", margin + 300, y - 15, true);
+	        drawText(cs, "Total Paid/Expenses:", margin + 250, y - 15, true);
 	        drawText(cs, "RM " + String.format("%.2f", totalIncome), margin + 400, y - 15, true);
+	        
+	        y-=lineHeight;
+	        drawText(cs,"All Prices Are Show in Discounted Price", margin,y-100,true);
+	        drawText(cs, "THIS IS A COMPUTER GENERATED REPORT", margin,y-200,true);
 
 	    } catch (IOException e) {
 	        e.printStackTrace();
@@ -187,19 +191,36 @@ public class PdfGenerator {
 	        y -= lineHeight * 2;
 
 	        // === Table Content ===
-	        double totalIncome = 0.0;
+	        double Subtotal = 0.0;
+	        double Total=0.0;
 	        for (PMGenPO item : reportData) {
 	            drawTableRow(cs, item, margin, y);
 	            y -= lineHeight;
-	            totalIncome += item.getPrice();
+	            int Quantity= item.getQuantity();
+	            double UnitP=item.UnitPriceR(item.getName());
+	            
+	            Subtotal += Quantity*UnitP;
+	            
+	            Total+=item.getPrice();
 	        }
 
 	        drawLine(cs, margin, y, tableWidth);
 	        y -= lineHeight;
 
 	        // === Total ===
+	        drawText(cs, "Subtotal:", margin + 300, y, true);
+	        drawText(cs, "RM " + String.format("%.2f", Subtotal), margin + 400, y, false);
+	        
+	        //discount label
+	        y -= lineHeight;
+	        drawText(cs,"Discount (RM)", margin+300,y,true);
+	        double disN= Subtotal-Total;
+	        drawText(cs,"("+disN+")",margin+400,y,false);
+	        
+	        y -= lineHeight;
+	        
 	        drawText(cs, "Total:", margin + 300, y, true);
-	        drawText(cs, "RM " + String.format("%.2f", totalIncome), margin + 400, y, false);
+	        drawText(cs, "RM " + String.format("%.2f", Total), margin + 400, y, false);
 	        
 	        // FOOTER
 	       y -= lineHeight * 2;
@@ -218,6 +239,7 @@ public class PdfGenerator {
 	private void drawTableHeader(PDPageContentStream cs, float x, float y) throws IOException {
 	    drawText(cs, "Item ID", x, y, true);
 	    drawText(cs, "Item Name", x + 120, y, true);
+	    drawText(cs, "Unit Price (RM)", x+200,y,true);
 	    drawText(cs, "Quantity", x + 300, y, true);
 	    drawText(cs, "Price (RM)", x + 400, y, true);
 	}
@@ -227,11 +249,13 @@ public class PdfGenerator {
 		String[] data= source.RetriveItems(item.getId(), item.getName()).toString().split(",");
 		
 		String upData= data[1].replace("\n", " ");
+        double UnitP=item.UnitPriceR(item.getName());
 		
 		drawText(cs, item.getName(), x, y, false);
 	    drawText(cs, upData, x + 120, y, false);
+	    drawText(cs, String.format("%.3f", item.UnitPriceR(item.getName())), x+200, y, false);
 	    drawText(cs, String.valueOf(item.getQuantity()), x + 300, y, false);
-	    drawText(cs, String.format("%.2f", item.getPrice()), x + 400, y, false);
+	    drawText(cs, String.format("%.2f", item.getQuantity()*UnitP), x + 400, y, false);
 	}
 
 

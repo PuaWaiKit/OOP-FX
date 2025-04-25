@@ -145,6 +145,7 @@ public class FMPayment extends Purchase_Order {
 	}
 	
 	
+	
 	public void Approve(String Id) throws IOException 
 	{	
 		PStatus="Approve";
@@ -157,6 +158,30 @@ public class FMPayment extends Purchase_Order {
 		ClearCache.close();
 		super.EditFunc();
 	}
+
+	
+	
+	public String ReturnDiscountedPrice(String Source) throws IOException
+	{
+		BufferedReader reader= new BufferedReader(new FileReader("Data/PurchaseOrder.txt"));
+		String line;
+		
+		String price=null;
+		while((line=reader.readLine())!=null) 
+		{
+			String[] data= line.split(",");
+			if(data[0].equals(Source)) 
+			{
+				price= data[3];
+				reader.close();
+				return price;
+			}
+			else continue;
+			
+		}
+		reader.close();
+		return price;
+	}
 	
 	@Override
 	public void SaveFunc() 
@@ -168,6 +193,7 @@ public class FMPayment extends Purchase_Order {
 		try {
 			if(!super.CacheChecking()) 
 			{
+				
 				BufferedReader readCache= new BufferedReader(new FileReader("Data/Cache.txt"));
 				while((CacheLine=readCache.readLine())!=null) 
 				{	String[] Data=CacheLine.split(",");
@@ -182,6 +208,7 @@ public class FMPayment extends Purchase_Order {
 						buffer.append(Data[5]).append(",");
 						buffer.append(Data[6]).append(",");
 						buffer.append(Data[7]).append("\n");
+						
 					}else continue;
 				}
 				Files.write(Paths.get("Data/PurchaseOrder.txt"), buffer.toString().getBytes(), StandardOpenOption.WRITE,StandardOpenOption.TRUNCATE_EXISTING);
@@ -202,18 +229,23 @@ public class FMPayment extends Purchase_Order {
 					    DateTimeFormatter Dformat= DateTimeFormatter.ofPattern("dd-MM-yyyy");
 						LocalDate Date= LocalDate.now(); 
 						
-						buffer.append(NewId).append(",");
-						buffer.append(CacheData[0]).append(",");
-						buffer.append(CacheData[1]).append(",");
-						buffer.append(CacheData[2]).append(",");
-						buffer.append(CacheData[3]).append(",");
-						buffer.append(CacheData[4]).append(",");// Status
-						buffer.append(CacheData[5]).append(",");
-						buffer.append(Total).append(",");
-						buffer.append("Paid").append(",");
-						buffer.append(Date.format(Dformat)).append("\n");
-					
+						String Price=ReturnDiscountedPrice(CacheData[0]);
+						
+						
+							buffer.append(NewId).append(",");
+							buffer.append(CacheData[0]).append(",");
+							buffer.append(CacheData[1]).append(",");
+							buffer.append(CacheData[2]).append(",");
+							buffer.append(CacheData[3]).append(",");
+							buffer.append(CacheData[4]).append(",");// Status
+							buffer.append(CacheData[5]).append(",");
+							buffer.append(Price).append(",");
+							buffer.append("Paid").append(",");
+							buffer.append(Date.format(Dformat)).append("\n");
+						
+				
 				writePayment.write(buffer.toString());
+				
 				oldCache.clear();
 				
 				BufferedWriter ClearCache2= new BufferedWriter(new FileWriter("Data/Cache.txt"));

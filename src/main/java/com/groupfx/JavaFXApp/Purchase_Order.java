@@ -230,8 +230,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 		{
 			while((line=reader.readLine())!=null) 
 			{
-				String[] PoStatus= line.split(",");System.out.println(PoStatus[0]);
-				System.out.println(PoStatus[5]);
+				String[] PoStatus= line.split(",");
 				if(LineCount==SelectedNum) 
 				{	
 					buffer.append(PoStatus[0]).append(",");
@@ -604,6 +603,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 	@Override
 	public void EditFunc() 
 	{	
+		builder.setLength(0);
 		String line;
 		if(ClickCount>0) 
 		{
@@ -664,9 +664,6 @@ public abstract class Purchase_Order implements viewData, modifyData {
 			try
 			{ 	
 				String[] Status= POStatus(LineNum).toString().split(",");
-				System.out.println(Status.length);
-				System.out.println(Status[5]+" LineNum "+LineNum);
-				System.out.println(PStatus);
 				if(!CacheChecking() && Status[5].equals(PStatus)) 
 				{
 					List<String> EditList= new ArrayList<>(Files.readAllLines(Paths.get("Data/Cache.txt")));

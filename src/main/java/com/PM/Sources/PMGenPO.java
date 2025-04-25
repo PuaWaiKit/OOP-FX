@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.groupfx.JavaFXApp.Purchase_Order;
 
@@ -97,4 +99,31 @@ public class PMGenPO extends Purchase_Order{
 		return d;
 		
 	}
+	
+	public double UnitPriceR(String ItemsId) throws IOException
+	{
+		BufferedReader reader= new BufferedReader(new FileReader("Data/ItemsList.txt"));
+		String line;
+		double price=0.00;
+		while((line=reader.readLine())!=null) 
+		{
+			String[] data= line.split(",");
+			for(String id:data) 
+			{
+				if(ItemsId.equals(id)) 
+				{
+					price=Double.parseDouble(data[4]);
+					reader.close();
+					return price;
+				}
+			}
+				
+			
+		}
+		reader.close();
+		return price;
+		
+	}
+	
+	
 }
