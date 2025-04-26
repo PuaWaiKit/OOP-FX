@@ -75,20 +75,31 @@ public class PdfGenerator {
 
 	        y -= (lineHeight * 3);
 
-	        // Header
-	        drawLine(cs, margin, y, 500);
-	        drawText(cs, "Item ID", margin, y - 15, true);
-	        drawText(cs, "Item", margin + 150, y - 15, true);
-	        drawText(cs, "Qty", margin + 300, y - 15, true);
-	        drawText(cs, "Total (RM)", margin + 400, y - 15, true);
-	        y -= lineHeight;
-	        drawLine(cs, margin, y, 500);
-
-	        // Content
+	        boolean headerFMDrawn = false;
 	        double totalIncome = 0.0;
-	        for (Object item : reportData) {
+	        
+	        
+	        for (int i = 0; i < reportData.size(); i++) {
+	        	
+	            Object item = reportData.get(i);
+	            
 	        	if(item instanceof FMGenReport) {
 	        		
+	        		if (!headerFMDrawn) {
+	        			
+	        			//Header
+	                    drawLine(cs, margin, y, 500);
+	                    drawText(cs, "Item ID", margin, y - 15, true);
+	                    drawText(cs, "Item", margin + 150, y - 15, true);
+	                    drawText(cs, "Qty", margin + 300, y - 15, true);
+	                    drawText(cs, "Total (RM)", margin + 400, y - 15, true);
+	                    y -= lineHeight;
+	                    drawLine(cs, margin, y, 500);
+	                    
+	                    headerFMDrawn = true;  // Set flag to true after drawing header
+	                }
+	        		
+	        		// Content
 	        		FMGenReport report = (FMGenReport) item;
 	        		
 	    	        drawText(cs, report.getItemId(), margin, y - 15, false);
@@ -97,19 +108,24 @@ public class PdfGenerator {
 	    	        drawText(cs, String.format("%.2f", report.getTotal()), margin + 400, y - 15, false);
 	    	        totalIncome += report.getTotal();
 	    	        y -= lineHeight;
+	    	        
+	    	        if(i == reportData.size() - 1) {
+	    	        	
+	    	        	drawLine(cs, margin, y, 500);
+	    		        y -= lineHeight;
+
+	    		        drawText(cs, "Total Paid/Expenses:", margin + 250, y - 15, true);
+	    		        drawText(cs, "RM " + String.format("%.2f", totalIncome), margin + 400, y - 15, true);
+	    		        
+	    		        y-=lineHeight;
+	    		        drawText(cs,"All Prices Are Show in Discounted Price", margin,y-100,true);
+	    		        drawText(cs, "THIS IS A COMPUTER GENERATED REPORT", margin,y-200,true);
+
+	    	        }
 	        	}
 	        	
 	        }
-
-	        drawLine(cs, margin, y, 500);
-	        y -= lineHeight;
-
-	        drawText(cs, "Total Paid/Expenses:", margin + 250, y - 15, true);
-	        drawText(cs, "RM " + String.format("%.2f", totalIncome), margin + 400, y - 15, true);
 	        
-	        y-=lineHeight;
-	        drawText(cs,"All Prices Are Show in Discounted Price", margin,y-100,true);
-	        drawText(cs, "THIS IS A COMPUTER GENERATED REPORT", margin,y-200,true);
 
 	    } catch (IOException e) {
 	        e.printStackTrace();
