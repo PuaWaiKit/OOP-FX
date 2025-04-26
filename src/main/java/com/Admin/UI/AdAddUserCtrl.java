@@ -68,7 +68,9 @@ public class AdAddUserCtrl {
     	UserNameTab.setCellValueFactory(new PropertyValueFactory<>("user"));
     	PasswordTab.setCellValueFactory(new PropertyValueFactory<>("password"));
     	RoleTab.setCellValueFactory(new PropertyValueFactory<>("role"));
+    	UserView.setSortPolicy(t->false);
     	loadTable();
+    	
     }
     
     public void loadTable() throws IOException 
@@ -95,26 +97,32 @@ public class AdAddUserCtrl {
     public void DelClick(MouseEvent event) throws IOException {
     	int SelectedRow= UserView.getSelectionModel().getSelectedIndex();
     	AdminSources SelectedItem= UserView.getSelectionModel().getSelectedItem();
-    	String name= SelectedItem.getUser();
-    	AdminSources source= new AdminSources(SelectedRow,name);
-    
-    	if(SelectedRow>=0 && !source.ReadLog()) 
-    	{
-    	  	
-    		source.DeleteFunc();
-    		if(source.Checking()) 
-    		{
-    			AlertInfo("Delete Sucessful","Delete User",AlertType.INFORMATION);
-    			UserView.getItems().remove(SelectedRow);
-    		}
-    		else 
-    		{
-    			AlertInfo("Delete Unsucess","Delete User",AlertType.ERROR);
-    		}
-    	}else 
-    	{
-    		AlertInfo("Please Select an Row to Delete/n Or Cannot Delete Current User !","Delete User",AlertType.WARNING);
-    	}
+     
+	    if(SelectedItem!=null) 
+	    {
+	    	String name= SelectedItem.getUser();
+	    	AdminSources source= new AdminSources(SelectedRow,name);
+	    	if(SelectedRow>=0 && !source.ReadLog()) 
+	    	{
+	    	  	
+	    		source.DeleteFunc();
+	    		if(source.Checking()) 
+	    		{
+	    			AlertInfo("Delete Sucessful","Delete User",AlertType.INFORMATION);
+	    			UserView.getItems().remove(SelectedRow);
+	    		}
+	    		else 
+	    		{
+	    			AlertInfo("Delete Unsucess","Delete User",AlertType.ERROR);
+	    		}
+	    	}else 
+	    	{
+	    		AlertInfo("Please Select an Row to Delete/n Or Cannot Delete Current User !","Delete User",AlertType.WARNING);
+	    	}
+	    }else 
+	    {
+	    	AlertInfo("Please Select an Row to Delete !","Delete User",AlertType.WARNING);
+	    }
     }
 
     @FXML

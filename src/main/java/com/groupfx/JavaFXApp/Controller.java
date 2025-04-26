@@ -8,6 +8,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,7 +22,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 
 public class Controller {
@@ -45,6 +49,10 @@ public class Controller {
     @FXML
     private Button Github;
     
+
+    @FXML
+    private AnchorPane rootPane;
+    
     @FXML
     private ImageView pwChangePic;
 
@@ -65,6 +73,16 @@ public class Controller {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
         
+        Platform.runLater(()->
+        {
+        	rootPane.getScene().setOnKeyPressed(event->
+        	{
+        		if(event.getCode()==KeyCode.ENTER) 
+        		{
+        			LoginBtn.fire();
+        		}
+        	});
+        });
       
     }
     
@@ -75,7 +93,7 @@ public class Controller {
     }
 
     @FXML
-    public void loginAct(MouseEvent event) throws IOException {
+    public void loginAct(ActionEvent event) throws IOException {
     	Authentication auth= new Authentication();
 		auth.LoadData();
 		String Password;

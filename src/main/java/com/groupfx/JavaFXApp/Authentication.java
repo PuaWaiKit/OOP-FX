@@ -1,6 +1,6 @@
 package com.groupfx.JavaFXApp;
 
-import java.awt.event.ActionEvent;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -14,6 +14,8 @@ import java.util.Map;
 
 import com.salesmanager.source.SalesM;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -51,8 +53,6 @@ public class Authentication {
 	private Map<String,String> UserMap= new HashMap<>();
 	private Map<String,String> roleMap= new HashMap<>();
 	private String CurrRole;
-	private Stage stage;
-	private Scene scene;
 	private String Name;
 	
 	
@@ -132,17 +132,27 @@ public class Authentication {
 	 * And the Text File Data must same as enum values *
 	 * 
 	  */
-	public void SwitchScene(MouseEvent event) throws IOException
+	public void SwitchScene(Event event) throws IOException
 	{			
 		for(UserRole rol: UserRole.values()) 
 		{
 			if (CurrRole.equals(rol.toString())) 
 			{	String filePath= MessageFormat.format("/fxml/{0}Interface.fxml",rol.getDescription());  //getDescription is enum method
 				Parent root= FXMLLoader.load(getClass().getResource(filePath));
-				stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-				scene= new Scene(root);
-				stage.setScene(scene);
-				stage.show();
+				Stage stage= null;
+				if(event.getSource() instanceof Node) 
+				{
+					stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+				}
+				
+				if(stage !=null) 
+				{
+					Scene scene= new Scene(root);
+					stage.setScene(scene);
+					stage.show();
+				}
+				
+				break;
 			}
 			
 		}
