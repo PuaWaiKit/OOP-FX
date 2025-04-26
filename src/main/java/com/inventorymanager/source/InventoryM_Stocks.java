@@ -13,6 +13,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class InventoryM_Stocks extends InventoryM implements viewData{
 	
+	private String InventoryM_ID;
+	
 	private String posID;
 	private String itemsID;
 	private String posStatus;
@@ -56,12 +58,16 @@ public class InventoryM_Stocks extends InventoryM implements viewData{
 	}
 	
 	public InventoryM_Stocks(String itemStockID, String itemStockName, int itemStock) {
-	
+		
+		InventoryM_ID = super.getUserID();
 		this.itemStockID = itemStockID;
 		this.itemStockName	= itemStockName;
 		this.itemStock = itemStock;
 		
 	}
+	
+	//For UserID
+	public String getInventoryM_ID() {return InventoryM_ID; }
 	
     //For Purchsae Order
 	public String getPosID() { return posID; }

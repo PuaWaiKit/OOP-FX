@@ -29,6 +29,7 @@ public class imUICtrl implements Initializable {
 	
 	@FXML
 	private AnchorPane contentPane;
+	
     @FXML
     private Button returnBtn;
     
@@ -49,38 +50,19 @@ public class imUICtrl implements Initializable {
 		}
     }
 	
-	  
-	public boolean SwitchAlert() throws IOException
-	{
-		Alert alert= new Alert(AlertType.CONFIRMATION);
-    	alert.setTitle("Switch Pages?");
-    	alert.setContentText("All data haven't save will lost");
-    	alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO); //add button yes and no
-    	Optional<ButtonType> result= alert.showAndWait(); // wait until user select
-    	alert.setHeaderText("Do You Want To Switch Pages?");
-    	
-    	if(result.isPresent() && result.get()==ButtonType.YES) 
-    	{
-    		 FileWriter writer = new FileWriter("Data/Cache.txt");
-    		 writer.close();
-    		 return true;
-    	}
-    	return false;
+	
+	@FXML
+	public void ReturnClick(MouseEvent event) throws IOException{
+		
+		Parent root= FXMLLoader.load(getClass().getResource("/fxml/adInterface.fxml"));
+		stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+		scene= new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		
 	}
 	
 	@FXML
-	    public void ReturnClick(MouseEvent event) throws IOException
-	    {
-	    	if(SwitchAlert()) 
-	    	{
-		    	Parent root= FXMLLoader.load(getClass().getResource("/fxml/adInterface.fxml"));
-				stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-				scene= new Scene(root);
-				stage.setScene(scene);
-				stage.show();
-			}
-	    }
-	
 	public void EnableButton() throws IOException
 	{
 		String line;
@@ -118,12 +100,7 @@ public class imUICtrl implements Initializable {
 	
 	@FXML
 	private void handleChangeSR() {
-		loadNewContent("/fxml/imSRs.fxml");
-	}
-	
-	@FXML
-	private void handleChangePO() {
-		loadNewContent("/fxml/imPO.fxml");
+		loadNewContent("/fxml/imStockReport.fxml");
 	}
 	
 	public void loadNewContent(String fxmlFile) {

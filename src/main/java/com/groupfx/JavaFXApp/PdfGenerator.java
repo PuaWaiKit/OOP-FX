@@ -6,6 +6,7 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import com.PM.Sources.PMGenPO;
 import com.financemanager.source.FMGenReport;
+import com.inventorymanager.source.*;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -120,6 +121,39 @@ public class PdfGenerator {
 	    		        y-=lineHeight;
 	    		        drawText(cs,"All Prices Are Show in Discounted Price", margin,y-100,true);
 	    		        drawText(cs, "THIS IS A COMPUTER GENERATED REPORT", margin,y-200,true);
+
+	    	        }
+	        	}
+	        	
+	        	if(item instanceof InventoryM_Stocks) {
+	        		
+	        		if (!headerFMDrawn) {
+	        			
+	        			//Header
+	                    drawLine(cs, margin, y, 500);
+	                    drawText(cs, "Item ID", margin, y - 15, true);
+	                    drawText(cs, "Item", margin + 150, y - 15, true);
+	                    drawText(cs, "Stock", margin + 300, y - 15, true);
+	                    y -= lineHeight;
+	                    drawLine(cs, margin, y, 500);
+	                    
+	                    headerFMDrawn = true;  // Set flag to true after drawing header
+	                }
+	        		
+	        		InventoryM_Stocks report = (InventoryM_Stocks) item;
+	        		
+	        		drawText(cs, report.getItemStockID(), margin, y - 15, false);
+	    	        drawText(cs, report.getItemStockName(), margin + 150, y - 15, false);
+	    	        drawText(cs, String.valueOf(report.getItemStock()), margin + 300, y - 15, false);
+	    	        y -= lineHeight;
+	    	        
+	    	        if(i == reportData.size() - 1) {
+	    	        	
+	    	        	drawLine(cs, margin, y, 500);
+	    		        y -= lineHeight;
+
+	    		        drawText(cs, "Report Writter:", margin + 250, y - 15, true);
+	    		        drawText(cs, String.format("%.2f", report.getInventoryM_ID()), margin + 400, y - 15, true);
 
 	    	        }
 	        	}
