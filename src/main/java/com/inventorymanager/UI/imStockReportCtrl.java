@@ -91,7 +91,7 @@ public class imStockReportCtrl {
                     PdfGenerator generator = new PdfGenerator();
 
                     // Generate Report PDF can put on background, not involve in UI Threads
-                    PDDocument doc = generator.PrepareReport(reportData, year);
+                    PDDocument doc = generator.PrepareReport(reportData, year, "STOCK REPORT");
 
                     // Need Run on the UI Thread FileChooser Save + Alert + open
                     Platform.runLater(() -> {

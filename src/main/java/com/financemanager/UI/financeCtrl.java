@@ -58,11 +58,7 @@ public class financeCtrl implements Initializable {
     @FXML
     private Button infoBtn;
 
-    @FXML
-    private Button invBtn;
 
-    @FXML
-    private Button menuBtn;
 
     @FXML
     private AnchorPane nvgPane;
@@ -192,15 +188,8 @@ public class financeCtrl implements Initializable {
     	}
     }
 
-    @FXML
-    void MenuClick(MouseEvent event) {
 
-    }
 
-    @FXML
-    void handleChangeInventory(ActionEvent event) {
-
-    }
 
     @FXML
     public void handleChangePO(ActionEvent event) throws IOException {
