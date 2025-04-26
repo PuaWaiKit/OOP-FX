@@ -33,7 +33,7 @@ public class PdfGenerator {
 	
 	public PdfGenerator() {}
 	
-	public PDDocument PrepareReport(List<?> reportData, String year) {
+	public PDDocument PrepareReport(List<?> reportData, String year, String ReportName) {
 	    PDDocument doc = new PDDocument();
 	    PDPage page = new PDPage(PDRectangle.A4);
 	    doc.addPage(page);
@@ -55,7 +55,7 @@ public class PdfGenerator {
 	        cs.beginText();
 	        cs.setFont(PDType1Font.HELVETICA_BOLD, 14);
 	        cs.newLineAtOffset(225, y);
-	        cs.showText("FINANCIAL STATEMENT");
+	        cs.showText(ReportName);
 	        cs.endText();
 
 	        y -= lineHeight;

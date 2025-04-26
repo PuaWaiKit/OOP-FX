@@ -89,6 +89,5 @@
                </padding>
             </HBox>
          </children></AnchorPane>
-      <RadioButton mnemonicParsing="false" text="RadioButton" />
    </children>
 </AnchorPane>

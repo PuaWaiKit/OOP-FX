@@ -165,7 +165,7 @@ public class FMGenReportCtrl {
                     PdfGenerator generator = new PdfGenerator();
 
                     // Generate Report PDF can put on background, not involve in UI Threads
-                    PDDocument doc = generator.PrepareReport(data, year);
+                    PDDocument doc = generator.PrepareReport(data, year, "FINANCIAL STATEMENT");
 
                     // Need Run on the UI Thread FileChooser Save + Alert + open
                     Platform.runLater(() -> {
