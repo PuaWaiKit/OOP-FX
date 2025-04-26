@@ -417,7 +417,7 @@ public class GenPOCtrl {
                     PdfGenerator generator = new PdfGenerator();
 
                     // Generate Report PDF can put on background, not involve in UI Threads
-                    PDDocument doc = generator.GeneratePurchaseOrder(List.of(data),"S001");
+                    PDDocument doc = generator.GeneratePurchaseOrder(List.of(data),"S001",data.getPm());
 
                     // Need Run on the UI Thread FileChooser Save + Alert + open
                     Platform.runLater(() -> {

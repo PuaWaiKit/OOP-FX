@@ -170,7 +170,7 @@ public class PdfGenerator {
 	}
 	
 	
-	public PDDocument GeneratePurchaseOrder(List<PMGenPO> reportData, String supplier) {
+	public PDDocument GeneratePurchaseOrder(List<PMGenPO> reportData, String supplier, String PMName) {
 	    PDDocument doc = new PDDocument();
 	    PDPage page = new PDPage(PDRectangle.A4);
 	    doc.addPage(page);
@@ -273,12 +273,18 @@ public class PdfGenerator {
 	        drawText(cs, "RM " + String.format("%.2f", Total), margin + 400, y, false);
 	        
 	        // FOOTER
-	       y -= lineHeight * 2;
+	        y-=lineHeight*2;
+	        drawText(cs,"This Report Is Written and Approved By: ", margin,y,true);
+	        
+	        drawText(cs, PMName, margin ,y-20,true);
+	        
+	       y -= lineHeight *2;
 	       drawText(cs, "This is a Computer Generated Report", margin, y, true);
 
 	     
 	       y-=lineHeight;
 	     drawText(cs, "E & O E", margin, y, false);
+	     
 
 	    } catch (IOException e) {
 	        e.printStackTrace();
