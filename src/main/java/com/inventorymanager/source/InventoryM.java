@@ -25,7 +25,7 @@ public class InventoryM {
 		
 		String ID = null;
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader("Log.txt"))) {
+		try (BufferedReader reader = new BufferedReader(new FileReader("Data/Log.txt"))) {
 			
 			String content = reader.readLine();
 		    String[] arr = content.split(",");
