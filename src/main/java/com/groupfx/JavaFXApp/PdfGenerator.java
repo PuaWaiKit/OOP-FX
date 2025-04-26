@@ -153,7 +153,7 @@ public class PdfGenerator {
 	    		        y -= lineHeight;
 
 	    		        drawText(cs, "Report Writter:", margin + 250, y - 15, true);
-	    		        drawText(cs, String.format("%.2f", report.getInventoryM_ID()), margin + 400, y - 15, true);
+	    		        drawText(cs, report.getInventoryM_ID(), margin + 400, y - 15, true);
 
 	    	        }
 	        	}
