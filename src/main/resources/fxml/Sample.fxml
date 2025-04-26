@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="593.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.groupfx.JavaFXApp.Controller">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="593.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.groupfx.JavaFXApp.Controller">
    <children>
       <AnchorPane prefHeight="700.0" prefWidth="600.0">
          <children>
@@ -21,7 +21,7 @@
             </ImageView>
             <AnchorPane layoutX="140.0" layoutY="75.0" prefHeight="550.0" prefWidth="320.0" style="-fx-background-color: white;" styleClass="loginbounded" stylesheets="@/css/styles.css">
                <children>
-                  <Button fx:id="LoginBtn" layoutX="112.0" layoutY="472.0" mnemonicParsing="false" onMouseClicked="#loginAct" prefHeight="27.0" prefWidth="101.0" text="Login">
+                  <Button fx:id="LoginBtn" layoutX="112.0" layoutY="472.0" mnemonicParsing="false" onAction="#loginAct" prefHeight="27.0" prefWidth="101.0" text="Login" defaultButton="true">
                      <graphic>
                         <FontIcon />
                      </graphic>
