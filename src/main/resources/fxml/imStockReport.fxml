@@ -28,7 +28,7 @@
                   <NumberAxis side="LEFT" />
                </yAxis>
             </BarChart>
-            <Button layoutX="799.0" layoutY="589.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="138.0" text="GENERATE">
+            <Button fx:id="generateBtn" layoutX="799.0" layoutY="589.0" mnemonicParsing="false" onAction="#generateReport" prefHeight="38.0" prefWidth="138.0" text="GENERATE">
                <graphic>
                   <FontIcon iconColor="WHITE" iconLiteral="anto-file-done" iconSize="25" />
                </graphic>

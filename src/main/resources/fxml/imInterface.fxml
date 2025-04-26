@@ -53,14 +53,6 @@
                               <Font name="Comic Sans MS" size="16.0" />
                            </font>
                         </Button>
-                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleChangePO" prefHeight="60.0" prefWidth="201.0" style="-fx-background-color: #1C2321;" stylesheets="@../css/styles.css" text="   PO" textFill="WHITE">
-                           <graphic>
-                              <FontIcon iconColor="WHITE" iconLiteral="anto-shopping-cart" iconSize="25" wrappingWidth="22.963074445724487" />
-                           </graphic>
-                           <font>
-                              <Font name="Comic Sans MS" size="16.0" />
-                           </font>
-                        </Button>
                         <Button fx:id="returnBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#ReturnClick" prefHeight="57.0" prefWidth="196.0" style="-fx-background-color: #1C2321;" text="  RETURN" textFill="WHITE">
                            <font>
                               <Font name="Comic Sans MS" size="16.0" />
