@@ -102,32 +102,43 @@ public class smPRsCtrl {
 
         SalesM_PRs selectedItem = viewPRsTable.getSelectionModel().getSelectedItem();
         
-        if (selectedItem.getStatus().equals("Approved")) {
+        clearTextField();
+        
+        if (selectedItem != null) {
         	
-        	viewPRsTable.getSelectionModel().clearSelection();
-        	Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("PR Approved");
-            alert.setHeaderText(null);
-            alert.setContentText("PR have been approved, you cannot do any edition");
-            alert.showAndWait();
-                
-            } else {
-            	if (selectedItem != null) {
-                    String id = selectedItem.getId();
-                    String itemId = selectedItem.getItem_ID();
-                    int quantity = selectedItem.getQuantity();
-                    String date = selectedItem.getDate();
-                    String salesM = selectedItem.getSalesM();
-                    String status = selectedItem.getStatus();
+        	if (selectedItem.getStatus().equals("Approved")) {
+            	
+            	viewPRsTable.getSelectionModel().clearSelection();
+            	Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("PR Approved");
+                alert.setHeaderText(null);
+                alert.setContentText("PR have been approved, you cannot do any edition");
+                alert.showAndWait();
                     
-                    txtPRsID.setText(id);
-                    txtItem_ID.setText(itemId);
-                    txtQuantity.setText(String.valueOf(quantity));
-                    txtDate.setText(String.valueOf(date));
-                    txtSalesM.setText(salesM);
-                    txtStatus.setText(status);
-                }
-            }
+             } else {
+            	 
+                String id = selectedItem.getId();
+                String itemId = selectedItem.getItem_ID();
+                int quantity = selectedItem.getQuantity();
+                String date = selectedItem.getDate();
+                String salesM = selectedItem.getSalesM();
+                String status = selectedItem.getStatus();
+                        
+                txtPRsID.setText(id);
+                txtItem_ID.setText(itemId);
+                txtQuantity.setText(String.valueOf(quantity));
+                txtDate.setText(String.valueOf(date));
+                txtSalesM.setText(salesM);
+                txtStatus.setText(status);
+             }       
+        } else {
+        	
+        	Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Please select a row");
+            alert.setHeaderText(null);
+            alert.setContentText("Dont select empty row");
+            alert.showAndWait();
+        }
     }
     
     
