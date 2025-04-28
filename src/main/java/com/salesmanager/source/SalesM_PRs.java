@@ -176,7 +176,7 @@ public class SalesM_PRs  extends SalesM implements viewData, modifyData {
 	public void SaveFunc() {
 		
 		String[] parts = resultString.split("\n");
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter("Data/Suppliers.txt", false))) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("Data/prList.txt", false))) {
 			for (String part : parts) {
 				
             writer.write(part);
