@@ -32,7 +32,7 @@ public abstract class Purchase_Order implements viewData, modifyData {
 	private int ClickCount;
 	private String Status;
 	private String Supplier;
-	protected String PaymentStatus="Checking";
+	protected String PaymentStatus="Pending";
 	protected String PStatus="Pending";
 	private double unitprice;
 	
