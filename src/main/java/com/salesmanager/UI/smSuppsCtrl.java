@@ -115,29 +115,42 @@ public class smSuppsCtrl {
         
         clearTextField();
         
-        if (selectedItem != null) {
+        try {
+	        if (selectedItem != null) {
+	        	
+	            String id = selectedItem.getId();
+	            String Name = selectedItem.getName();
+	            String ContactN = selectedItem.getContactNum();
+	            String Address = selectedItem.getAddress();
+	            
+	            txtID.setText(id);
+	            txtName.setText(Name);
+	            txtContactN.setText(ContactN);
+	            txtAddress.setText(Address);
+	            
+	            for(Map.Entry<String, String[]> entry : suppItemList.entrySet()) {
+	            	if(id.equals(entry.getKey())) {
+	            		itemBox.getItems().addAll(entry.getValue());
+	            	}
+	            }
+	            
+	            txtID.setEditable(false);
+	        } else {
+	        	
+	        	Alert alert = new Alert(AlertType.INFORMATION);
+	            alert.setTitle("Please select a row");
+	            alert.setHeaderText(null);
+	            alert.setContentText("Dont select empty row");
+	            alert.showAndWait();
+	        }
+        } catch (Exception e) {
         	
-            String id = selectedItem.getId();
-            String Name = selectedItem.getName();
-            String ContactN = selectedItem.getContactNum();
-            String Address = selectedItem.getAddress();
-            
-            txtID.setText(id);
-            txtName.setText(Name);
-            txtContactN.setText(ContactN);
-            txtAddress.setText(Address);
-            
-            for(Map.Entry<String, String[]> entry : suppItemList.entrySet()) {
-            	if(id.equals(entry.getKey())) {
-            		itemBox.getItems().addAll(entry.getValue());
-            	}
-            }
-            
-            txtID.setEditable(false);
+        	System.out.println(e);
         }
     }
     
     private boolean containsID(ObservableList<SalesM_Suppliers> List, String id, String itemId) {
+    	
         for (SalesM_Suppliers supplier : List) {
             if (supplier.getId().equals(id) || supplier.getItem().equals(itemId)) {
             	

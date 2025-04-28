@@ -142,9 +142,19 @@ public class smItemsCtrl {
 	            txtItemSupp.setText(supplier);
 	            txtItemsStock.setText(String.valueOf(stock));
 	            txtItemsUP.setText(String.valueOf(unitPrice));
+	            
+	        } else {
+	        	
+	        	Alert alert = new Alert(AlertType.INFORMATION);
+	            alert.setTitle("Please select a row");
+	            alert.setHeaderText(null);
+	            alert.setContentText("Dont select empty row");
+	            alert.showAndWait();
 	        }
+	        
 	    } catch (Exception e) {
 	    	
+	    	System.out.println(e);
 	    }
     	
     }

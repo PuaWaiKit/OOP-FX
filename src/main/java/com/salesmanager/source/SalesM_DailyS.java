@@ -21,7 +21,7 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	private String itemId;
 	private String date;
 	private int totalSales;
-	private final String author = this.getUserId();
+	private final String author = super.getUserId();
 	private String tempAuthor;
 	
 	//Variable for the modification
@@ -129,35 +129,29 @@ public class SalesM_DailyS extends SalesM implements viewData, modifyData {
 	    return false;
 	}
 	
-    public void insertCheck(SalesM_DailyS selectedDS) {
+    public boolean insertCheck(SalesM_DailyS selectedDS) {
     	
     	try {
 	    	if(containsID(cachelist, Id, itemId, date) && selectedDS != null) {
 	
 		    	EditFunc();
-		    	
+		    	return true;
 		    	
 	    	} else if (!(containsID(cachelist,  Id, itemId, date)) && selectedDS == null){	
 	    		
 			    AddFunc();
-			    
+			    return true;
+			    	
 	    	} else {
 	    		
-	    		Alert alert = new Alert(AlertType.INFORMATION);
-	    		alert.setTitle("Information");
-	    		alert.setHeaderText(null);
-	    		alert.setContentText("Please select the supplier if you want to edit\n OR \n If you want to add a supplier please dont repeat the ID");
-	    		alert.showAndWait();
+	    		return false;
 	    	}
     	} catch (Exception e) {
     		
-    		Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(String.format("Error: %s", e.toString()));
-            alert.showAndWait();
+    		return false;
     	}
     }
+    
 	@Override
 	public void AddFunc() {
 		

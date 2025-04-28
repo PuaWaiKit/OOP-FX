@@ -66,13 +66,12 @@ public class smDailySCtrl {
     @FXML
     private LineChart<String,Integer> viewSalesChart;
     
-    ObservableList<SalesM_DailyS> cacheList = FXCollections.observableArrayList(); 
+    ObservableList<SalesM_DailyS> cacheList = FXCollections.observableArrayList();
+    
+    LocalDate today = LocalDate.now();
     
     private int oriSales;
-//    private String[] week = {
-//    	"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"	
-//    };
-//    
+  
     public void initialize() throws IOException 
     {
     	DSID.setCellValueFactory(new PropertyValueFactory<>("id")); 
@@ -90,7 +89,6 @@ public class smDailySCtrl {
     	ObservableList<SalesM_DailyS> itemList= FXCollections.observableArrayList(); 
     	String[] row= listed.ReadTextFile().toString().split("\n");
     	DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    	LocalDate date = null;
     	
     	try {
 	    	for(String rows: row) 
@@ -106,11 +104,10 @@ public class smDailySCtrl {
 	    					spl[4]
 	    					));
 	    			
-	    			date = LocalDate.parse(spl[2], format);
 	    		}
 	    	}
 	    	
-	    	resetWeek(date, format);
+	    	resetWeek(today, format);
 	    	cacheList = itemList;
 	    	viewSalesTable.setItems(cacheList);
 	    	clearTextField();
@@ -121,36 +118,49 @@ public class smDailySCtrl {
     	}
     }
     
-    public void resetWeek(LocalDate dateEnd, DateTimeFormatter format) {
-    	
-    	try (BufferedReader reader = new BufferedReader(new FileReader("Data/weekRecord.txt"))) {
-    		
-    		String fileDateStr = reader.readLine();
-    		LocalDate lastReset = LocalDate.parse(fileDateStr, format);
-    		
-    		if(dateEnd.get(WeekFields.ISO.weekOfYear()) != lastReset.get(WeekFields.ISO.weekOfYear())
-                || dateEnd.getYear() != lastReset.getYear()) {
-    			
-    			try (FileWriter writer = new FileWriter("Data/weekRecord.txt", false)) {
-    				
-    				writer.write(dateEnd.toString());
-    				
-    				try (FileWriter writerData = new FileWriter("Data/dailySales.txt", false)){
-    					
-    					load();
-    				} catch (IOException e) {
-    					e.printStackTrace();
-    				}
-    	        } catch (IOException e) {
-    	            e.printStackTrace();
-    	        }
- 
-    		} 
-    		
-    	} catch (Exception e) {
-    		
-    		System.out.println(e);
-    	}
+    public static void resetWeek(LocalDate dateEnd, DateTimeFormatter format) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("Data/weekRecord.txt"))) {
+
+            String fileDateStr = reader.readLine();
+            LocalDate lastReset = LocalDate.parse(fileDateStr, format);
+
+            System.out.println("dateEnd = " + dateEnd);
+            System.out.println("lastReset = " + lastReset);
+            System.out.println("dateEnd week = " + dateEnd.get(WeekFields.ISO.weekOfYear()));
+            System.out.println("lastReset week = " + lastReset.get(WeekFields.ISO.weekOfYear()));
+            System.out.println("dateEnd year = " + dateEnd.getYear());
+            System.out.println("lastReset year = " + lastReset.getYear());
+
+            if (dateEnd.get(WeekFields.ISO.weekOfYear()) != lastReset.get(WeekFields.ISO.weekOfYear())
+                    || dateEnd.getYear() != lastReset.getYear()) {
+
+                System.out.println("Week changed! Resetting records...");
+
+                try (FileWriter writer = new FileWriter("Data/weekRecord.txt", false)) {
+                    writer.write(dateEnd.format(format));
+                }
+
+                clearDailySales();
+            } else {
+                System.out.println("Same week, no reset needed.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error reading weekRecord.txt: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+        }
+    }
+
+    private static void clearDailySales() {
+        try (FileWriter writerData = new FileWriter("Data/dailySales.txt", false)) {
+            
+        	System.out.println("Daily sales cleared.");
+        	
+        } catch (IOException e) {
+            System.err.println("Error clearing dailySales.txt: " + e.getMessage());
+        }
+    }
     	
 //    	if (now.get(WeekFields.ISO.weekOfYear()) != dateEnd.get(WeekFields.ISO.weekOfYear())
 //                || now.getYear() != dateEnd.getYear()) {
@@ -161,7 +171,7 @@ public class smDailySCtrl {
 //        } else {
 //            System.out.println("Same week, no reset needed.");
 //        }
-    }
+    
     
     
     public void chartload(String itemId) {
@@ -222,32 +232,19 @@ public class smDailySCtrl {
     	
     }
     
-	private boolean containsID(ObservableList<SalesM_DailyS> List, String id, String itemId, String date) {
-		
-	    for (SalesM_DailyS item : List) {
-	        if (item.getId().equals(id)) {
-	        	
-	            return true;
-	        } else if (item.getDate().equals(date) && item.getItemId().equals(itemId)) {
-	        	
-	        	return true;
-	        }
-	    }
-	    return false;
-	}
-    
     @FXML
     public void addeditClick() {
     	
-    	SalesM_DailyS selectedDS = viewSalesTable.getSelectionModel().getSelectedItem();	
-    	int selectedSuppIndex = viewSalesTable.getSelectionModel().getSelectedIndex();
-    	
+		SalesM_DailyS selectedDS = viewSalesTable.getSelectionModel().getSelectedItem();	
+		int selectedSuppIndex = viewSalesTable.getSelectionModel().getSelectedIndex();
+	
     	try {
-		SalesM_DailyS dataEntry = new SalesM_DailyS(
-				
+    		
+			SalesM_DailyS dataEntry = new SalesM_DailyS(
+					
 				txtDSID.getText().trim(),
 				txtitemID.getText().trim(),
-				txtDate.getText().trim(),
+				String.valueOf(today),
 				Integer.parseInt(txttotalSales.getText().trim()),
 				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
 				cacheList, 
@@ -255,78 +252,32 @@ public class smDailySCtrl {
 				oriSales
 				);
 		
-		dataEntry.insertCheck(selectedDS);
-		ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
-	    cacheList = tempList;
-	    viewSalesTable.setItems(cacheList);
-	    clearTextField();
-		
+			boolean result = dataEntry.insertCheck(selectedDS);
+			
+			if (result) {
+				
+				ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
+			    cacheList = tempList;
+			    viewSalesTable.setItems(cacheList);
+			    clearTextField();
+			} else {
+				
+				Alert alert = new Alert(AlertType.ERROR);
+	    		alert.setTitle("Error");
+	    		alert.setHeaderText(null);
+	    		alert.setContentText("Please do something correct");
+	    		alert.showAndWait();
+			}
 		
     	} catch (Exception e) {
     		
-	    		Alert alert = new Alert(AlertType.ERROR);
-	    		alert.setTitle("Error");
-	    		alert.setHeaderText(null);
-	    		alert.setContentText(String.format("Error: %s", e.toString()));
-	    		alert.showAndWait();
-    	}
-    	
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Error");
+    		alert.setHeaderText(null);
+    		alert.setContentText(String.format("Error: %s", e.toString()));
+    		alert.showAndWait();
+    	}	
     }
-//    	try {
-//	    	if(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtDate.getText().trim()) && selectedSupp != null) {
-//	
-//	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
-//	    				
-//	    				txtDSID.getText().trim(),
-//	    				txtitemID.getText().trim(),
-//	    				txtDate.getText().trim(),
-//	    				Integer.parseInt(txttotalSales.getText()),
-//	    				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
-//	    				cacheList, 
-//	    				selectedSuppIndex,
-//	    				oriSales
-//	    				);
-//	    		
-//		    	dataEntry.EditFunc();
-//		    	ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
-//		    	cacheList = tempList;
-//		    	viewSalesTable.setItems(cacheList);
-//		    	clearTextField();
-//		    	
-//	    	} else if (!(containsID(cacheList, txtDSID.getText().trim(), txtitemID.getText().trim(), txtDate.getText().trim())) && selectedSupp == null){	
-//	    		
-//	    		SalesM_DailyS dataEntry = new SalesM_DailyS(
-//	    				
-//	    				txtDSID.getText().trim(),
-//	    				txtitemID.getText().trim(),
-//	    				txtDate.getText().trim(),
-//	    				Integer.parseInt(txttotalSales.getText()),
-//	    				"temp", //Use the UserID in the superclass (author), so  the system will record who edit this record
-//	    				cacheList, 
-//	    				selectedSuppIndex
-//	    				);
-//	    		
-//			    dataEntry.AddFunc();
-//			    ObservableList<SalesM_DailyS>  tempList = dataEntry.getCacheList();
-//			    cacheList = tempList;
-//			    viewSalesTable.setItems(cacheList);
-//			    clearTextField();
-//	    	} else {
-//	    		
-//	    		Alert alert = new Alert(AlertType.INFORMATION);
-//	    		alert.setTitle("Information");
-//	    		alert.setHeaderText(null);
-//	    		alert.setContentText("Please select the supplier if you want to edit\n OR \n If you want to add a supplier please dont repeat the ID");
-//	    		alert.showAndWait();
-//	    	}
-//    	} catch (Exception e) {
-//    		
-//    		Alert alert = new Alert(AlertType.ERROR);
-//            alert.setTitle("Error");
-//            alert.setHeaderText(null);
-//            alert.setContentText(String.format("Error: %s", e.toString()));
-//            alert.showAndWait();
-//    	}
     
     @FXML
     public void deleteClick() {
@@ -334,20 +285,30 @@ public class smDailySCtrl {
     	int selectedSuppIndex = viewSalesTable.getSelectionModel().getSelectedIndex();
     	
     	SalesM_DailyS delIndex = new SalesM_DailyS(selectedSuppIndex, cacheList);
-    	try {
-    		
-    		delIndex.DeleteFunc();
-    		ObservableList<SalesM_DailyS>  tempList = delIndex.getCacheList();
-    		cacheList = tempList;
-    		viewSalesTable.setItems(cacheList);
-    		clearTextField();
-    		
-    	} catch (Exception e) {
+    	
+    	if (selectedSuppIndex >= 0) {
+	    	try {
+	    		
+	    		delIndex.DeleteFunc();
+	    		ObservableList<SalesM_DailyS>  tempList = delIndex.getCacheList();
+	    		cacheList = tempList;
+	    		viewSalesTable.setItems(cacheList);
+	    		clearTextField();
+	    		
+	    	} catch (Exception e) {
+	    		
+	    		Alert alert = new Alert(AlertType.INFORMATION);
+	    	    alert.setTitle("Error");
+	    	    alert.setHeaderText("Something went wrong");
+	    	    alert.setContentText("Error: " + e.getMessage());
+	    	    alert.showAndWait();
+	    	}
+    	} else {
     		
     		Alert alert = new Alert(AlertType.INFORMATION);
     	    alert.setTitle("Error");
     	    alert.setHeaderText("Something went wrong");
-    	    alert.setContentText("Error: " + e.getMessage());
+    	    alert.setContentText("Bro please select a row first lah, why you try to delete empty (^_^') ");
     	    alert.showAndWait();
     	}
     }
